@@ -9,4 +9,7 @@ public enum SmOperandType {
 
   // Value: constant
   CONSTANT,
+
+  // Text: Text Constant (comment)
+  TEXT,
 }

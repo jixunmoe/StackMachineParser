@@ -1,18 +1,58 @@
 package uk.jixun.project.Helper;
 
+import com.google.common.collect.ImmutableMap;
+
 public class ParseHelper {
+  private static ImmutableMap<String, Integer> prefixRadix = ImmutableMap.of(
+    "0x", 16,
+    "0b", 2
+  );
+
+  private static ImmutableMap<String, Integer> suffixRadix = ImmutableMap.of(
+    "h", 16,
+    "d", 10,
+    "o", 8,
+    "b", 2
+  );
+
   /**
    * Parsing an integer(long) from given string with prefix.
    * @param value String representation
    * @return Parsed long
-   * @throws IllegalArgumentException When string is mal-formatted.
+   * @throws NumberFormatException When string is mal-formatted.
    */
-  public static long parseLong(String value) throws IllegalArgumentException {
+  public static long parseLong(String value) throws NumberFormatException {
     String v = value.trim();
     if (v.length() < 1) return 0;
 
-    // TODO: Implement parsing string to long (d, h suffix; 0x, 0b prefix)
+    int radix = 10;
+    boolean baseRead = false;
 
-    return 0;
+    // TODO: Implement parsing string to long (d, h suffix; 0x, 0b prefix)
+    if (v.length() > 2) {
+      // Check for prefix
+      String prefix = v.substring(0, 2);
+      if (prefixRadix.containsKey(prefix)) {
+        radix = prefixRadix.get(prefix);
+
+        // Remove prefix
+        v = v.substring(2);
+        baseRead = true;
+      }
+    }
+
+    if (!baseRead && v.length() > 1) {
+      String suffix = v.substring(v.length() - 1);
+      if (suffixRadix.containsKey(suffix)) {
+        radix = suffixRadix.get(suffix);
+
+        // Remove suffix (length - 2 = last index - 1)
+        v = v.substring(0, v.length() - 2);
+        baseRead = true;
+      }
+    }
+
+    // If any other invalid character present in this string, it will throw "NumberFormatException".
+    return Long.valueOf(v, radix);
   }
 }

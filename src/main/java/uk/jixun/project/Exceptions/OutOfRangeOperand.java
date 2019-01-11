@@ -9,7 +9,7 @@ public class OutOfRangeOperand extends Exception {
   private ISmInstruction inst;
   private int oprIndex;
 
-  OutOfRangeOperand(int index, ISmInstruction inst) {
+  public OutOfRangeOperand(int index, ISmInstruction inst) {
     oprIndex = index;
     this.inst = inst;
   }
