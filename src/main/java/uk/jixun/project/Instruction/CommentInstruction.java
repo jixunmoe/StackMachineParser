@@ -25,7 +25,20 @@ public class CommentInstruction implements ISmInstruction {
   }
 
   @Override
-  public String toString() {
+  public int GetCycleTime() {
+    // This instruction is comment
+    return 0;
+  }
+
+  @Override
+  public String toAssembly() {
     return "# " + comment.replace("\n", "\\n");
+  }
+
+  @Override
+  public String toString() {
+    return "CommentInstruction{" +
+      "comment='" + comment + '\'' +
+      '}';
   }
 }

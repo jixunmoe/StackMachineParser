@@ -17,4 +17,16 @@ public interface ISmInstruction {
    * @return Number of operands.
    */
   int GetOperandCount();
+
+  /**
+   * Get the number of cycles required to complete this instruction.
+   * @return Cycles to complete this instruction.
+   */
+  int GetCycleTime();
+
+  /**
+   * Convert instruction to assembly code representation (not byte code)
+   * @return Compiled assembly code.
+   */
+  String toAssembly();
 }
