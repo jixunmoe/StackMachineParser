@@ -1,0 +1,205 @@
+Dump and formatted from *Appendix A* of the following publication:
+
+  Investigating Opportunities for Instruction-Level Parallelism for
+    Stack Machine Code, by Huibin Shi
+
+  Publication is online availiable at:
+  https://www-users.cs.york.ac.uk/~chrisb/main-pages/publications/
+    Shi_Huibin_PhD_thesis.pdf.1
+
+--------------------------------------------------------------------------------
+
+Registers
+TOS         Top of (data) stack register.
+NOS         Next on (data) stack register.
+3OS         Third on stack.
+4OS         Fourth on stack.
+SP          Data stack memory pointer. XP User address pointer XP.
+RP          Return stack memory pointer. YP User address pointer YP.
+FP          Frame stack memory pointer. PC Program Counter.
+ZPR         Zero Page Register.
+DPR         Data page register.
+PSW/ICR     Processor Status Word. & Interrupt Control Register.
+
+--------------------------------------------------------------------------------
+
+ARITHMETIC OPERATIONS.
+add         full-word addition, tos = tos + nos.
+sub         full-word subtract, tos = tos - nos.
+hmul        half-word single cycle multiply. tos = tos * nos
+hdiv        half-word single cycle divide. tos = tos / nos
+mul         full-word multiply tos = tos * nos
+div         full-word divide. tos = tos / nos
+
+xp++        increment xp.
+yp++        increment yp.
+tos++       increment tos.
+xp--        decrement xp.
+yp--        decrement yp.
+tos--       decrement tos.
+
+--------------------------------------------------------------------------------
+
+LOGICAL.
+and         32 bit logical and
+or          32 bit logical or
+not         32 bit invert.
+xor         32 bit exclusive or.
+lsl         logic shift left, full-word. msb filled with zeros
+lsr         logic shift right, full-word. lsb filled with zeros
+rol         rotate left, full-word. msb filled with old lsb
+ror         rotate right, full-word. lsb filled with old msb
+
+WORD MANIPULATION.
+rbyte       rotate right by one byte. [a][b][c][d] >>> [d][a][b][c]
+rhwd        rotate right by half word. [ a ][ b ] >>> [ b ][ a ]
+xbyte_n     extract byte n. [a][b][c][d] >>> [0][0][0][n]
+xwrd_n      extract word n [ a ][ b ] >>> [ 0 ][ n ]
+ibyte_n     insert byte [x] >> [a][b][c][d] >>>> [a][x][c][d]
+iwrd_n      insert word [ xx ] >> [a][b] >>>> [xx ][b]
+
+--------------------------------------------------------------------------------
+
+STACK & REGISTER MANIPULATION, EXTENDED FOR SCHEDULING OPERATIONS.
+
+                                           (tos)              (tos')
+copy1       equivalent to dup.      n4 n3 n2 n1 --- n4 n3 n2 n1 n1
+copy2       equivalent to over.     n4 n3 n2 n1 --- n4 n3 n2 n1 n2
+copy3       equivalent to 2 pick.   n4 n3 n2 n1 --- n4 n3 n2 n1 n3
+copy4       equivalent to 3 pick.   n4 n3 n2 n1 --- n4 n3 n2 n1 n4
+drop1       equivalent to drop.
+drop2       equivalent to nip.
+drop3       drop 3rd data stack item.
+drop4       drop 4th item on stack.
+rsu2        swap. (rotate stack upward, top two values only)
+rsu3        rot. (rotate stack, top three values affected)
+rsu4        3 roll. (rotate stack, top four values only)
+rsd3        -rot (reverse rotate stack, top three values) 
+rsd4        3 -roll. (reverse rotate stack , top four values)
+>r          push to return stack.       [tos] >>> [tor]
+<r          pop from return stack.      [tos] <<< [tor]
+xp>r        push xp on return stack.    [xp] > [return stack]
+yp>r        push yp on return stack.    [yp] > [return stack]
+xp<r        pop xp from return stack.   [xp] < [return stack]
+yp<r        pop yp from return stack.   [yp] < [return stack]
+>xp         push through xp             [tos] > [xp] > [return stack]
+>yp         push through yp             [tos] > [yp] > [return stack]
+<xp         pop through xp              [tos] < [xp] < [return stack]
+<yp         pop through yp              [tos] < [yp] < [return stack]
+
+Example (is direction correct?):
+                   (tos)           (tos')
+rsu2        n4 n3 n2 n1 --- n4 n3 n1 n2
+rsu3        n4 n3 n2 n1 --- n4 n1 n3 n2  [direction  up ]
+rsu4        n4 n3 n2 n1 --- n1 n4 n3 n2  [direction  up ]
+rsd3        n4 n3 n2 n1 --- n4 n2 n1 n3  [direction down]
+rsd4        n4 n3 n2 n1 --- n3 n2 n1 n4  [direction down]
+
+--------------------------------------------------------------------------------
+
+MISCELLEANEOUS
+@sp         fetch data stack pointer.
+@rp         fetch return stack pointer.
+@fp         fetch frame stack pointer.
+@xp         fetch user pointer xp.
+@yp         fetch user pointer yp.
+@icr        fetch interrupt control word.
+@psw        fetch processor status word.
+            (icr and psw may be combined in a single register).
+!sp         store data stack pointer.
+!rp         store return stack pointer.
+!fp         store frame stack pointer.
+!xp         store user pointer xp.
+!yp         store user pointer yp.
+!icr        store interrupt control word.
+!psw        store processor status word.
+
+--------------------------------------------------------------------------------
+
+CONTROL & COMPARE.
+The following operators are destructive tests, removing the operand, or operands from the
+stack, performing a "Test And Drop", before placing the flag back on the stack, for
+destructive evaluation by the program flow conditionals.
+
+teq         test for equality, tos = nos. ?
+tne         test for inequality, tos ≠ nos. ?
+tgt         test for greater than, tos > nos. ?
+tlt         test for less than, nos > tos. ?
+tnv         test for negative. tos < 0 ?
+tpv         test for positive. tos >= 0 ?
+tnz         test for not zero. tos <> 0 ?
+txpz        test for xp zero xp = 0 ?
+typz        text for yp zero yp = 0 ?
+
+--------------------------------------------------------------------------------
+
+Unconditional.
+bp          addr. branch to page relative offset address.
+bl          addr. branch to absolute long address.
+cp          addr. call to page relative offset. (unconditional). addr = 17 bit.
+cl          addr. call to long absolute address. (unconditional). addr = 24 bit.
+zpc         vector. call to zero page code block. (unconditional). vector = 7bit.
+exit        unconditional return from call.
+
+--------------------------------------------------------------------------------
+
+Conditional.
+bcr         addr. conditional branch to short pc relative offset. (taken when not zero ).
+bcp         addr. conditional branch to paged offset address. (taken when not zero ).
+            branch is assumed to fall through.
+bcl         addr. conditional branch to long absolute address. (taken when not zero ).
+            branch is assumed to fall through.
+ccp         addr. cond. call to page relative offset. (taken if not zero). addr = 17 bit.
+ccl         addr. cond. call to long absolute address. (taken if not zero). addr = 24 bit.
+?exit       conditional return, (taken if not zero).
+
+--------------------------------------------------------------------------------
+
+MEMORY & DATA ACCESS.
+lit num     load 8 bit literal.
+lsi num     load short immediate ( literal 17 bits ).
+lei num     load extended immediate ( literal 24 bits ).
+
+@loc [n]    fetch local, at address fp+n.
+!loc [n]    store local at address fp+n.
+ldp addr    load from page relative address.
+ldl addr    load from absolute address.
+stp addr    store data to paged address.
+stl addr    store data to absolute address.
+![tos]      store (tos = address, nos = data to be stored)
+!           store (nos = address, tos = data to be stored)
+@[tos]      fetch( tos = address of data to be fetched to stack), the same as @
+@[xp]       load mem contents addressed by xp.
+@[yp]       load mem contents addressed by yp.
+![xp]       store mem contents addressed by xp.
+![yp]       store mem contents addressed by yp.
+@[xp++]     indexed load with post increment.
+@[xp--]     indexed load with post decrement.
+@[yp++]     indexed load with post increment.
+@[yp--]     indexed load with post decrement.
+![xp++]     indexed store with post increment.
+![xp--]     indexed store with post decrement.
+![yp++]     indexed store with post increment.
+![yp--]     indexed store with post decrement.
+
+--------------------------------------------------------------------------------
+
+GENERAL
+sp+         sp = sp + tos
+rp+         rp = rp + tos
+yp+         yp = yp + tos
+xp+         xp = xp + tos
+fp+         fp = fp + tos
+sp-         sp = sp - tos
+rp-         rp = rp - tos
+yp-         yp = yp - tos
+xp-         xp = xp - tos
+fp-         fp = fp - tos
+sp++,sp--   increment (by ++) or decrement (by --) specified register by one.
+rp++,rp--   increment (by ++) or decrement (by --) specified register by one.
+tos++,tos-- increment (by ++) or decrement (by --) specified register by one.
+fp++,fp--   increment (by ++) or decrement (by --) specified register by one.
+xp++,xp--   increment (by ++) or decrement (by --) specified register by one.
+yp++,yp--   increment (by ++) or decrement (by --) specified register by one.
+
+
