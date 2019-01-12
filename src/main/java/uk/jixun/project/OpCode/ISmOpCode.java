@@ -3,7 +3,7 @@ package uk.jixun.project.OpCode;
 import uk.jixun.project.Register.SmRegister;
 
 public interface ISmOpCode {
-  SmOpCode GetOpCode();
+  SmOpCode getOpCode();
 
   /**
    * Number variant.
@@ -11,7 +11,7 @@ public interface ISmOpCode {
    *
    * @return Variant.
    */
-  int GetVariant();
+  int getVariant();
 
   /**
    * Register variant.
@@ -19,5 +19,7 @@ public interface ISmOpCode {
    * TODO: Using any of those variant in this project?
    * @return Register variant for this instruction.
    */
-  SmRegister GetRegisterVariant();
+  SmRegister getRegisterVariant();
+
+  String toAssembly();
 }

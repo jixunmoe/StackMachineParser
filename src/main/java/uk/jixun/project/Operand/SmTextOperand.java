@@ -1,7 +1,7 @@
 package uk.jixun.project.Operand;
 
 public class SmTextOperand implements ISmOperand {
-  String text;
+  private String text;
 
   public SmTextOperand() {
     this.text = "";
@@ -12,22 +12,34 @@ public class SmTextOperand implements ISmOperand {
   }
 
   @Override
-  public SmOperandType GetOperandType() {
+  public SmOperandType getOperandType() {
     return SmOperandType.TEXT;
   }
 
   @Override
-  public void SetValue(Object val) {
+  public void setValue(Object val) {
     this.text = String.valueOf(val);
   }
 
   @Override
-  public Object GetValue() {
+  public Object getValue() {
     return text;
   }
 
   @Override
-  public void FromString(String value) {
+  public void fromString(String value) {
     text = value;
+  }
+
+  @Override
+  public String toAssembly() {
+    return text;
+  }
+
+  @Override
+  public String toString() {
+    return "SmTextOperand{" +
+      "text=" + text +
+      "}";
   }
 }

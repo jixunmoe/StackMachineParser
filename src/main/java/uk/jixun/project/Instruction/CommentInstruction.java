@@ -1,17 +1,34 @@
 package uk.jixun.project.Instruction;
 
+import com.google.common.collect.ImmutableList;
 import uk.jixun.project.Exceptions.OutOfRangeOperand;
+import uk.jixun.project.OpCode.ISmOpCode;
 import uk.jixun.project.Operand.ISmOperand;
 import uk.jixun.project.Operand.SmTextOperand;
 
-public class CommentInstruction implements ISmInstruction {
+import java.util.List;
+
+public class CommentInstruction extends AbstractBasicInstruction {
   private String comment;
+  private ImmutableList<ISmOperand> operands;
+
   public CommentInstruction(String comment) {
     this.comment = comment;
+    this.operands = ImmutableList.<ISmOperand>of(new SmTextOperand(comment));
   }
 
   @Override
-  public ISmOperand GetOperand(int index) throws OutOfRangeOperand {
+  protected List<ISmOperand> getOperands() {
+    return operands;
+  }
+
+  @Override
+  public ISmOpCode getOpCode() {
+    return null;
+  }
+
+  @Override
+  public ISmOperand getOperand(int index) throws OutOfRangeOperand {
     if (index != 0) {
       throw new OutOfRangeOperand(index, this);
     }
@@ -20,13 +37,12 @@ public class CommentInstruction implements ISmInstruction {
   }
 
   @Override
-  public int GetOperandCount() {
+  public int getOperandCount() {
     return 1;
   }
 
   @Override
-  public int GetCycleTime() {
-    // This instruction is comment
+  public int getCycleTime() {
     return 0;
   }
 

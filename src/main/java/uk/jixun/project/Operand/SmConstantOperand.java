@@ -5,29 +5,29 @@ package uk.jixun.project.Operand;
  */
 public class SmConstantOperand implements ISmOperand {
   @Override
-  public SmOperandType GetOperandType() {
+  public SmOperandType getOperandType() {
     // TODO: Implement this
     return null;
   }
 
   @Override
-  public void SetValue(Object val) {
+  public void setValue(Object val) {
     // TODO: Implement this
   }
 
   @Override
-  public Object GetValue() {
+  public Object getValue() {
     // TODO: Implement this
     return null;
   }
 
   @Override
-  public void FromString(String value) {
+  public void fromString(String value) {
     // TODO: Implement this
   }
 
   @Override
-  public String toString() {
+  public String toAssembly() {
     // TODO: Implement this
     return super.toString();
   }

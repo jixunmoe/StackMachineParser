@@ -11,29 +11,36 @@ public class SmIndirectOperand implements ISmOperand {
   }
 
   @Override
-  public SmOperandType GetOperandType() {
+  public SmOperandType getOperandType() {
     return SmOperandType.INDIRECT;
   }
 
   @Override
-  public void SetValue(Object val) {
+  public void setValue(Object val) {
     if (!(val instanceof Long))
       throw new IllegalArgumentException("Invalid address type for SmIndirectOperand");
     address = (Long) val;
   }
 
   @Override
-  public Object GetValue() {
+  public Object getValue() {
     return address;
   }
 
   @Override
-  public void FromString(String value) {
+  public void fromString(String value) {
     // TODO: Parse from string
   }
 
   @Override
-  public String toString() {
+  public String toAssembly() {
     return "ptr:[" + address + "]";
+  }
+
+  @Override
+  public String toString() {
+    return "SmIndirectOperand{" +
+      "address=" + address +
+      "}";
   }
 }

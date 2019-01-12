@@ -1,6 +1,9 @@
 package uk.jixun.project.Register;
 
 public enum SmRegister {
+  // Special Register indicates register was not used.
+  NONE,
+
   // User Address Pointer
   XP, YP,
 

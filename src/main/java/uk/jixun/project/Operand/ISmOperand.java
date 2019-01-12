@@ -2,14 +2,14 @@ package uk.jixun.project.Operand;
 
 public interface ISmOperand {
   // Get operand type
-  SmOperandType GetOperandType();
+  SmOperandType getOperandType();
 
-  void SetValue(Object val);
+  void setValue(Object val);
 
-  Object GetValue();
+  Object getValue();
 
-  void FromString(String value);
+  void fromString(String value);
 
   // Convert operand to string.
-  String toString();
+  String toAssembly();
 }

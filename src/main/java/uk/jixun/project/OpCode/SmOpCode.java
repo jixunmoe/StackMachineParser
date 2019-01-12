@@ -1,6 +1,9 @@
 package uk.jixun.project.OpCode;
 
 public enum SmOpCode {
+  // Special OpCode, it is not an opcode.
+  NONE,
+
   ADD, SUB, MUL, DIV,
   // hmul & hdiv
   HALF_MUL, HALF_DIV,

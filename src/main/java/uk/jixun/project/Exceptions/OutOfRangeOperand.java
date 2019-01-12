@@ -18,7 +18,7 @@ public class OutOfRangeOperand extends Exception {
     return "OutOfRangeOperand["
       + "inst=" + inst.toString() + "; "
       + "index=" + oprIndex + "; "
-      + "len=" + inst.GetOperandCount()
+      + "len=" + inst.getOperandCount()
       + "]";
   }
 }
