@@ -17,4 +17,5 @@ dependencies {
     testRuntime("org.junit.vintage:junit-vintage-engine:5.3.2")
 
     compile("com.google.guava:guava:27.0.1-jre")
+    compile("org.apache.commons:commons-lang3:3.8.1")
 }

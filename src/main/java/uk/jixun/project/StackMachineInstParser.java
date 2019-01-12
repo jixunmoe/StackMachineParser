@@ -1,6 +1,6 @@
 package uk.jixun.project;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import uk.jixun.project.Instruction.CommentInstruction;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Instruction.NoInstruction;
@@ -33,7 +33,7 @@ public class StackMachineInstParser implements Iterator<ISmInstruction> {
 
     // Convert to opcode
     // TODO: Implement instruction parsing
-    throw new NotImplementedException();
+    throw new NotImplementedException("Instruction Parsing not done yet.");
   }
 
   @Override
