@@ -28,7 +28,6 @@ public class ParseHelper {
     int radix = 10;
     boolean baseRead = false;
 
-    // TODO: Implement parsing string to long (d, h suffix; 0x, 0b prefix)
     if (v.length() > 2) {
       // Check for prefix
       String prefix = v.substring(0, 2);
@@ -46,8 +45,8 @@ public class ParseHelper {
       if (suffixRadix.containsKey(suffix)) {
         radix = suffixRadix.get(suffix);
 
-        // Remove suffix (length - 2 = last index - 1)
-        v = v.substring(0, v.length() - 2);
+        // Remove suffix
+        v = v.substring(0, v.length() - 1);
         baseRead = true;
       }
     }
