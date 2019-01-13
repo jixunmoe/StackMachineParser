@@ -1,7 +1,5 @@
 .gradle
 /gradle/
-/out/
-/build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -25,3 +23,8 @@ gradle-app.setting
 /.settings
 /.classpath
 /.project
+
+# Gradle build
+/bin/
+/out/
+/build/
