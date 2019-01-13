@@ -15,9 +15,9 @@ gradle-app.setting
 
 # IntelliJ
 /.idea
-/jixun.project.iml
-/jixun.project.ipr
-/jixun.project.iws
+/*.iml
+/*.ipr
+/*.iws
 
 # Eclipse
 /.settings
