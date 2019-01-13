@@ -1,5 +1,6 @@
 package uk.jixun.project.Helper;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 public class ParseHelper {
@@ -53,5 +54,13 @@ public class ParseHelper {
 
     // If any other invalid character present in this string, it will throw "NumberFormatException".
     return Long.valueOf(v, radix);
+  }
+
+  public static boolean isWhiteSpace(char c) {
+    return c == ' ' || c == '\t';
+  }
+
+  public static boolean isNewLine(char c) {
+    return c == '\r' || c == '\n';
   }
 }
