@@ -7,6 +7,9 @@ Dump and formatted from *Appendix A* of the following publication:
   https://www-users.cs.york.ac.uk/~chrisb/main-pages/publications/
     Shi_Huibin_PhD_thesis.pdf.1
 
+This document has been modified to fit in to text reader uses width 80, as well
+  as my own understanding.
+
 --------------------------------------------------------------------------------
 
 Registers
@@ -45,18 +48,18 @@ and         32 bit logical and
 or          32 bit logical or
 not         32 bit invert.
 xor         32 bit exclusive or.
-lsl         logic shift left, full-word. msb filled with zeros
+lsl         logic shift left, full-word.  msb filled with zeros
 lsr         logic shift right, full-word. lsb filled with zeros
-rol         rotate left, full-word. msb filled with old lsb
-ror         rotate right, full-word. lsb filled with old msb
+rol         rotate left, full-word.       msb filled with old lsb
+ror         rotate right, full-word.      lsb filled with old msb
 
 WORD MANIPULATION.
-rbyte       rotate right by one byte. [a][b][c][d] >>> [d][a][b][c]
-rhwd        rotate right by half word. [ a ][ b ] >>> [ b ][ a ]
-xbyte_n     extract byte n. [a][b][c][d] >>> [0][0][0][n]
-xwrd_n      extract word n [ a ][ b ] >>> [ 0 ][ n ]
-ibyte_n     insert byte [x] >> [a][b][c][d] >>>> [a][x][c][d]
-iwrd_n      insert word [ xx ] >> [a][b] >>>> [xx ][b]
+rbyte       rotate right by one byte.  [a][b][c][d] >>> [d][a][b][c]
+rhwd        rotate right by half word. [ aa ][ bb ] >>> [ bb ][ aa ]
+xbyte_n     extract byte n.            [a][b][c][d] >>> [0][0][0][n]
+xwrd_n      extract word n             [ aa ][ bb ] >>> [ 00 ][ nn ]
+ibyte_n     insert byte        [x] >>> [a][b][c][d] >>> [a][x][c][d]
+iwrd_n      insert word     [ xx ] >>> [ aa ][ bb ] >>> [ xx ][ bb ]
 
 --------------------------------------------------------------------------------
 
@@ -117,40 +120,45 @@ MISCELLEANEOUS
 --------------------------------------------------------------------------------
 
 CONTROL & COMPARE.
-The following operators are destructive tests, removing the operand, or operands from the
-stack, performing a "Test And Drop", before placing the flag back on the stack, for
-destructive evaluation by the program flow conditionals.
+The following operators are destructive tests, removing the operand, or operands
+from the stack, performing a "Test And Drop", before placing the flag back on 
+the stack, for destructive evaluation by the program flow conditionals.
 
-teq         test for equality, tos = nos. ?
-tne         test for inequality, tos ≠ nos. ?
-tgt         test for greater than, tos > nos. ?
-tlt         test for less than, nos > tos. ?
-tnv         test for negative. tos < 0 ?
-tpv         test for positive. tos >= 0 ?
-tnz         test for not zero. tos <> 0 ?
-txpz        test for xp zero xp = 0 ?
-typz        text for yp zero yp = 0 ?
+teq         test for equality,      tos  = nos ?
+tne         test for inequality,    tos != nos ?
+tgt         test for greater than,  tos  > nos ?
+tlt         test for less than,     nos  > tos ?
+tnv         test for negative,      tos  <  0  ?
+tpv         test for positive,      tos >=  0  ?
+tnz         test for not zero,      tos <>  0  ?
+txpz        test for xp zero,        xp  =  0  ?
+typz        text for yp zero,        yp  =  0  ?
 
 --------------------------------------------------------------------------------
 
 Unconditional.
 bp          addr. branch to page relative offset address.
 bl          addr. branch to absolute long address.
-cp          addr. call to page relative offset. (unconditional). addr = 17 bit.
-cl          addr. call to long absolute address. (unconditional). addr = 24 bit.
-zpc         vector. call to zero page code block. (unconditional). vector = 7bit.
+cp          addr. call to page relative offset. addr = 17 bit.
+cl          addr. call to long absolute address. addr = 24 bit.
+zpc         vector. call to zero page code block. vector = 7bit.
 exit        unconditional return from call.
 
 --------------------------------------------------------------------------------
 
 Conditional.
-bcr         addr. conditional branch to short pc relative offset. (taken when not zero ).
-bcp         addr. conditional branch to paged offset address. (taken when not zero ).
+bcr         addr. conditional branch to short pc relative offset.
+            (taken when not zero ).
+bcp         addr. conditional branch to paged offset address.
+            (taken when not zero ).
             branch is assumed to fall through.
-bcl         addr. conditional branch to long absolute address. (taken when not zero ).
+bcl         addr. conditional branch to long absolute address.
+            (taken when not zero ).
             branch is assumed to fall through.
-ccp         addr. cond. call to page relative offset. (taken if not zero). addr = 17 bit.
-ccl         addr. cond. call to long absolute address. (taken if not zero). addr = 24 bit.
+ccp         addr. cond. call to page relative offset.
+            (taken if not zero). addr = 17 bit.
+ccl         addr. cond. call to long absolute address.
+            (taken if not zero). addr = 24 bit.
 ?exit       conditional return, (taken if not zero).
 
 --------------------------------------------------------------------------------
@@ -161,7 +169,8 @@ lsi num     load short immediate ( literal 17 bits ).
 lei num     load extended immediate ( literal 24 bits ).
 
 @loc [n]    fetch local, at address fp+n.
-!loc [n]    store local at address fp+n.
+!loc [n]    store local, at address fp+n.
+            [*] Similar to "push/pop dword[ebp+n]" in x86?
 ldp addr    load from page relative address.
 ldl addr    load from absolute address.
 stp addr    store data to paged address.
@@ -190,11 +199,13 @@ rp+         rp = rp + tos
 yp+         yp = yp + tos
 xp+         xp = xp + tos
 fp+         fp = fp + tos
+
 sp-         sp = sp - tos
 rp-         rp = rp - tos
 yp-         yp = yp - tos
 xp-         xp = xp - tos
 fp-         fp = fp - tos
+
 sp++,sp--   increment (by ++) or decrement (by --) specified register by one.
 rp++,rp--   increment (by ++) or decrement (by --) specified register by one.
 tos++,tos-- increment (by ++) or decrement (by --) specified register by one.
