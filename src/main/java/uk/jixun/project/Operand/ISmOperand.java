@@ -1,5 +1,7 @@
 package uk.jixun.project.Operand;
 
+import uk.jixun.project.Instruction.ISmInstruction;
+
 public interface ISmOperand {
   // Get operand type
   SmOperandType getOperandType();
@@ -12,4 +14,7 @@ public interface ISmOperand {
 
   // Convert operand to string.
   String toAssembly();
+
+  ISmInstruction getInstruction();
+  void setInstruction(ISmInstruction instruction);
 }

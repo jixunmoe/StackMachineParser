@@ -4,16 +4,39 @@ import org.apache.commons.lang3.NotImplementedException;
 import uk.jixun.project.Exceptions.OutOfRangeOperand;
 import uk.jixun.project.OpCode.ISmOpCode;
 import uk.jixun.project.Operand.ISmOperand;
+import uk.jixun.project.Program.ISmProgram;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractBasicInstruction implements ISmInstruction {
-  protected List<ISmOperand> operands = new ArrayList<>();
+  private ISmProgram program;
+  private ISmOpCode opcode;
+  private List<ISmOperand> operands = new ArrayList<>();
 
   protected List<ISmOperand> getOperands() {
     return operands;
   }
+
+  @Override
+  public ISmOpCode getOpCode() {
+    return opcode;
+  }
+
+  public void setOpcode(ISmOpCode opcode) {
+    this.opcode = opcode;
+  }
+
+  @Override
+  public ISmProgram getProgram() {
+    return program;
+  }
+
+  @Override
+  public void setProgram(ISmProgram program) {
+    this.program = program;
+  }
+
 
   @Override
   public ISmOperand getOperand(int index) throws OutOfRangeOperand {

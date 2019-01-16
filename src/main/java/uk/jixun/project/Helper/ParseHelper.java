@@ -63,4 +63,17 @@ public class ParseHelper {
   public static boolean isNewLine(char c) {
     return c == '\r' || c == '\n';
   }
+
+  public static boolean isDigit(char c) {
+    return c >= '0' && c <= '9';
+  }
+
+  public static boolean containsWhiteSpace(String operandStr) {
+    for (char c : operandStr.toCharArray()) {
+      if (isWhiteSpace(c)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

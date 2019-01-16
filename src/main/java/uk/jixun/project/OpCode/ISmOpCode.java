@@ -1,5 +1,6 @@
 package uk.jixun.project.OpCode;
 
+import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Register.SmRegister;
 
 public interface ISmOpCode {
@@ -24,4 +25,7 @@ public interface ISmOpCode {
   void setRegisterVariant(SmRegister regVariant);
 
   String toAssembly();
+
+  ISmInstruction getInstruction();
+  void setInstruction(ISmInstruction instruction);
 }

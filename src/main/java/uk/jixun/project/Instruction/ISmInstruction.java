@@ -3,7 +3,9 @@ package uk.jixun.project.Instruction;
 import uk.jixun.project.Exceptions.OutOfRangeOperand;
 import uk.jixun.project.OpCode.ISmOpCode;
 import uk.jixun.project.Operand.ISmOperand;
+import uk.jixun.project.Program.ISmProgram;
 
+import java.lang.module.Configuration;
 import java.util.List;
 
 public interface ISmInstruction {
@@ -48,4 +50,7 @@ public interface ISmInstruction {
    * @return Compiled assembly code.
    */
   String toAssembly();
+
+  ISmProgram getProgram();
+  void setProgram(ISmProgram program);
 }

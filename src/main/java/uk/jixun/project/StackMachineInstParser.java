@@ -3,11 +3,17 @@ package uk.jixun.project;
 import org.apache.commons.lang3.NotImplementedException;
 import uk.jixun.project.Exceptions.LabelDuplicationException;
 import uk.jixun.project.Helper.ParseHelper;
+import uk.jixun.project.Instruction.BasicInstruction;
 import uk.jixun.project.Instruction.CommentInstruction;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Instruction.NoInstruction;
+import uk.jixun.project.OpCode.ISmOpCode;
+import uk.jixun.project.OpCode.SmOpcodeParser;
+import uk.jixun.project.Operand.ISmOperand;
+import uk.jixun.project.Operand.SmOperandParser;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Parsing a stream of asm code text.
@@ -35,8 +41,8 @@ public class StackMachineInstParser {
     int i = 0;
     boolean skipWhiteSpace = false;
     StringBuilder buffer = new StringBuilder();
-    String opcode = "";
-    List<String> operands = new ArrayList<>();
+    String opcodeStr = "";
+    List<String> operandsStr = new ArrayList<>();
 
     ParseInstructionState state = ParseInstructionState.Opcode;
     while (true) {
@@ -58,7 +64,7 @@ public class StackMachineInstParser {
           } else if (ParseHelper.isWhiteSpace(c)) {
             skipWhiteSpace = true;
 
-            opcode = buffer.toString();
+            opcodeStr = buffer.toString();
             buffer = new StringBuilder();
             state = ParseInstructionState.Operand;
           } else {
@@ -67,7 +73,7 @@ public class StackMachineInstParser {
           break;
         case Operand:
           if (ParseHelper.isWhiteSpace(c)) {
-            operands.add(buffer.toString());
+            operandsStr.add(buffer.toString());
             buffer = new StringBuilder();
           } else {
             buffer.append(c);
@@ -88,19 +94,29 @@ public class StackMachineInstParser {
     }
 
     if (state == ParseInstructionState.Opcode) {
-      opcode = buffer.toString();
+      opcodeStr = buffer.toString();
 
       // Check for empty line
-      if (opcode.length() == 0) {
+      if (opcodeStr.length() == 0) {
         return new NoInstruction();
       }
     }
 
-    // Convert to opcode
-    // TODO: Convert opcode string to opcode
-    // TODO: Convert operands string array to operands
-    // TODO: Merge opcode and operands to single instruction.
-    throw new NotImplementedException("Instruction Parsing not implemented.");
+    // Initialise instruction object
+    BasicInstruction instruction = new BasicInstruction();
+
+    // Set opcode parsed
+    ISmOpCode opcode = SmOpcodeParser.parse(opcodeStr);
+    instruction.setOpcode(opcode);
+
+    // Convert operands to nodes
+    List<ISmOperand> operands = operandsStr
+      .stream()
+      .map((String operandStr) -> SmOperandParser.parse(operandStr, instruction))
+      .collect(Collectors.toList());
+    instruction.setOperands(operands);
+
+    return instruction;
   }
 
   public boolean hasNext() {

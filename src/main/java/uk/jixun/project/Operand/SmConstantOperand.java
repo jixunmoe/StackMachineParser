@@ -1,34 +1,28 @@
 package uk.jixun.project.Operand;
 
+import uk.jixun.project.Helper.ParseHelper;
+import uk.jixun.project.Instruction.ISmInstruction;
+
 /**
  * Stack Machine Constant Operand.
  */
-public class SmConstantOperand implements ISmOperand {
+public class SmConstantOperand extends SmBasicOperandAbstract {
+  SmConstantOperand() {
+    setValue(0);
+  }
+  SmConstantOperand(long value) {
+    setValue(value);
+  }
+
   @Override
   public SmOperandType getOperandType() {
-    // TODO: Implement this
-    return null;
+    return SmOperandType.CONSTANT;
   }
 
   @Override
-  public void setValue(Object val) {
-    // TODO: Implement this
-  }
-
-  @Override
-  public Object getValue() {
-    // TODO: Implement this
-    return null;
-  }
-
-  @Override
-  public void fromString(String value) {
-    // TODO: Implement this
-  }
-
-  @Override
-  public String toAssembly() {
-    // TODO: Implement this
-    return super.toString();
+  public String toString() {
+    return "SmConstantOperand{" +
+      "value=" + getValue() +
+      "}";
   }
 }

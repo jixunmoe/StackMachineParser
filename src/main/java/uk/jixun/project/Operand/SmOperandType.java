@@ -12,4 +12,7 @@ public enum SmOperandType {
 
   // Text: Text Constant (comment)
   TEXT,
+
+  // Label: Label that is associated to an address
+  LABEL,
 }

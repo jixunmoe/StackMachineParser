@@ -1,10 +1,12 @@
 package uk.jixun.project.OpCode;
 
+import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Register.SmRegister;
 
 public abstract class AbstractBasicOpCode implements ISmOpCode {
   protected int variant = 0;
   protected SmRegister regVariant = SmRegister.NONE;
+  protected ISmInstruction instruction;
 
   @Override
   public int getVariant() {
@@ -31,5 +33,15 @@ public abstract class AbstractBasicOpCode implements ISmOpCode {
     }
 
     return sb.toString();
+  }
+
+  @Override
+  public ISmInstruction getInstruction() {
+    return instruction;
+  }
+
+  @Override
+  public void setInstruction(ISmInstruction instruction) {
+    this.instruction = instruction;
   }
 }
