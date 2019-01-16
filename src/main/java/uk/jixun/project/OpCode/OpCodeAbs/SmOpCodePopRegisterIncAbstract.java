@@ -39,16 +39,18 @@ public abstract class SmOpCodePopRegisterIncAbstract extends AbstractBasicOpCode
 
   @Override
   public void setVariant(int variant) {
-    throw new RuntimeException("Variant does not apply for this opcode.");
+    if (variant != 0) {
+      throw new RuntimeException("Variant does not apply for this opcode.");
+    }
   }
 
   @Override
   public void setRegisterVariant(SmRegister regVariant) {
-    if (regVariant != SmRegister.XP && regVariant != SmRegister.YP) {
+    if ((regVariant == SmRegister.XP) || (regVariant == SmRegister.YP)) {
       this.regVariant = regVariant;
+    } else {
+      throw new RuntimeException("Register variant " + regVariant.toString()
+        + " is not allowed for opcode POP_REGISTER_INC");
     }
-
-    throw new RuntimeException("Register variant " + regVariant.toString()
-      + " is not allowed for opcode POP_REGISTER_INC");
   }
 }

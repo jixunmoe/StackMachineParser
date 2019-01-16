@@ -25,13 +25,15 @@ public abstract class SmOpCodeDropAbstract extends AbstractBasicOpCode {
 
   @Override
   public void setVariant(int variant) {
-    if (variant != 1 && variant != 2 && variant != 3 && variant != 4) {
+    if ((variant == 1) || (variant == 2) || (variant == 3) || (variant == 4)) {
       this.variant = variant;
     }
   }
 
   @Override
   public void setRegisterVariant(SmRegister regVariant) {
-    throw new RuntimeException("RegisterVariant does not apply for this opcode.");
+    if (regVariant != SmRegister.NONE) {
+      throw new RuntimeException("RegisterVariant does not apply for this opcode.");
+    }
   }
 }

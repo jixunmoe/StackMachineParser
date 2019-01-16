@@ -134,9 +134,11 @@ public enum SmOpCodeEnum {
   POP_REGISTER,
 
   // Push register content and then perform register increment / decrement
+  // ![REG++] / ![REG--]
   PUSH_REGISTER_INC, PUSH_REGISTER_DEC,
 
   // Pop register content and then perform register increment / decrement
+  // @[REG++] / @[REG--]
   POP_REGISTER_INC, POP_REGISTER_DEC,
 
   // General

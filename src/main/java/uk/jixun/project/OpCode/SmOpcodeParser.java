@@ -17,7 +17,7 @@ import uk.jixun.project.Exceptions.UnknownOpCodeException;
 import uk.jixun.project.Register.SmRegister;
 
 public class SmOpcodeParser {
-  public static ISmOpCode Parse(String opcode) throws UnknownOpCodeException {
+  public static ISmOpCode parse(String opcode) throws UnknownOpCodeException {
     opcode = opcode.trim().toUpperCase();
     char lastChar = opcode.charAt(opcode.length() - 1);
 

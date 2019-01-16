@@ -55,16 +55,18 @@ public abstract class SmOpCodeRegIncAbstract extends AbstractBasicOpCode {
 
   @Override
   public void setVariant(int variant) {
-    throw new RuntimeException("Variant does not apply for this opcode.");
+    if (variant != 0) {
+      throw new RuntimeException("Variant does not apply for this opcode.");
+    }
   }
 
   @Override
   public void setRegisterVariant(SmRegister regVariant) {
-    if (regVariant != SmRegister.SP && regVariant != SmRegister.RP && regVariant != SmRegister.YP && regVariant != SmRegister.XP && regVariant != SmRegister.FP && regVariant != SmRegister.TOS) {
+    if ((regVariant == SmRegister.SP) || (regVariant == SmRegister.RP) || (regVariant == SmRegister.YP) || (regVariant == SmRegister.XP) || (regVariant == SmRegister.FP) || (regVariant == SmRegister.TOS)) {
       this.regVariant = regVariant;
+    } else {
+      throw new RuntimeException("Register variant " + regVariant.toString()
+        + " is not allowed for opcode REG_INC");
     }
-
-    throw new RuntimeException("Register variant " + regVariant.toString()
-      + " is not allowed for opcode REG_INC");
   }
 }

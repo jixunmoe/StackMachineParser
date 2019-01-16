@@ -25,11 +25,15 @@ public abstract class SmOpCodeCondReturnAbstract extends AbstractBasicOpCode {
 
   @Override
   public void setVariant(int variant) {
-    throw new RuntimeException("Variant does not apply for this opcode.");
+    if (variant != 0) {
+      throw new RuntimeException("Variant does not apply for this opcode.");
+    }
   }
 
   @Override
   public void setRegisterVariant(SmRegister regVariant) {
-    throw new RuntimeException("RegisterVariant does not apply for this opcode.");
+    if (regVariant != SmRegister.NONE) {
+      throw new RuntimeException("RegisterVariant does not apply for this opcode.");
+    }
   }
 }

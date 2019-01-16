@@ -51,16 +51,18 @@ public abstract class SmOpCodeRegSubAbstract extends AbstractBasicOpCode {
 
   @Override
   public void setVariant(int variant) {
-    throw new RuntimeException("Variant does not apply for this opcode.");
+    if (variant != 0) {
+      throw new RuntimeException("Variant does not apply for this opcode.");
+    }
   }
 
   @Override
   public void setRegisterVariant(SmRegister regVariant) {
-    if (regVariant != SmRegister.SP && regVariant != SmRegister.RP && regVariant != SmRegister.YP && regVariant != SmRegister.XP && regVariant != SmRegister.FP) {
+    if ((regVariant == SmRegister.SP) || (regVariant == SmRegister.RP) || (regVariant == SmRegister.YP) || (regVariant == SmRegister.XP) || (regVariant == SmRegister.FP)) {
       this.regVariant = regVariant;
+    } else {
+      throw new RuntimeException("Register variant " + regVariant.toString()
+        + " is not allowed for opcode REG_SUB");
     }
-
-    throw new RuntimeException("Register variant " + regVariant.toString()
-      + " is not allowed for opcode REG_SUB");
   }
 }

@@ -6,6 +6,8 @@ const javaRoot = path.join(__dirname, '../src/main/java/uk/jixun/project/');
 
 const doc = yaml.safeLoad(fs.readFileSync('./opcodes.yaml', 'utf8'))
 
+const classToLoad = [];
+
 const editWarning = `
 
 // !!!                               !!!
@@ -58,41 +60,49 @@ public abstract class ${absName} extends AbstractBasicOpCode {
 
   @Override
   public void setVariant(int variant) {
-    throw new RuntimeException("Variant does not apply for this opcode.");
+    if (variant != 0) {
+      throw new RuntimeException("Variant does not apply for this opcode.");
+    }
   }
 
   @Override
   public void setRegisterVariant(SmRegister regVariant) {
-    if (${Object.keys(opcode.reg).map(reg => `regVariant != SmRegister.${reg}`).join(' && ')}) {
+    if (${Object.keys(opcode.reg).map(reg => `(regVariant == SmRegister.${reg})`).join(' || ')}) {
       this.regVariant = regVariant;
+    } else {
+      throw new RuntimeException("Register variant " + regVariant.toString()
+        + " is not allowed for opcode ${id}");
     }
-
-    throw new RuntimeException("Register variant " + regVariant.toString()
-      + " is not allowed for opcode ${id}");
   }`
   } else if (opcode.Varients) {
     code += `
   @Override
   public void setVariant(int variant) {
-    if (${opcode.Varients.map(v => `variant != ${v}`).join(' && ')}) {
+    if (${opcode.Varients.map(v => `(variant == ${v})`).join(' || ')}) {
       this.variant = variant;
     }
   }
 
   @Override
   public void setRegisterVariant(SmRegister regVariant) {
-    throw new RuntimeException("RegisterVariant does not apply for this opcode.");
+    if (regVariant != SmRegister.NONE) {
+      throw new RuntimeException("RegisterVariant does not apply for this opcode.");
+    }
   }`
   } else {
     code += `
   @Override
   public void setVariant(int variant) {
-    throw new RuntimeException("Variant does not apply for this opcode.");
+    if (variant != 0) {
+      throw new RuntimeException("Variant does not apply for this opcode.");
+    }
   }
 
   @Override
   public void setRegisterVariant(SmRegister regVariant) {
-    throw new RuntimeException("RegisterVariant does not apply for this opcode.");
+    if (regVariant != SmRegister.NONE) {
+      throw new RuntimeException("RegisterVariant does not apply for this opcode.");
+    }
   }`
   }
 
@@ -112,6 +122,8 @@ public class ${implName} extends ${absName} {
 }`;
     fs.writeFileSync(implFile, code, 'utf-8')
   }
+
+  classToLoad.push({ id, name: implName });
 }
 
 
@@ -125,7 +137,7 @@ import uk.jixun.project.Exceptions.UnknownOpCodeException;
 import uk.jixun.project.Register.SmRegister;
 
 public class SmOpcodeParser {
-  public static ISmOpCode Parse(String opcode) throws UnknownOpCodeException {
+  public static ISmOpCode parse(String opcode) throws UnknownOpCodeException {
     opcode = opcode.trim().toUpperCase();
     char lastChar = opcode.charAt(opcode.length() - 1);
 `
@@ -172,3 +184,19 @@ code += `
 
 const target = path.join(javaRoot, './OpCode/SmOpcodeParser.java')
 fs.writeFileSync(target, code, 'utf-8')
+
+code = `package uk.jixun.project.OpCode;
+
+${editWarning}
+
+import uk.jixun.project.OpCode.OpCodeImpl.*;
+
+class OpCodeRegistry {
+  static void registerAll() {
+    ${classToLoad.map(({ id, name }) => `
+    OpCodeFactory.register(SmOpCodeEnum.${id}, ${name}.class);`).join("")}
+  }
+}
+`
+
+fs.writeFileSync(path.join(javaRoot, './OpCode/OpCodeRegistry.java'), code, 'utf-8')
