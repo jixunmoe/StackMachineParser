@@ -1,0 +1,185 @@
+# Opcode dumps
+
+opcodes:
+  # Arithmetic
+  - ADD
+  - SUB
+  - HMUL
+  - HDIV
+  - MUL
+  - DIV
+
+  # Logical
+  - AND
+  - OR
+  - NOT
+  - XOR
+  - LSL
+  - LSR
+  - ROL
+  - ROR
+
+  # Word Manipulation
+  - id: ROTATE_RIGHT_BYTE
+    scan: RBYTE
+  - id: ROTATE_RIGHT_WORD
+    scan: RHWD
+  - id: EXTRACT_RIGHT_BYTE
+    scan: XBYTE_N
+  - id: EXTRACT_RIGHT_WORD
+    scan: XWRD_N
+  - id: INSERT_BYTE
+    scan: IBYTE_N
+  - id: INSERT_WORD
+    scan: IWRD_N
+  # Stack & Register Manipulation
+  - id: COPY
+    Varients:
+      - 1
+      - 2
+      - 3
+      - 4
+  - id: DROP
+    Varients:
+      - 1
+      - 2
+      - 3
+      - 4
+  - id: RSU
+    Varients:
+      - 2
+      - 3
+      - 4
+  - id: RSD
+    Varients:
+      - 3
+      - 4
+  - id: PUSH_TO_RS
+    scan: ">r"
+  - id: POP_FROM_RS
+    scan: "<r"
+  # Some other push/pop to/from return stack?
+
+  # Control & Compare
+  - id: TEST_EQ
+    scan: TEQ
+  - id: TEST_NEQ
+    scan: TNE
+  - id: TEST_GT
+    scan: TGT
+  - id: TEST_LT
+    scan: TLT
+  - id: TEST_NEGATIVE
+    scan: TNV
+  - id: TEST_POSITIVE
+    scan: TPV
+  - id: TEST_NOT_ZERO
+    scan: TNZ
+  - id: TEST_XP_ZERO
+    scan: TXPZ
+  - id: TEST_YP_ZERO
+    scan: TYPZ
+
+  # Unconditional
+  - id: RELATIVE_JUMP
+    scan:  BP
+  - id: ABSOLUTE_JUMP
+    scan:  BL
+  - id: RELATIVE_CALL
+    scan:  CP
+  - id: ABSOLUTE_CALL
+    scan:  CL
+  - id: RETURN
+    scan:  EXIT
+
+  # Conditional
+  - id: COND_RELATIVE_JUMP
+    scan: BCR
+  - id: COND_PAGE_JUMP
+    scan: BCP
+  - id: COND_ABSOLUTE_JUMP
+    scan: BCL
+  - id: COND_RELATIVE_CALL
+    scan: CCP
+  - id: COND_ABSOLUTE_CALL
+    scan: CCL
+  - id: COND_RETURN
+    scan: "?EXIT"
+
+  # Memory & Data Access
+  - id: PUSH_BYTE
+    scan: LIT
+  - id: PUSH_SHORT
+    scan: LSI
+  - id: PUSH_EXTEND
+    scan: LEI
+  - id: PUSH_FRAME_ADDR
+    scan: "@LOC"
+  - id: POP_FRAME_ADDR
+    scan: "!LOC"
+  - id: PUSH_INDIRECT_RELATIVE
+    scan: LDP
+  - id: POP_INDIRECT_RELATIVE
+    scan: STP
+  - id: PUSH_INDIRECT_ABSOLUTE
+    scan: LDL
+  - id: POP_INDIRECT_ABSOLUTE
+    scan: STL
+  - id: PUSH_REGISTER
+    reg:
+      NOS: "!"
+      TOS: "![TOS]"
+      XP: "![XP]"
+      YP: "![YP]"
+  - id: POP_REGISTER
+    reg:
+      NOS: "@"
+      TOS: "@[TOS]"
+      XP: "@[XP]"
+      YP: "@[YP]"
+  - id: PUSH_REGISTER_INC
+    reg:
+      XP: "![XP++]"
+      YP: "![YP++]"
+  - id: PUSH_REGISTER_DEC
+    reg:
+      XP: "![XP--]"
+      YP: "![YP--]"
+  - id: POP_REGISTER_INC
+    reg:
+      XP: "@[XP++]"
+      YP: "@[YP++]"
+  - id: POP_REGISTER_DEC
+    reg:
+      XP: "@[XP--]"
+      YP: "@[YP--]"
+  - id: REG_ADD
+    reg:
+      SP: SP+
+      RP: RP+
+      YP: YP+
+      XP: XP+
+      FP: FP+
+  - id: REG_SUB
+    reg:
+      SP: SP-
+      RP: RP-
+      YP: YP-
+      XP: XP-
+      FP: FP-
+  - id: REG_INC
+    reg:
+      SP: SP++
+      RP: RP++
+      YP: YP++
+      XP: XP++
+      FP: FP++
+      TOS: TOS++
+  - id: REG_DEC
+    reg:
+      SP: SP--
+      RP: RP--
+      YP: YP--
+      XP: XP--
+      FP: FP--
+      TOS: TOS--

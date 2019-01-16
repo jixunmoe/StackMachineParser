@@ -1,0 +1,17 @@
+{
+  "name": "parser-helper-scripts",
+  "version": "1.0.0",
+  "description": "Helper Scripts for building ths project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard"
+  },
+  "author": "Jixun Wu",
+  "license": "MIT",
+  "dependencies": {
+    "js-yaml": "^3.12.1"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1"
+  }
+}
