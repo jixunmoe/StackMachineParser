@@ -18,6 +18,8 @@ public enum SmRegister {
 
   // TOS: Top of (data) Stack
   TOS,
+  // NOS: Next of (data) Stack
+  NOS,
 
   // icr and psw may be implemented as a combined single register (DWORD)
   // ICR: Interrupt ContRol Word

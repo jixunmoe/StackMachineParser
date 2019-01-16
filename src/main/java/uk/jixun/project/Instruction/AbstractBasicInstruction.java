@@ -5,10 +5,15 @@ import uk.jixun.project.Exceptions.OutOfRangeOperand;
 import uk.jixun.project.OpCode.ISmOpCode;
 import uk.jixun.project.Operand.ISmOperand;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractBasicInstruction implements ISmInstruction {
-  protected abstract List<ISmOperand> getOperands();
+  protected List<ISmOperand> operands = new ArrayList<>();
+
+  protected List<ISmOperand> getOperands() {
+    return operands;
+  }
 
   @Override
   public ISmOperand getOperand(int index) throws OutOfRangeOperand {
@@ -22,7 +27,36 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
 
   @Override
   public String toAssembly() {
-    // TODO
-    throw new NotImplementedException("TODO: Decode opcode and operands.");
+    StringBuilder result = new StringBuilder();
+    result.append(getOpCode().toAssembly());
+
+    for(int i = 0; i < getOperandCount(); i++) {
+      result.append(" ");
+
+      try {
+        result.append(getOperand(i).toAssembly());
+      } catch (OutOfRangeOperand outOfRangeOperand) {
+        // FIXME: This exception should never occur.
+        outOfRangeOperand.printStackTrace();
+      }
+    }
+
+    return result.toString();
+}
+
+  @Override
+  public void setOperand(int index, ISmOperand operand) throws OutOfRangeOperand {
+    if (index < getOperandCount()) {
+      operands.set(index, operand);
+    } else if (index == getOperandCount()) {
+      operands.add(operand);
+    } else {
+      throw new OutOfRangeOperand(index, this);
+    }
+  }
+
+  @Override
+  public void setOperands(List<ISmOperand> operands) {
+    this.operands = operands;
   }
 }

@@ -1,15 +1,15 @@
 package uk.jixun.project.OpCode;
 
-public enum SmOpCode {
+public enum SmOpCodeEnum {
   // Special OpCode, it is not an opcode.
   NONE,
 
   ADD, SUB, MUL, DIV,
   // hmul & hdiv
-  HALF_MUL, HALF_DIV,
+  HMUL, HDIV,
 
-  // increment / decrement
-  INC, DEC,
+  // increment / decrement (defined later)
+  // INC, DEC,
 
   AND, OR, NOT, XOR,
   LSL, LSR, ROL, ROR,
@@ -54,12 +54,12 @@ public enum SmOpCode {
   // @Register; @
   // e.g. @xp
   // x86 equivalent: pop xp
-  FETCH,
+  POP,
 
-  // !Register; @
+  // !Register; !
   // e.g. !xp
   // x86 equivalent: push xp
-  STORE,
+  PUSH,
 
   // Test: Check for TOS and NOS; Write flag (True/False) to indicate test result.
   // TOS == NOS; TOS != NOS
@@ -102,4 +102,45 @@ public enum SmOpCode {
   COND_RETURN,
 
   // Memory / Data Access
+  // LIT: Load 8 bit literal
+  PUSH_BYTE,
+  // LSI: Load short immediate (17 bits)
+  PUSH_SHORT,
+  // LEI: Load Extended immediate
+  PUSH_EXTEND,
+
+  // @LOC [n]: Fetch Local, at address fp+n
+  PUSH_FRAME_ADDR,
+  // !LOC [n]: Store local at address fp+n
+  POP_FRAME_ADDR,
+
+  // LDP: LoaD Page relative address
+  PUSH_INDIRECT_RELATIVE,
+  // STP: STore Page relative address
+  POP_INDIRECT_RELATIVE,
+
+  // LDL: LoaD from absoLute address
+  PUSH_INDIRECT_ABSOLUTE,
+  // STL: Store to absoLute address
+  POP_INDIRECT_ABSOLUTE,
+
+  // ![TOS]: Store data (tos = address; nos = data); mov dword[TOS], data
+  // !: Store data (tos = data; nos = address); mov dword[NOS], data
+  // Store mem contents addressed by register
+  // Register can be TOS/NOS(omitted)/XP/YP
+  PUSH_REGISTER,
+
+  // @[reg]: Fetch
+  POP_REGISTER,
+
+  // Push register content and then perform register increment / decrement
+  PUSH_REGISTER_INC, PUSH_REGISTER_DEC,
+
+  // Pop register content and then perform register increment / decrement
+  POP_REGISTER_INC, POP_REGISTER_DEC,
+
+  // General
+  // reg+; reg-; reg++; reg--
+  REG_ADD, REG_SUB,
+  REG_INC, REG_DEC,
 }

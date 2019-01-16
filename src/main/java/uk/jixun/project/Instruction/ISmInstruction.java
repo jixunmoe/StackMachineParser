@@ -4,6 +4,8 @@ import uk.jixun.project.Exceptions.OutOfRangeOperand;
 import uk.jixun.project.OpCode.ISmOpCode;
 import uk.jixun.project.Operand.ISmOperand;
 
+import java.util.List;
+
 public interface ISmInstruction {
   ISmOpCode getOpCode();
 
@@ -14,6 +16,20 @@ public interface ISmInstruction {
    * @throws OutOfRangeOperand When the given index is invalid, this exception will be thrown.
    */
   ISmOperand getOperand(int index) throws OutOfRangeOperand;
+
+  /**
+   * Set an operand; use {@link #setOperands(List)} if you are trying to assign many operands.
+   * @param index Index to set
+   * @param operand Operand to be set.
+   * @throws OutOfRangeOperand When the given index is greater than existing operand size, this error will be thrown.
+   */
+  void setOperand(int index, ISmOperand operand) throws OutOfRangeOperand;
+
+  /**
+   * Sets all operands
+   * @param operands operands to be set as whole
+   */
+  void setOperands(List<ISmOperand> operands);
 
   /**
    * Get the number of operands in this instruction.

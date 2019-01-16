@@ -2,7 +2,6 @@ package uk.jixun.project;
 
 import org.apache.commons.lang3.NotImplementedException;
 import uk.jixun.project.Exceptions.LabelDuplicationException;
-import uk.jixun.project.Exceptions.OutOfRangeOperand;
 import uk.jixun.project.Helper.ParseHelper;
 import uk.jixun.project.Instruction.CommentInstruction;
 import uk.jixun.project.Instruction.ISmInstruction;
@@ -13,7 +12,7 @@ import java.util.*;
 /**
  * Parsing a stream of asm code text.
  */
-public class StackMachineInstParser implements Iterator<ISmInstruction> {
+public class StackMachineInstParser {
   private Scanner source;
   public StackMachineInstParser(Scanner scanner) {
     source = scanner;
@@ -27,7 +26,7 @@ public class StackMachineInstParser implements Iterator<ISmInstruction> {
   long lineNumber = 0;
   HashMap<String, Long> labelMapping = new HashMap<>();
 
-  private ISmInstruction parseInstruction(String line) {
+  private ISmInstruction parseInstruction(String line) throws LabelDuplicationException {
     // Instruction is actually a comment
     if (line.charAt(0) == '#') {
       return new CommentInstruction(line.substring(1).trim());
@@ -104,13 +103,11 @@ public class StackMachineInstParser implements Iterator<ISmInstruction> {
     throw new NotImplementedException("Instruction Parsing not implemented.");
   }
 
-  @Override
   public boolean hasNext() {
     return source.hasNext();
   }
 
-  @Override
-  public ISmInstruction next() {
+  public ISmInstruction next() throws LabelDuplicationException {
     String line = source.nextLine();
     lineNumber++;
 

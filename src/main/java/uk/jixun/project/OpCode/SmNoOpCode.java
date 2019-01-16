@@ -4,8 +4,8 @@ import uk.jixun.project.Register.SmRegister;
 
 public class SmNoOpCode implements ISmOpCode {
   @Override
-  public SmOpCode getOpCode() {
-    return SmOpCode.NONE;
+  public SmOpCodeEnum getOpCode() {
+    return SmOpCodeEnum.NONE;
   }
 
   @Override
@@ -14,8 +14,18 @@ public class SmNoOpCode implements ISmOpCode {
   }
 
   @Override
+  public void setVariant(int variant) {
+    // Do Nothing
+  }
+
+  @Override
   public SmRegister getRegisterVariant() {
     return null;
+  }
+
+  @Override
+  public void setRegisterVariant(SmRegister regVariant) {
+    // Do Nothing
   }
 
   @Override

@@ -3,33 +3,33 @@ package uk.jixun.project.OpCode;
 import uk.jixun.project.Register.SmRegister;
 
 public abstract class AbstractBasicOpCode implements ISmOpCode {
+  protected int variant = 0;
+  protected SmRegister regVariant = SmRegister.NONE;
+
   @Override
   public int getVariant() {
-    return 0;
+    return variant;
   }
 
   @Override
   public SmRegister getRegisterVariant() {
-    return SmRegister.NONE;
+    return regVariant;
   }
 
   @Override
   public String toAssembly() {
-    // TODO: Test this function
-    StringBuilder sb = new StringBuilder();
-
-    SmRegister registerVariant = getRegisterVariant();
-    if (registerVariant != SmRegister.NONE) {
-      sb.append(registerVariant.toString());
+    if (getRegisterVariant() != SmRegister.NONE) {
+      throw new RuntimeException("Need to override toAssembly for this opcode.");
     }
 
-    sb.append(this.getOpCode());
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getOpCode().toString());
 
     int variant = getVariant();
     if (variant != 0) {
       sb.append(variant);
     }
 
-    return this.getOpCode().toString();
+    return sb.toString();
   }
 }
