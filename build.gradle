@@ -4,6 +4,10 @@ plugins {
     id 'eclipse'
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
