@@ -4,7 +4,7 @@ import uk.jixun.project.Register.SmRegister;
 
 public class SmNoOpCode implements ISmOpCode {
   @Override
-  public SmOpCodeEnum getOpCode() {
+  public SmOpCodeEnum getOpCodeId() {
     return SmOpCodeEnum.NONE;
   }
 

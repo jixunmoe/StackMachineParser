@@ -19,7 +19,7 @@ import uk.jixun.project.Register.SmRegister;
 
 public abstract class SmOpCodeTestPositiveAbstract extends AbstractBasicOpCode {
   @Override
-  public SmOpCodeEnum getOpCode() {
+  public SmOpCodeEnum getOpCodeId() {
     return SmOpCodeEnum.TEST_POSITIVE;
   }
 

@@ -21,7 +21,7 @@ class SmOpcodeParserTest {
   })
   void parse_happyPath(String str, SmOpCodeEnum opcodeEnum, int variant, SmRegister reg) {
     ISmOpCode opcode = SmOpcodeParser.parse(str);
-    assertEquals(opcodeEnum, opcode.getOpCode());
+    assertEquals(opcodeEnum, opcode.getOpCodeId());
     assertEquals(variant, opcode.getVariant());
     assertEquals(reg, opcode.getRegisterVariant());
   }

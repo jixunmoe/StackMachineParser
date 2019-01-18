@@ -40,7 +40,7 @@ import uk.jixun.project.Register.SmRegister;
 
 public abstract class ${absName} extends AbstractBasicOpCode {
   @Override
-  public SmOpCodeEnum getOpCode() {
+  public SmOpCodeEnum getOpCodeId() {
     return SmOpCodeEnum.${id};
   }
 `

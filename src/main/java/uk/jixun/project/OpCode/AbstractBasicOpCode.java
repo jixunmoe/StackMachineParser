@@ -25,7 +25,7 @@ public abstract class AbstractBasicOpCode implements ISmOpCode {
     }
 
     StringBuilder sb = new StringBuilder();
-    sb.append(this.getOpCode().toString());
+    sb.append(this.getOpCodeId().toString());
 
     int variant = getVariant();
     if (variant != 0) {

@@ -4,7 +4,7 @@ import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Register.SmRegister;
 
 public interface ISmOpCode {
-  SmOpCodeEnum getOpCode();
+  SmOpCodeEnum getOpCodeId();
 
   /**
    * Number variant.
