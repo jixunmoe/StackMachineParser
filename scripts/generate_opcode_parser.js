@@ -139,6 +139,9 @@ import uk.jixun.project.Register.SmRegister;
 public class SmOpcodeParser {
   public static ISmOpCode parse(String opcode) throws UnknownOpCodeException {
     opcode = opcode.trim().toUpperCase();
+    if (opcode.length() == 0) {
+      return new SmNoOpCode();
+    }
     char lastChar = opcode.charAt(opcode.length() - 1);
 `
 
