@@ -5,7 +5,6 @@ import uk.jixun.project.OpCode.ISmOpCode;
 import uk.jixun.project.Operand.ISmOperand;
 import uk.jixun.project.Program.ISmProgram;
 
-import java.lang.module.Configuration;
 import java.util.List;
 
 public interface ISmInstruction {
@@ -18,6 +17,11 @@ public interface ISmInstruction {
    * @throws OutOfRangeOperand When the given index is invalid, this exception will be thrown.
    */
   ISmOperand getOperand(int index) throws OutOfRangeOperand;
+
+  long getLine();
+  long getVirtualAddress();
+  void setLine(long lineNumber);
+  void setVirtualAddress(long address);
 
   /**
    * Set an operand; use {@link #setOperands(List)} if you are trying to assign many operands.

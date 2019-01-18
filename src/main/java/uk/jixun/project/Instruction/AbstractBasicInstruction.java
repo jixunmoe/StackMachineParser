@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractBasicInstruction implements ISmInstruction {
-  private ISmProgram program;
+  long line = 0;
+  long virtualAddress = 0;
   private ISmOpCode opcode;
+  private ISmProgram program;
   private List<ISmOperand> operands = new ArrayList<>();
 
   protected List<ISmOperand> getOperands() {
@@ -37,6 +39,25 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
     this.program = program;
   }
 
+  @Override
+  public long getLine() {
+    return line;
+  }
+
+  @Override
+  public void setLine(long line) {
+    this.line = line;
+  }
+
+  @Override
+  public long getVirtualAddress() {
+    return virtualAddress;
+  }
+
+  @Override
+  public void setVirtualAddress(long virtualAddress) {
+    this.virtualAddress = virtualAddress;
+  }
 
   @Override
   public ISmOperand getOperand(int index) throws OutOfRangeOperand {

@@ -3,6 +3,7 @@ package uk.jixun.project.Instruction;
 import com.google.common.collect.ImmutableList;
 import uk.jixun.project.Exceptions.OutOfRangeOperand;
 import uk.jixun.project.OpCode.ISmOpCode;
+import uk.jixun.project.OpCode.SmNoOpCode;
 import uk.jixun.project.Operand.ISmOperand;
 import uk.jixun.project.Operand.SmTextOperand;
 
@@ -24,7 +25,7 @@ public class CommentInstruction extends AbstractBasicInstruction {
 
   @Override
   public ISmOpCode getOpCode() {
-    return null;
+    return new SmNoOpCode();
   }
 
   @Override

@@ -1,9 +1,7 @@
 package uk.jixun.project.OpCode;
 
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.jixun.project.Exceptions.UnknownOpCodeException;
 import uk.jixun.project.Register.SmRegister;

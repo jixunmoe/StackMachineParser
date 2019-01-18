@@ -1,7 +1,7 @@
 package uk.jixun.project;
 
-import org.apache.commons.lang3.NotImplementedException;
 import uk.jixun.project.Exceptions.LabelDuplicationException;
+import uk.jixun.project.Exceptions.ParseException;
 import uk.jixun.project.Helper.ParseHelper;
 import uk.jixun.project.Instruction.BasicInstruction;
 import uk.jixun.project.Instruction.CommentInstruction;
@@ -11,6 +11,7 @@ import uk.jixun.project.OpCode.ISmOpCode;
 import uk.jixun.project.OpCode.SmOpcodeParser;
 import uk.jixun.project.Operand.ISmOperand;
 import uk.jixun.project.Operand.SmOperandParser;
+import uk.jixun.project.Program.SmProgram;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,10 +20,12 @@ import java.util.stream.Collectors;
  * Parsing a stream of asm code text.
  */
 public class StackMachineInstParser {
+  private SmProgram program = new SmProgram();
   private Scanner source;
   public StackMachineInstParser(Scanner scanner) {
     source = scanner;
   }
+  private ArrayList<ISmInstruction> results = new ArrayList<>();
 
   private enum ParseInstructionState {
     Opcode, Operand
@@ -30,37 +33,38 @@ public class StackMachineInstParser {
 
   long virtualAddress = 0;
   long lineNumber = 0;
-  HashMap<String, Long> labelMapping = new HashMap<>();
 
-  private ISmInstruction parseInstruction(String line) throws LabelDuplicationException {
-    // Instruction is actually a comment
-    if (line.charAt(0) == '#') {
-      return new CommentInstruction(line.substring(1).trim());
-    }
-
-    int i = 0;
-    boolean skipWhiteSpace = false;
+  private boolean parseInstruction(String line) throws LabelDuplicationException {
+    boolean skipWhiteSpace = true;
     StringBuilder buffer = new StringBuilder();
     String opcodeStr = "";
     List<String> operandsStr = new ArrayList<>();
 
     ParseInstructionState state = ParseInstructionState.Opcode;
-    while (true) {
-      if (i >= line.length()) {
-        break;
+    for (int i = 0; i < line.length(); i++) {
+      if (skipWhiteSpace) {
+        while (ParseHelper.isWhiteSpace(line.charAt(i))) {
+          i++;
+        }
+        skipWhiteSpace = false;
       }
 
       char c = line.charAt(i);
-      switch(state) {
+      switch (state) {
         case Opcode:
           if (c == ':') {
             String label = buffer.toString();
-            if (labelMapping.containsKey(label)) {
-              throw new LabelDuplicationException(label);
-            }
-            labelMapping.put(label, virtualAddress);
+            program.registerLabel(label, virtualAddress);
 
             buffer = new StringBuilder();
+            skipWhiteSpace = true;
+          } else if (c == '#') {
+            // Is a comment
+            ISmInstruction instruction = new CommentInstruction(line.substring(i + 1));
+            instruction.setLine(lineNumber);
+            instruction.setVirtualAddress(virtualAddress);
+            results.add(instruction);
+            return true;
           } else if (ParseHelper.isWhiteSpace(c)) {
             skipWhiteSpace = true;
 
@@ -82,15 +86,6 @@ public class StackMachineInstParser {
         default:
           break;
       }
-
-      if (skipWhiteSpace) {
-        while(ParseHelper.isWhiteSpace(line.charAt(c))) {
-          i++;
-        }
-        skipWhiteSpace = false;
-      } else {
-        i++;
-      }
     }
 
     if (state == ParseInstructionState.Opcode) {
@@ -98,12 +93,21 @@ public class StackMachineInstParser {
 
       // Check for empty line
       if (opcodeStr.length() == 0) {
-        return new NoInstruction();
+        // results.add(new NoInstruction());
+        return true;
+      }
+    } else {
+      // state == ParseInstructionState.Operand
+      // If there's anything in the buffer that can be an operand
+      if (buffer.length() > 0) {
+        operandsStr.add(buffer.toString());
       }
     }
 
     // Initialise instruction object
     BasicInstruction instruction = new BasicInstruction();
+    instruction.setLine(lineNumber);
+    instruction.setVirtualAddress(virtualAddress);
 
     // Set opcode parsed
     ISmOpCode opcode = SmOpcodeParser.parse(opcodeStr);
@@ -116,17 +120,34 @@ public class StackMachineInstParser {
       .collect(Collectors.toList());
     instruction.setOperands(operands);
 
-    return instruction;
+    // FIXME: Let instruction to calculate sizeof current instruction.
+    virtualAddress++;
+
+    results.add(instruction);
+    return true;
   }
 
   public boolean hasNext() {
     return source.hasNext();
   }
 
-  public ISmInstruction next() throws LabelDuplicationException {
-    String line = source.nextLine();
-    lineNumber++;
+  public ISmInstruction next() throws LabelDuplicationException, ParseException {
+    while (results.size() <= 0) {
+      if (!hasNext()) {
+        // FIXME: Throw an error if no more entries left?
+        return new NoInstruction();
+      }
+      String line = source.nextLine();
+      lineNumber++;
+      if (!parseInstruction(line)) {
+        throw ParseException.forInputString(line);
+      }
+    }
 
-    return parseInstruction(line.trim());
+    ISmInstruction instruction = results.get(0);
+    instruction.setProgram(program);
+    program.addInstruction(instruction);
+    results.remove(0);
+    return instruction;
   }
 }
