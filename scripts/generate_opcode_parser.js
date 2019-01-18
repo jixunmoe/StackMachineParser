@@ -107,7 +107,8 @@ public abstract class ${absName} extends AbstractBasicOpCode {
   }
 
   code += `
-}`
+}
+`
 
   fs.writeFileSync(absFile, code, 'utf-8')
 
@@ -119,7 +120,8 @@ import uk.jixun.project.OpCode.OpCodeAbs.${absName};
 
 public class ${implName} extends ${absName} {
   // TODO: Override any opcode specific methods here.
-}`;
+}
+`;
     fs.writeFileSync(implFile, code, 'utf-8')
   }
 
