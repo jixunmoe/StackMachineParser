@@ -206,52 +206,49 @@ public class SmOpcodeParser {
       return OpCodeFactory.create(SmOpCodeEnum.POP_INDIRECT_ABSOLUTE);
     }
     if ("!".equals(opcode)) {
-      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REGISTER, SmRegister.NOS);
-    }
-    if ("![TOS]".equals(opcode)) {
-      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REGISTER, SmRegister.TOS);
-    }
-    if ("![XP]".equals(opcode)) {
-      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REGISTER, SmRegister.XP);
-    }
-    if ("![YP]".equals(opcode)) {
-      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REGISTER, SmRegister.YP);
-    }
-    if ("@".equals(opcode)) {
       return OpCodeFactory.create(SmOpCodeEnum.POP_REGISTER, SmRegister.NOS);
     }
-    if ("@[TOS]".equals(opcode)) {
+    if ("![TOS]".equals(opcode)) {
       return OpCodeFactory.create(SmOpCodeEnum.POP_REGISTER, SmRegister.TOS);
     }
-    if ("@[XP]".equals(opcode)) {
+    if ("![XP]".equals(opcode)) {
       return OpCodeFactory.create(SmOpCodeEnum.POP_REGISTER, SmRegister.XP);
     }
-    if ("@[YP]".equals(opcode)) {
+    if ("![YP]".equals(opcode)) {
       return OpCodeFactory.create(SmOpCodeEnum.POP_REGISTER, SmRegister.YP);
     }
+    if ("@".equals(opcode) || "@[TOS]".equals(opcode)) {
+      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REGISTER, SmRegister.TOS);
+    }
+    if ("@[XP]".equals(opcode)) {
+      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REGISTER, SmRegister.XP);
+    }
+    if ("@[YP]".equals(opcode)) {
+      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REGISTER, SmRegister.YP);
+    }
     if ("![XP++]".equals(opcode)) {
-      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REGISTER_INC, SmRegister.XP);
-    }
-    if ("![YP++]".equals(opcode)) {
-      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REGISTER_INC, SmRegister.YP);
-    }
-    if ("![XP--]".equals(opcode)) {
-      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REGISTER_DEC, SmRegister.XP);
-    }
-    if ("![YP--]".equals(opcode)) {
-      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REGISTER_DEC, SmRegister.YP);
-    }
-    if ("@[XP++]".equals(opcode)) {
       return OpCodeFactory.create(SmOpCodeEnum.POP_REGISTER_INC, SmRegister.XP);
     }
-    if ("@[YP++]".equals(opcode)) {
+    if ("![YP++]".equals(opcode)) {
       return OpCodeFactory.create(SmOpCodeEnum.POP_REGISTER_INC, SmRegister.YP);
     }
-    if ("@[XP--]".equals(opcode)) {
+    if ("![XP--]".equals(opcode)) {
       return OpCodeFactory.create(SmOpCodeEnum.POP_REGISTER_DEC, SmRegister.XP);
     }
-    if ("@[YP--]".equals(opcode)) {
+    if ("![YP--]".equals(opcode)) {
       return OpCodeFactory.create(SmOpCodeEnum.POP_REGISTER_DEC, SmRegister.YP);
+    }
+    if ("@[XP++]".equals(opcode)) {
+      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REGISTER_INC, SmRegister.XP);
+    }
+    if ("@[YP++]".equals(opcode)) {
+      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REGISTER_INC, SmRegister.YP);
+    }
+    if ("@[XP--]".equals(opcode)) {
+      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REGISTER_DEC, SmRegister.XP);
+    }
+    if ("@[YP--]".equals(opcode)) {
+      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REGISTER_DEC, SmRegister.YP);
     }
     if ("SP+".equals(opcode)) {
       return OpCodeFactory.create(SmOpCodeEnum.REG_ADD, SmRegister.SP);

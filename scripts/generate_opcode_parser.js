@@ -21,6 +21,15 @@ const editWarning = `
 
 `
 
+// scan can be either string or string[]
+function getFirstScan(scan) {
+  if (typeof scan === 'string') {
+    return scan;
+  }
+
+  return scan[0];
+}
+
 function writeOpCodeAbstract(opcode) {
   let id = (typeof opcode === 'string') ? opcode : opcode.id;
   let cls = id.toLowerCase().replace(/(^|_)./g, z => z.toUpperCase().slice(-1));
@@ -30,6 +39,9 @@ function writeOpCodeAbstract(opcode) {
   const absFile = path.join(javaRoot, `./OpCode/OpCodeAbs/${absName}.java`)
   const implFile = path.join(javaRoot, `./OpCode/OpCodeImpl/${implName}.java`)
 
+  // if it contains variation, hash map needs to be imported.
+  const importHashMap = !!(opcode.reg || opcode.Varients);
+
   let code = `package uk.jixun.project.OpCode.OpCodeAbs;
 
 ${editWarning}
@@ -38,7 +50,34 @@ import uk.jixun.project.OpCode.AbstractBasicOpCode;
 import uk.jixun.project.OpCode.SmOpCodeEnum;
 import uk.jixun.project.Register.SmRegister;
 
+${!importHashMap ? '' : 'import java.util.HashMap;'}
+
 public abstract class ${absName} extends AbstractBasicOpCode {
+`
+
+  if (opcode.reg || opcode.Varients) {
+    const keyType = opcode.reg ? 'SmRegister' : 'Integer';
+
+    code += `
+  private static HashMap<${keyType}, Integer> mapConsume = new HashMap<>();
+  private static HashMap<${keyType}, Integer> mapProduce = new HashMap<>();
+
+  static {
+    ${!opcode.reg ? "" : Object.keys(opcode.reg).map(reg => `
+    mapConsume.put(SmRegister.${reg}, ${opcode.reg[reg].consume});
+    mapProduce.put(SmRegister.${reg}, ${opcode.reg[reg].produce});
+    `).join('')}
+
+    ${!opcode.Varients ? "" : opcode.Varients.map(variant => `
+      mapConsume.put(${variant.id}, ${variant.consume});
+      mapProduce.put(${variant.id}, ${variant.produce});
+    `).join('')}
+  }
+`;
+  }
+
+
+code += `
   @Override
   public SmOpCodeEnum getOpCodeId() {
     return SmOpCodeEnum.${id};
@@ -49,10 +88,20 @@ public abstract class ${absName} extends AbstractBasicOpCode {
   if (opcode.reg) {
     code += `
   @Override
+  public int getProduce() {
+    return mapProduce.getOrDefault(getRegisterVariant(), 0);
+  }
+
+  @Override
+  public int getConsume() {
+    return mapConsume.getOrDefault(getRegisterVariant(), 0);
+  }
+
+  @Override
   public String toAssembly() {
     ${Object.keys(opcode.reg).map(reg => `
     if (getRegisterVariant() == SmRegister.${reg}) {
-      return ${JSON.stringify(opcode.reg[reg])};
+      return ${JSON.stringify(getFirstScan(opcode.reg[reg].scan))};
     }`).join('\n')}
 
     throw new RuntimeException("Unsupported register variant for this opcode.");
@@ -77,8 +126,18 @@ public abstract class ${absName} extends AbstractBasicOpCode {
   } else if (opcode.Varients) {
     code += `
   @Override
+  public int getProduce() {
+    return mapProduce.getOrDefault(getVariant(), 0);
+  }
+
+  @Override
+  public int getConsume() {
+    return mapConsume.getOrDefault(getVariant(), 0);
+  }
+
+  @Override
   public void setVariant(int variant) {
-    if (${opcode.Varients.map(v => `(variant == ${v})`).join(' || ')}) {
+    if (${opcode.Varients.map(v => `(variant == ${v.id})`).join(' || ')}) {
       this.variant = variant;
     }
   }
@@ -91,6 +150,16 @@ public abstract class ${absName} extends AbstractBasicOpCode {
   }`
   } else {
     code += `
+  @Override
+  public int getProduce() {
+    return 0;
+  }
+
+  @Override
+  public int getConsume() {
+    return 0;
+  }
+
   @Override
   public void setVariant(int variant) {
     if (variant != 0) {
@@ -129,6 +198,13 @@ public class ${implName} extends ${absName} {
 }
 
 
+function matchScan(scan) {
+  if (typeof scan === 'string') {
+    scan = [scan];
+  }
+
+  return scan.map(s => `"${s.toUpperCase()}".equals(opcode)`).join(" || ");
+}
 
 
 let code = `package uk.jixun.project.OpCode;
@@ -153,28 +229,28 @@ doc.opcodes.forEach(opcode => {
   if (typeof opcode === 'string') {
     // OPCODE id and scan is same.
     code += `
-    if ("${opcode.toUpperCase()}".equals(opcode)) {
+    if (${matchScan(opcode)}) {
       return OpCodeFactory.create(SmOpCodeEnum.${opcode});
     }`
   } else if (opcode.scan) {
     code += `
-    if ("${opcode.scan.toUpperCase()}".equals(opcode)) {
+    if (${matchScan(opcode.scan)}) {
       return OpCodeFactory.create(SmOpCodeEnum.${opcode.id});
     }`
   } else if (opcode.Varients) {
     code += `
     if (
       "${opcode.id.toUpperCase()}".equals(opcode.substring(0, opcode.length() - 1))
-      && (${opcode.Varients.map(v => `lastChar == '${v}'`).join(' || ')})
+      && (${opcode.Varients.map(v => `lastChar == '${v.id}'`).join(' || ')})
     ) {
       return OpCodeFactory.create(SmOpCodeEnum.${opcode.id},
         Character.getNumericValue(lastChar));
     }`
   } else if (opcode.reg) {
     Object.keys(opcode.reg).forEach(reg => {
-      const scan = opcode.reg[reg]
+      const scan = opcode.reg[reg].scan
       code += `
-    if ("${scan}".equals(opcode)) {
+    if (${matchScan(scan)}) {
       return OpCodeFactory.create(SmOpCodeEnum.${opcode.id}, SmRegister.${reg});
     }`
     })

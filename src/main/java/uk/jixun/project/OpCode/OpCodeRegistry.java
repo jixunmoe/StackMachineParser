@@ -73,12 +73,12 @@ class OpCodeRegistry {
     OpCodeFactory.register(SmOpCodeEnum.POP_INDIRECT_RELATIVE, SmOpCodePopIndirectRelative.class);
     OpCodeFactory.register(SmOpCodeEnum.PUSH_INDIRECT_ABSOLUTE, SmOpCodePushIndirectAbsolute.class);
     OpCodeFactory.register(SmOpCodeEnum.POP_INDIRECT_ABSOLUTE, SmOpCodePopIndirectAbsolute.class);
-    OpCodeFactory.register(SmOpCodeEnum.PUSH_REGISTER, SmOpCodePushRegister.class);
     OpCodeFactory.register(SmOpCodeEnum.POP_REGISTER, SmOpCodePopRegister.class);
-    OpCodeFactory.register(SmOpCodeEnum.PUSH_REGISTER_INC, SmOpCodePushRegisterInc.class);
-    OpCodeFactory.register(SmOpCodeEnum.PUSH_REGISTER_DEC, SmOpCodePushRegisterDec.class);
+    OpCodeFactory.register(SmOpCodeEnum.PUSH_REGISTER, SmOpCodePushRegister.class);
     OpCodeFactory.register(SmOpCodeEnum.POP_REGISTER_INC, SmOpCodePopRegisterInc.class);
     OpCodeFactory.register(SmOpCodeEnum.POP_REGISTER_DEC, SmOpCodePopRegisterDec.class);
+    OpCodeFactory.register(SmOpCodeEnum.PUSH_REGISTER_INC, SmOpCodePushRegisterInc.class);
+    OpCodeFactory.register(SmOpCodeEnum.PUSH_REGISTER_DEC, SmOpCodePushRegisterDec.class);
     OpCodeFactory.register(SmOpCodeEnum.REG_ADD, SmOpCodeRegAdd.class);
     OpCodeFactory.register(SmOpCodeEnum.REG_SUB, SmOpCodeRegSub.class);
     OpCodeFactory.register(SmOpCodeEnum.REG_INC, SmOpCodeRegInc.class);

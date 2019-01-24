@@ -17,29 +17,63 @@ import uk.jixun.project.OpCode.AbstractBasicOpCode;
 import uk.jixun.project.OpCode.SmOpCodeEnum;
 import uk.jixun.project.Register.SmRegister;
 
+import java.util.HashMap;
+
 public abstract class SmOpCodePopRegisterAbstract extends AbstractBasicOpCode {
+
+  private static HashMap<SmRegister, Integer> mapConsume = new HashMap<>();
+  private static HashMap<SmRegister, Integer> mapProduce = new HashMap<>();
+
+  static {
+    
+    mapConsume.put(SmRegister.NOS, 2);
+    mapProduce.put(SmRegister.NOS, 0);
+    
+    mapConsume.put(SmRegister.TOS, 2);
+    mapProduce.put(SmRegister.TOS, 0);
+    
+    mapConsume.put(SmRegister.XP, 1);
+    mapProduce.put(SmRegister.XP, 0);
+    
+    mapConsume.put(SmRegister.YP, 1);
+    mapProduce.put(SmRegister.YP, 0);
+    
+
+    
+  }
+
   @Override
   public SmOpCodeEnum getOpCodeId() {
     return SmOpCodeEnum.POP_REGISTER;
   }
 
   @Override
+  public int getProduce() {
+    return mapProduce.getOrDefault(getRegisterVariant(), 0);
+  }
+
+  @Override
+  public int getConsume() {
+    return mapConsume.getOrDefault(getRegisterVariant(), 0);
+  }
+
+  @Override
   public String toAssembly() {
     
     if (getRegisterVariant() == SmRegister.NOS) {
-      return "@";
+      return "!";
     }
 
     if (getRegisterVariant() == SmRegister.TOS) {
-      return "@[TOS]";
+      return "![TOS]";
     }
 
     if (getRegisterVariant() == SmRegister.XP) {
-      return "@[XP]";
+      return "![XP]";
     }
 
     if (getRegisterVariant() == SmRegister.YP) {
-      return "@[YP]";
+      return "![YP]";
     }
 
     throw new RuntimeException("Unsupported register variant for this opcode.");

@@ -17,10 +17,23 @@ import uk.jixun.project.OpCode.AbstractBasicOpCode;
 import uk.jixun.project.OpCode.SmOpCodeEnum;
 import uk.jixun.project.Register.SmRegister;
 
+
+
 public abstract class SmOpCodeInsertWordAbstract extends AbstractBasicOpCode {
+
   @Override
   public SmOpCodeEnum getOpCodeId() {
     return SmOpCodeEnum.INSERT_WORD;
+  }
+
+  @Override
+  public int getProduce() {
+    return 0;
+  }
+
+  @Override
+  public int getConsume() {
+    return 0;
   }
 
   @Override

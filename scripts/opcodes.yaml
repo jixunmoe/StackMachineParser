@@ -2,184 +2,487 @@
 
 opcodes:
   # Arithmetic
-  - ADD
-  - SUB
-  - HMUL
-  - HDIV
-  - MUL
-  - DIV
+  - id: ADD
+    scan: ADD
+    consume: 2
+    produce: 1
+  - id: SUB
+    scan: SUB
+    consume: 2
+    produce: 1
+  - id: HMUL
+    scan: HMUL
+    consume: 2
+    produce: 1
+  - id: HDIV
+    scan: HDIV
+    consume: 2
+    produce: 1
+  - id: MUL
+    scan: MUL
+    consume: 2
+    produce: 1
+  - id: DIV
+    scan: DIV
+    consume: 2
+    produce: 1
 
   # Logical
-  - AND
-  - OR
-  - NOT
-  - XOR
-  - LSL
-  - LSR
-  - ROL
-  - ROR
+  - id: AND
+    scan: AND
+    consume: 2
+    produce: 1
+  - id: OR
+    scan: OR
+    consume: 2
+    produce: 1
+  - id: NOT
+    scan: NOT
+    consume: 2
+    produce: 1
+  - id: XOR
+    scan: XOR
+    consume: 2
+    produce: 1
+  - id: LSL
+    scan: LSL
+    consume: 2
+    produce: 1
+  - id: LSR
+    scan: LSR
+    consume: 2
+    produce: 1
+  - id: ROL
+    scan: ROL
+    consume: 2
+    produce: 1
+  - id: ROR
+    scan: ROR
+    consume: 2
+    produce: 1
 
   # Word Manipulation
   - id: ROTATE_RIGHT_BYTE
     scan: RBYTE
+    consume: 1
+    produce: 1
   - id: ROTATE_RIGHT_WORD
     scan: RHWD
+    consume: 1
+    produce: 1
   - id: EXTRACT_RIGHT_BYTE
     scan: XBYTE_N
+    consume: 1
+    produce: 1
   - id: EXTRACT_RIGHT_WORD
     scan: XWRD_N
+    consume: 1
+    produce: 1
   - id: INSERT_BYTE
     scan: IBYTE_N
+    consume: 1
+    produce: 1
   - id: INSERT_WORD
     scan: IWRD_N
+    consume: 1
+    produce: 1
   # Stack & Register Manipulation
   - id: COPY
     Varients:
-      - 1
-      - 2
-      - 3
-      - 4
+      - id: 1
+        consume: 1
+        produce: 2
+      - id: 2
+        consume: 2
+        produce: 4
+      - id: 3
+        consume: 3
+        produce: 6
+      - id: 4
+        consume: 4
+        produce: 8
   - id: DROP
     Varients:
-      - 1
-      - 2
-      - 3
-      - 4
+      - id: 1
+        consume: 1
+        produce: 0
+      - id: 2
+        consume: 2
+        produce: 0
+      - id: 3
+        consume: 3
+        produce: 0
+      - id: 4
+        consume: 4
+        produce: 0
   - id: RSU
     Varients:
-      - 2
-      - 3
-      - 4
+      - id: 2
+        consume: 2
+        produce: 2
+      - id: 3
+        consume: 3
+        produce: 3
+      - id: 4
+        consume: 4
+        produce: 4
   - id: RSD
     Varients:
-      - 3
-      - 4
+      - id: 3
+        consume: 3
+        produce: 3
+      - id: 4
+        consume: 4
+        produce: 4
   - id: PUSH_TO_RS
     scan: ">r"
+    consume: 0
+    produce: 1
   - id: POP_FROM_RS
     scan: "<r"
+    consume: 1
+    produce: 0
   # Some other push/pop to/from return stack?
 
   # Control & Compare
   - id: TEST_EQ
     scan: TEQ
+    consume: 2
+    produce: 2
   - id: TEST_NEQ
     scan: TNE
+    consume: 2
+    produce: 2
   - id: TEST_GT
     scan: TGT
+    consume: 2
+    produce: 2
   - id: TEST_LT
     scan: TLT
+    consume: 2
+    produce: 2
   - id: TEST_NEGATIVE
     scan: TNV
+    consume: 1
+    produce: 1
   - id: TEST_POSITIVE
     scan: TPV
+    consume: 1
+    produce: 1
   - id: TEST_NOT_ZERO
     scan: TNZ
+    consume: 1
+    produce: 1
   - id: TEST_XP_ZERO
     scan: TXPZ
+    consume: 0
+    produce: 0
   - id: TEST_YP_ZERO
     scan: TYPZ
+    consume: 0
+    produce: 0
 
   # Unconditional
   - id: RELATIVE_JUMP
-    scan:  BP
+    scan: BP
+    braching: true
+    consume: 0
+    produce: 0
   - id: ABSOLUTE_JUMP
-    scan:  BL
+    scan: BL
+    braching: true
+    consume: 0
+    produce: 0
   - id: RELATIVE_CALL
-    scan:  CP
+    scan: CP
+    braching: true
+    consume: 0
+    produce: 0
   - id: ABSOLUTE_CALL
-    scan:  CL
+    scan: CL
+    braching: true
+    consume: 0
+    produce: 0
   - id: RETURN
-    scan:  EXIT
+    scan: EXIT
+    braching: true
+    consume: 0
+    produce: 0
 
   # Conditional
   - id: COND_RELATIVE_JUMP
     scan: BCR
+    braching: true
+    consume: 0
+    produce: 0
   - id: COND_PAGE_JUMP
     scan: BCP
+    braching: true
+    consume: 0
+    produce: 0
   - id: COND_ABSOLUTE_JUMP
     scan: BCL
+    braching: true
+    consume: 0
+    produce: 0
   - id: COND_RELATIVE_CALL
     scan: CCP
+    braching: true
+    consume: 0
+    produce: 0
   - id: COND_ABSOLUTE_CALL
     scan: CCL
+    braching: true
+    consume: 0
+    produce: 0
   - id: COND_RETURN
     scan: "?EXIT"
+    braching: true
+    consume: 0
+    produce: 0
 
   # Memory & Data Access
+  # push immediates (byte/word/dword)
   - id: PUSH_BYTE
     scan: LIT
+    consume: 0
+    produce: 1
   - id: PUSH_SHORT
     scan: LSI
+    consume: 0
+    produce: 1
   - id: PUSH_EXTEND
     scan: LEI
+    consume: 0
+    produce: 1
   - id: PUSH_FRAME_ADDR
     scan: "@LOC"
+    consume: 0
+    produce: 1
+    ram: true
   - id: POP_FRAME_ADDR
     scan: "!LOC"
+    consume: 1
+    produce: 0
+    ram: true
+    # push dword[page:0x1234]
   - id: PUSH_INDIRECT_RELATIVE
     scan: LDP
+    consume: 0
+    produce: 1
+    ram: true
+    # pop dword[page:0x1234]
   - id: POP_INDIRECT_RELATIVE
     scan: STP
+    consume: 1
+    produce: 0
+    ram: true
+    # push dword[0x1234]
   - id: PUSH_INDIRECT_ABSOLUTE
     scan: LDL
+    consume: 0
+    produce: 1
+    ram: true
+    # pop dword[0x1234]
   - id: POP_INDIRECT_ABSOLUTE
     scan: STL
-  - id: PUSH_REGISTER
-    reg:
-      NOS: "!"
-      TOS: "![TOS]"
-      XP: "![XP]"
-      YP: "![YP]"
+    consume: 1
+    produce: 0
+    ram: true
+    # pop [reg]
   - id: POP_REGISTER
     reg:
-      NOS: "@"
-      TOS: "@[TOS]"
-      XP: "@[XP]"
-      YP: "@[YP]"
-  - id: PUSH_REGISTER_INC
+      # mov [sp + 0], [sp + 1]
+      # pop; pop;
+      NOS:
+        scan: "!"
+        consume: 2
+        produce: 0
+        ram: true
+      TOS:
+        scan: "![TOS]"
+        consume: 2
+        produce: 0
+        ram: true
+      # pop [XP]
+      XP:
+        scan: "![XP]"
+        consume: 1
+        produce: 0
+        ram: true
+      # pop [YP]
+      YP:
+        scan: "![YP]"
+        consume: 1
+        produce: 0
+        ram: true
+    # push [reg]
+  - id: PUSH_REGISTER
     reg:
-      XP: "![XP++]"
-      YP: "![YP++]"
-  - id: PUSH_REGISTER_DEC
-    reg:
-      XP: "![XP--]"
-      YP: "![YP--]"
+      # Remove content at TOS and push it.
+      # pop temp_reg; push [temp_reg]
+      TOS:
+        scan: ["@", "@[TOS]"]
+        consume: 1
+        produce: 1
+        ram: true
+      # push [XP]
+      XP:
+        scan: "@[XP]"
+        consume: 0
+        produce: 1
+        ram: true
+      # push [YP]
+      YP:
+        scan: "@[YP]"
+        consume: 0
+        produce: 1
+        ram: true
+    # pop [reg]; inc reg
   - id: POP_REGISTER_INC
     reg:
-      XP: "@[XP++]"
-      YP: "@[YP++]"
+      XP:
+        scan: "![XP++]"
+        consume: 1
+        produce: 0
+        ram: true
+      YP:
+        scan: "![YP++]"
+        consume: 1
+        produce: 0
+        ram: true
+    # pop [reg]; dec reg
   - id: POP_REGISTER_DEC
     reg:
-      XP: "@[XP--]"
-      YP: "@[YP--]"
+      XP:
+        scan: "![XP--]"
+        consume: 1
+        produce: 0
+        ram: true
+      YP:
+        scan: "![YP--]"
+        consume: 1
+        produce: 0
+        ram: true
+    # push [reg]; inc reg
+  - id: PUSH_REGISTER_INC
+    reg:
+      XP:
+        scan: "@[XP++]"
+        consume: 0
+        produce: 1
+        ram: true
+      YP:
+        scan: "@[YP++]"
+        consume: 0
+        produce: 1
+        ram: true
+    # pop [reg]; dec reg
+  - id: PUSH_REGISTER_DEC
+    reg:
+      XP:
+        scan: "@[XP--]"
+        consume: 0
+        produce: 1
+        ram: true
+      YP:
+        scan: "@[YP--]"
+        consume: 0
+        produce: 1
+        ram: true
   - id: REG_ADD
     reg:
-      SP: SP+
-      RP: RP+
-      YP: YP+
-      XP: XP+
-      FP: FP+
+      SP:
+        scan: SP+
+        consume: 1
+        produce: 0
+      RP:
+        scan: RP+
+        consume: 1
+        produce: 0
+      YP:
+        scan: YP+
+        consume: 1
+        produce: 0
+      XP:
+        scan: XP+
+        consume: 1
+        produce: 0
+      FP:
+        scan: FP+
+        consume: 1
+        produce: 0
   - id: REG_SUB
     reg:
-      SP: SP-
-      RP: RP-
-      YP: YP-
-      XP: XP-
-      FP: FP-
+      SP:
+        scan: SP-
+        consume: 1
+        produce: 0
+      RP:
+        scan: RP-
+        consume: 1
+        produce: 0
+      YP:
+        scan: YP-
+        consume: 1
+        produce: 0
+      XP:
+        scan: XP-
+        consume: 1
+        produce: 0
+      FP:
+        scan: FP-
+        consume: 1
+        produce: 0
   - id: REG_INC
     reg:
-      SP: SP++
-      RP: RP++
-      YP: YP++
-      XP: XP++
-      FP: FP++
-      TOS: TOS++
+      SP:
+        scan: SP++
+        consume: 0
+        produce: 0
+      RP:
+        scan: RP++
+        consume: 0
+        produce: 0
+      YP:
+        scan: YP++
+        consume: 0
+        produce: 0
+      XP:
+        scan: XP++
+        consume: 0
+        produce: 0
+      FP:
+        scan: FP++
+        consume: 0
+        produce: 0
+      TOS:
+        scan: TOS++
+        consume: 0
+        produce: 0
   - id: REG_DEC
     reg:
-      SP: SP--
-      RP: RP--
-      YP: YP--
-      XP: XP--
-      FP: FP--
-      TOS: TOS--
+      SP:
+        scan: SP--
+        consume: 0
+        produce: 0
+      RP:
+        scan: RP--
+        consume: 0
+        produce: 0
+      YP:
+        scan: YP--
+        consume: 0
+        produce: 0
+      XP:
+        scan: XP--
+        consume: 0
+        produce: 0
+      FP:
+        scan: FP--
+        consume: 0
+        produce: 0
+      TOS:
+        scan: TOS--
+        consume: 0
+        produce: 0

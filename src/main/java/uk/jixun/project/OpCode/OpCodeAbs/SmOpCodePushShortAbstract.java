@@ -17,10 +17,23 @@ import uk.jixun.project.OpCode.AbstractBasicOpCode;
 import uk.jixun.project.OpCode.SmOpCodeEnum;
 import uk.jixun.project.Register.SmRegister;
 
+
+
 public abstract class SmOpCodePushShortAbstract extends AbstractBasicOpCode {
+
   @Override
   public SmOpCodeEnum getOpCodeId() {
     return SmOpCodeEnum.PUSH_SHORT;
+  }
+
+  @Override
+  public int getProduce() {
+    return 0;
+  }
+
+  @Override
+  public int getConsume() {
+    return 0;
   }
 
   @Override

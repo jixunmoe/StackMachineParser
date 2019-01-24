@@ -24,6 +24,16 @@ public class SmNoOpCode extends AbstractBasicOpCode {
   }
 
   @Override
+  public int getConsume() {
+    return 0;
+  }
+
+  @Override
+  public int getProduce() {
+    return 0;
+  }
+
+  @Override
   public String toString() {
     return "SmNoOpCode{}";
   }

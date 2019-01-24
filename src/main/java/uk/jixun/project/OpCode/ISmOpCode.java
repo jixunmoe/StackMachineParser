@@ -28,4 +28,16 @@ public interface ISmOpCode {
 
   ISmInstruction getInstruction();
   void setInstruction(ISmInstruction instruction);
+
+  /**
+   * How many items in the stack does it consume (number of operands, destructive).
+   * @return Number of items to consume from stack.
+   */
+  int getConsume();
+
+  /**
+   * How many items will be pushed into the stack (number of results)?
+   * @return Number of items to produce after execution.
+   */
+  int getProduce();
 }

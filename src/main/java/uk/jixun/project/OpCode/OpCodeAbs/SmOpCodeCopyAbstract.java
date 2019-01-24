@@ -17,10 +17,44 @@ import uk.jixun.project.OpCode.AbstractBasicOpCode;
 import uk.jixun.project.OpCode.SmOpCodeEnum;
 import uk.jixun.project.Register.SmRegister;
 
+import java.util.HashMap;
+
 public abstract class SmOpCodeCopyAbstract extends AbstractBasicOpCode {
+
+  private static HashMap<Integer, Integer> mapConsume = new HashMap<>();
+  private static HashMap<Integer, Integer> mapProduce = new HashMap<>();
+
+  static {
+    
+
+    
+      mapConsume.put(1, 1);
+      mapProduce.put(1, 2);
+    
+      mapConsume.put(2, 2);
+      mapProduce.put(2, 4);
+    
+      mapConsume.put(3, 3);
+      mapProduce.put(3, 6);
+    
+      mapConsume.put(4, 4);
+      mapProduce.put(4, 8);
+    
+  }
+
   @Override
   public SmOpCodeEnum getOpCodeId() {
     return SmOpCodeEnum.COPY;
+  }
+
+  @Override
+  public int getProduce() {
+    return mapProduce.getOrDefault(getVariant(), 0);
+  }
+
+  @Override
+  public int getConsume() {
+    return mapConsume.getOrDefault(getVariant(), 0);
   }
 
   @Override

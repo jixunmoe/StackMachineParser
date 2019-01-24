@@ -17,21 +17,49 @@ import uk.jixun.project.OpCode.AbstractBasicOpCode;
 import uk.jixun.project.OpCode.SmOpCodeEnum;
 import uk.jixun.project.Register.SmRegister;
 
+import java.util.HashMap;
+
 public abstract class SmOpCodePushRegisterIncAbstract extends AbstractBasicOpCode {
+
+  private static HashMap<SmRegister, Integer> mapConsume = new HashMap<>();
+  private static HashMap<SmRegister, Integer> mapProduce = new HashMap<>();
+
+  static {
+    
+    mapConsume.put(SmRegister.XP, 0);
+    mapProduce.put(SmRegister.XP, 1);
+    
+    mapConsume.put(SmRegister.YP, 0);
+    mapProduce.put(SmRegister.YP, 1);
+    
+
+    
+  }
+
   @Override
   public SmOpCodeEnum getOpCodeId() {
     return SmOpCodeEnum.PUSH_REGISTER_INC;
   }
 
   @Override
+  public int getProduce() {
+    return mapProduce.getOrDefault(getRegisterVariant(), 0);
+  }
+
+  @Override
+  public int getConsume() {
+    return mapConsume.getOrDefault(getRegisterVariant(), 0);
+  }
+
+  @Override
   public String toAssembly() {
     
     if (getRegisterVariant() == SmRegister.XP) {
-      return "![XP++]";
+      return "@[XP++]";
     }
 
     if (getRegisterVariant() == SmRegister.YP) {
-      return "![YP++]";
+      return "@[YP++]";
     }
 
     throw new RuntimeException("Unsupported register variant for this opcode.");

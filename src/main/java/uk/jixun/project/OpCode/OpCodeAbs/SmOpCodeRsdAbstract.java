@@ -17,10 +17,38 @@ import uk.jixun.project.OpCode.AbstractBasicOpCode;
 import uk.jixun.project.OpCode.SmOpCodeEnum;
 import uk.jixun.project.Register.SmRegister;
 
+import java.util.HashMap;
+
 public abstract class SmOpCodeRsdAbstract extends AbstractBasicOpCode {
+
+  private static HashMap<Integer, Integer> mapConsume = new HashMap<>();
+  private static HashMap<Integer, Integer> mapProduce = new HashMap<>();
+
+  static {
+    
+
+    
+      mapConsume.put(3, 3);
+      mapProduce.put(3, 3);
+    
+      mapConsume.put(4, 4);
+      mapProduce.put(4, 4);
+    
+  }
+
   @Override
   public SmOpCodeEnum getOpCodeId() {
     return SmOpCodeEnum.RSD;
+  }
+
+  @Override
+  public int getProduce() {
+    return mapProduce.getOrDefault(getVariant(), 0);
+  }
+
+  @Override
+  public int getConsume() {
+    return mapConsume.getOrDefault(getVariant(), 0);
   }
 
   @Override
