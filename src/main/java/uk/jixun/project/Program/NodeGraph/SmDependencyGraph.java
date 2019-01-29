@@ -1,6 +1,7 @@
 package uk.jixun.project.Program.NodeGraph;
 
 import uk.jixun.project.Instruction.ISmInstruction;
+import uk.jixun.project.Program.ISmProgram;
 
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Stack;
 public class SmDependencyGraph implements ISmDependencyGraph {
   private Stack<ISmProgramNode> globalStack = new Stack<>();
   private List<ISmProgramNode> nodes = new ArrayList<>();
+  private ISmProgram program = null;
 
   @Override
   public Stack<ISmProgramNode> getInstructionStack() {
@@ -22,7 +24,26 @@ public class SmDependencyGraph implements ISmDependencyGraph {
   }
 
   @Override
-  public void addInstruction(ISmInstruction instruction) {
+  public void setProgram(ISmProgram program) {
+    this.program = program;
+    reloadInstructions();
+  }
+
+  @Override
+  public RenderedImage getImage() {
+    return null;
+  }
+
+  private void reloadInstructions() {
+    globalStack.clear();
+    nodes.clear();
+
+    for (ISmInstruction inst : program.getInstructions()) {
+      addInstruction(inst);
+    }
+  }
+
+  private void addInstruction(ISmInstruction instruction) {
     ISmDependencyNode node = new SmDependencyNode();
     node.setInstruction(instruction);
 
@@ -45,10 +66,5 @@ public class SmDependencyGraph implements ISmDependencyGraph {
         getInstructionStack().push(node);
       }
     }
-  }
-
-  @Override
-  public RenderedImage getImage() {
-    return null;
   }
 }

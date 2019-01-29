@@ -56,13 +56,7 @@ public class SmProgram implements ISmProgram {
   @Override
   public ISmProgramGraph createGraph() {
     ISmProgramGraph graph = new SmDependencyGraph();
-
-    for (ISmInstruction instruction : getInstructions()) {
-      if (!(instruction instanceof SmNoOpCode)) {
-        graph.addInstruction(instruction);
-      }
-    }
-
+    graph.setProgram(this);
     return graph;
   }
 }
