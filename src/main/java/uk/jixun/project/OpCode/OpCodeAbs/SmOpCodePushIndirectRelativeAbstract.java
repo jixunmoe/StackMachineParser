@@ -37,6 +37,11 @@ public abstract class SmOpCodePushIndirectRelativeAbstract extends AbstractBasic
   }
 
   @Override
+  public boolean accessRam() {
+    return true;
+  }
+
+  @Override
   public void setVariant(int variant) {
     if (variant != 0) {
       throw new RuntimeException("Variant does not apply for this opcode.");

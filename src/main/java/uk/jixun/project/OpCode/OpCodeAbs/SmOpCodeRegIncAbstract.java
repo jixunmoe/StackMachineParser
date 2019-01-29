@@ -64,6 +64,36 @@ public abstract class SmOpCodeRegIncAbstract extends AbstractBasicOpCode {
   }
 
   @Override
+  public boolean accessRam() {
+    
+    if (getRegisterVariant() == SmRegister.SP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.RP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.YP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.XP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.FP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.TOS) {
+      return false;
+    }
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
   public String toAssembly() {
     
     if (getRegisterVariant() == SmRegister.SP) {

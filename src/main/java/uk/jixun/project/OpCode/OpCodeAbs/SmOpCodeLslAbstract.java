@@ -37,6 +37,11 @@ public abstract class SmOpCodeLslAbstract extends AbstractBasicOpCode {
   }
 
   @Override
+  public boolean accessRam() {
+    return false;
+  }
+
+  @Override
   public void setVariant(int variant) {
     if (variant != 0) {
       throw new RuntimeException("Variant does not apply for this opcode.");

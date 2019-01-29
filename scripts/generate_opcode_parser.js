@@ -21,6 +21,10 @@ const editWarning = `
 
 `
 
+function b4s(b) {
+  return (!!b).toString();
+}
+
 // scan can be either string or string[]
 function getFirstScan(scan) {
   if (typeof scan === 'string') {
@@ -98,6 +102,16 @@ code += `
   }
 
   @Override
+  public boolean accessRam() {
+    ${Object.keys(opcode.reg).map(reg => `
+    if (getRegisterVariant() == SmRegister.${reg}) {
+      return ${b4s(opcode.reg[reg].ram)};
+    }`).join('\n')}
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
   public String toAssembly() {
     ${Object.keys(opcode.reg).map(reg => `
     if (getRegisterVariant() == SmRegister.${reg}) {
@@ -136,6 +150,16 @@ code += `
   }
 
   @Override
+  public boolean accessRam() {
+    ${opcode.Varients.map(v => `
+    if (variant == ${v.id}) {
+      return ${b4s(v.ram)};
+    }`).join('\n')}
+
+    throw new RuntimeException("Unsupported variant for this opcode.");
+  }
+
+  @Override
   public void setVariant(int variant) {
     if (${opcode.Varients.map(v => `(variant == ${v.id})`).join(' || ')}) {
       this.variant = variant;
@@ -158,6 +182,11 @@ code += `
   @Override
   public int getConsume() {
     return 0;
+  }
+
+  @Override
+  public boolean accessRam() {
+    return ${b4s(opcode.ram)};
   }
 
   @Override

@@ -24,4 +24,21 @@ dependencies {
 
     compile("com.google.guava:guava:27.0.1-jre")
     compile("org.apache.commons:commons-lang3:3.8.1")
+    compile("com.github.adedayo.intellij.sdk:forms_rt:142.1")
 }
+
+jar {
+    manifest {
+        attributes(
+                "Class-Path": configurations.compile.collect { it.getName() }.join(' '),
+                "Main-Class" : "uk.jixun.project.Entry"
+        )
+    }
+}
+
+task copyToLib(type: Copy) {
+    into "$buildDir/libs"
+    from configurations.runtime
+}
+
+jar.dependsOn(copyToLib)

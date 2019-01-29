@@ -40,4 +40,6 @@ public interface ISmOpCode {
    * @return Number of items to produce after execution.
    */
   int getProduce();
+
+  boolean accessRam();
 }

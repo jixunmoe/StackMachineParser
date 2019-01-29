@@ -55,6 +55,24 @@ public abstract class SmOpCodeRsuAbstract extends AbstractBasicOpCode {
   }
 
   @Override
+  public boolean accessRam() {
+    
+    if (variant == 2) {
+      return false;
+    }
+
+    if (variant == 3) {
+      return false;
+    }
+
+    if (variant == 4) {
+      return false;
+    }
+
+    throw new RuntimeException("Unsupported variant for this opcode.");
+  }
+
+  @Override
   public void setVariant(int variant) {
     if ((variant == 2) || (variant == 3) || (variant == 4)) {
       this.variant = variant;
