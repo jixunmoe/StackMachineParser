@@ -1,16 +1,16 @@
 package uk.jixun.project.Gui;
 
-import uk.jixun.project.Program.NodeGraph.ISmProgramNodeGraph;
+import uk.jixun.project.Program.NodeGraph.ISmProgramGraph;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class GraphCanvas extends JPanel {
-  private ISmProgramNodeGraph graph = null;
+  private ISmProgramGraph graph = null;
   private Font msgFont;
   private int msgFontHeight;
 
-  public ISmProgramNodeGraph getGraph() {
+  public ISmProgramGraph getGraph() {
     return graph;
   }
 
@@ -25,7 +25,7 @@ public class GraphCanvas extends JPanel {
     return new Dimension(400,400);
   }
 
-  public void setGraph(ISmProgramNodeGraph graph) {
+  public void setGraph(ISmProgramGraph graph) {
     this.graph = graph;
   }
 

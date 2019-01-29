@@ -4,9 +4,8 @@ import uk.jixun.project.Exceptions.LabelDuplicationException;
 import uk.jixun.project.Exceptions.LabelNotFoundException;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.OpCode.SmNoOpCode;
-import uk.jixun.project.Program.NodeGraph.ISmProgramNodeGraph;
-import uk.jixun.project.Program.NodeGraph.SmBasicProgramNode;
-import uk.jixun.project.Program.NodeGraph.SmBasicProgramNodeGraph;
+import uk.jixun.project.Program.NodeGraph.ISmProgramGraph;
+import uk.jixun.project.Program.NodeGraph.SmDependencyGraph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,8 +54,8 @@ public class SmProgram implements ISmProgram {
   }
 
   @Override
-  public ISmProgramNodeGraph createGraph() {
-    ISmProgramNodeGraph graph = new SmBasicProgramNodeGraph();
+  public ISmProgramGraph createGraph() {
+    ISmProgramGraph graph = new SmDependencyGraph();
 
     for (ISmInstruction instruction : getInstructions()) {
       if (!(instruction instanceof SmNoOpCode)) {

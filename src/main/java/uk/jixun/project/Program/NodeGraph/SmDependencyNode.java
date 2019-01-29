@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.util.Stack;
 
-public class SmBasicProgramNode implements ISmProgramNode {
+public class SmDependencyNode implements ISmDependencyNode {
   private static Font nodeFont;
   private static final int padding = 3;
 

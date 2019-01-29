@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class SmBasicProgramNodeGraph implements ISmProgramNodeGraph {
+public class SmDependencyGraph implements ISmDependencyGraph {
   private Stack<ISmProgramNode> globalStack = new Stack<>();
   private List<ISmProgramNode> nodes = new ArrayList<>();
 
@@ -23,7 +23,7 @@ public class SmBasicProgramNodeGraph implements ISmProgramNodeGraph {
 
   @Override
   public void addInstruction(ISmInstruction instruction) {
-    ISmProgramNode node = new SmBasicProgramNode();
+    ISmDependencyNode node = new SmDependencyNode();
     node.setInstruction(instruction);
 
     int consume = instruction.getOpCode().getConsume();
