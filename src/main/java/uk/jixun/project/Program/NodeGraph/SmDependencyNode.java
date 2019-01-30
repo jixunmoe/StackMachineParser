@@ -41,7 +41,7 @@ public class SmDependencyNode implements ISmDependencyNode {
   }
 
   @Override
-  public RenderedImage getImage() {
+  public Image getImage() {
     String text = getInstruction().toAssembly();
     Rectangle2D rect = GuiManager.getFontBound(nodeFont, text);
 

@@ -1,9 +1,9 @@
 package uk.jixun.project.Program.NodeGraph;
 
-import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Program.ISmProgram;
+import uk.jixun.project.RenderConfig.IRenderConfig;
 
-import java.awt.image.RenderedImage;
+import java.awt.*;
 
 public interface ISmProgramGraph {
   /**
@@ -12,5 +12,5 @@ public interface ISmProgramGraph {
    */
   void setProgram(ISmProgram program);
 
-  RenderedImage getImage();
+  Image getImage(IRenderConfig config);
 }

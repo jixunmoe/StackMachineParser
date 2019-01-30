@@ -2,8 +2,9 @@ package uk.jixun.project.Program.NodeGraph;
 
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Program.ISmProgram;
+import uk.jixun.project.RenderConfig.IRenderConfig;
 
-import java.awt.image.RenderedImage;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -30,7 +31,7 @@ public class SmDependencyGraph implements ISmDependencyGraph {
   }
 
   @Override
-  public RenderedImage getImage() {
+  public Image getImage(IRenderConfig config) {
     return null;
   }
 

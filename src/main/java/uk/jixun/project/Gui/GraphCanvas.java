@@ -39,6 +39,6 @@ public class GraphCanvas extends JPanel {
       return;
     }
 
-    graph.getImage(g);
+    g.drawImage(graph.getImage(), 0, 0, null);
   }
 }
