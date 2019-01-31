@@ -1,5 +1,6 @@
 package uk.jixun.project.Program.NodeGraph;
 
+import uk.jixun.project.Helper.GridData;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Program.ISmProgram;
 import uk.jixun.project.RenderConfig.IRenderConfig;
@@ -7,7 +8,6 @@ import uk.jixun.project.RenderConfig.IRenderConfig;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class SmExecutionGraph implements ISmProgramGraph {
@@ -18,6 +18,7 @@ public class SmExecutionGraph implements ISmProgramGraph {
   private int aluCount;
   private int ramCount;
   private BufferedImage image;
+  private GridData<ISmProgramNode> nodesTable;
 
   @Override
   public void setProgram(ISmProgram program) {
@@ -42,6 +43,10 @@ public class SmExecutionGraph implements ISmProgramGraph {
       cacheNodes();
     }
 
+    if (nodesTable == null) {
+      cacheNodeTable();
+    }
+
     if (image == null) {
       cacheImage();
     }
@@ -54,6 +59,7 @@ public class SmExecutionGraph implements ISmProgramGraph {
     image = null;
     aluCount = 0;
     ramCount = 0;
+    nodesTable = null;
   }
 
   private void cacheNodes() {
@@ -64,6 +70,10 @@ public class SmExecutionGraph implements ISmProgramGraph {
       node.setInstruction(inst);
       nodes.add(node);
     }
+  }
+
+  private void cacheNodeTable() {
+    // TODO: Cache node table
   }
 
   private void cacheImage() {
