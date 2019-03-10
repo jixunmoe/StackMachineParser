@@ -259,36 +259,42 @@ opcodes:
     scan: "@LOC"
     consume: 0
     produce: 1
-    ram: true
+    ram: read
+    address: op1
   - id: POP_FRAME_ADDR
     scan: "!LOC"
     consume: 1
     produce: 0
-    ram: true
+    ram: write
+    address: op1
     # push dword[page:0x1234]
   - id: PUSH_INDIRECT_RELATIVE
     scan: LDP
     consume: 0
     produce: 1
-    ram: true
+    ram: read
+    address: op1
     # pop dword[page:0x1234]
   - id: POP_INDIRECT_RELATIVE
     scan: STP
     consume: 1
     produce: 0
-    ram: true
+    ram: write
+    address: op1
     # push dword[0x1234]
   - id: PUSH_INDIRECT_ABSOLUTE
     scan: LDL
     consume: 0
     produce: 1
-    ram: true
+    ram: read
+    address: op1
     # pop dword[0x1234]
   - id: POP_INDIRECT_ABSOLUTE
     scan: STL
     consume: 1
     produce: 0
-    ram: true
+    ram: write
+    address: op1
     # pop [reg]
   - id: POP_REGISTER
     reg:
@@ -298,24 +304,28 @@ opcodes:
         scan: "!"
         consume: 2
         produce: 0
-        ram: true
+        ram: write
+        address: unknown
       TOS:
         scan: "![TOS]"
         consume: 2
         produce: 0
-        ram: true
+        ram: write
+        address: unknown
       # pop [XP]
       XP:
         scan: "![XP]"
         consume: 1
         produce: 0
-        ram: true
+        ram: write
+        address: unknown
       # pop [YP]
       YP:
         scan: "![YP]"
         consume: 1
         produce: 0
-        ram: true
+        ram: write
+        address: unknown
     # push [reg]
   - id: PUSH_REGISTER
     reg:
@@ -325,19 +335,22 @@ opcodes:
         scan: ["@", "@[TOS]"]
         consume: 1
         produce: 1
-        ram: true
+        ram: read
+        address: unknown
       # push [XP]
       XP:
         scan: "@[XP]"
         consume: 0
         produce: 1
-        ram: true
+        ram: read
+        address: unknown
       # push [YP]
       YP:
         scan: "@[YP]"
         consume: 0
         produce: 1
-        ram: true
+        ram: read
+        address: unknown
     # pop [reg]; inc reg
   - id: POP_REGISTER_INC
     reg:
@@ -345,12 +358,14 @@ opcodes:
         scan: "![XP++]"
         consume: 1
         produce: 0
-        ram: true
+        ram: write
+        address: unknown
       YP:
         scan: "![YP++]"
         consume: 1
         produce: 0
-        ram: true
+        ram: write
+        address: unknown
     # pop [reg]; dec reg
   - id: POP_REGISTER_DEC
     reg:
@@ -358,12 +373,14 @@ opcodes:
         scan: "![XP--]"
         consume: 1
         produce: 0
-        ram: true
+        ram: write
+        address: unknown
       YP:
         scan: "![YP--]"
         consume: 1
         produce: 0
-        ram: true
+        ram: write
+        address: unknown
     # push [reg]; inc reg
   - id: PUSH_REGISTER_INC
     reg:
@@ -371,12 +388,14 @@ opcodes:
         scan: "@[XP++]"
         consume: 0
         produce: 1
-        ram: true
+        ram: read
+        address: unknown
       YP:
         scan: "@[YP++]"
         consume: 0
         produce: 1
-        ram: true
+        ram: read
+        address: unknown
     # pop [reg]; dec reg
   - id: PUSH_REGISTER_DEC
     reg:
@@ -384,12 +403,14 @@ opcodes:
         scan: "@[XP--]"
         consume: 0
         produce: 1
-        ram: true
+        ram: write
+        address: unknown
       YP:
         scan: "@[YP--]"
         consume: 0
         produce: 1
-        ram: true
+        ram: write
+        address: unknown
   - id: REG_ADD
     reg:
       SP:

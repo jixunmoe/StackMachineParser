@@ -52,7 +52,7 @@ public abstract class SmOpCodePushRegisterIncAbstract extends AbstractBasicOpCod
   }
 
   @Override
-  public boolean accessRam() {
+  public boolean readRam() {
     
     if (getRegisterVariant() == SmRegister.XP) {
       return true;
@@ -60,6 +60,48 @@ public abstract class SmOpCodePushRegisterIncAbstract extends AbstractBasicOpCod
 
     if (getRegisterVariant() == SmRegister.YP) {
       return true;
+    }
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
+  public boolean writeRam() {
+    
+    if (getRegisterVariant() == SmRegister.XP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.YP) {
+      return false;
+    }
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
+  public boolean isStaticRamAddress() {
+    
+    if (getRegisterVariant() == SmRegister.XP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.YP) {
+      return false;
+    }
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
+  public int accessRamAddress() throws Exception {
+    
+    if (getRegisterVariant() == SmRegister.XP) {
+      throw new RuntimeException("Unknown ram access type");
+    }
+
+    if (getRegisterVariant() == SmRegister.YP) {
+      throw new RuntimeException("Unknown ram access type");
     }
 
     throw new RuntimeException("Unsupported register variant for this opcode.");

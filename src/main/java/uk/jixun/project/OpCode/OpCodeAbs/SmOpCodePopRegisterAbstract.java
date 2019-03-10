@@ -58,7 +58,29 @@ public abstract class SmOpCodePopRegisterAbstract extends AbstractBasicOpCode {
   }
 
   @Override
-  public boolean accessRam() {
+  public boolean readRam() {
+    
+    if (getRegisterVariant() == SmRegister.NOS) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.TOS) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.XP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.YP) {
+      return false;
+    }
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
+  public boolean writeRam() {
     
     if (getRegisterVariant() == SmRegister.NOS) {
       return true;
@@ -74,6 +96,50 @@ public abstract class SmOpCodePopRegisterAbstract extends AbstractBasicOpCode {
 
     if (getRegisterVariant() == SmRegister.YP) {
       return true;
+    }
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
+  public boolean isStaticRamAddress() {
+    
+    if (getRegisterVariant() == SmRegister.NOS) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.TOS) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.XP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.YP) {
+      return false;
+    }
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
+  public int accessRamAddress() throws Exception {
+    
+    if (getRegisterVariant() == SmRegister.NOS) {
+      throw new RuntimeException("Unknown ram access type");
+    }
+
+    if (getRegisterVariant() == SmRegister.TOS) {
+      throw new RuntimeException("Unknown ram access type");
+    }
+
+    if (getRegisterVariant() == SmRegister.XP) {
+      throw new RuntimeException("Unknown ram access type");
+    }
+
+    if (getRegisterVariant() == SmRegister.YP) {
+      throw new RuntimeException("Unknown ram access type");
     }
 
     throw new RuntimeException("Unsupported register variant for this opcode.");

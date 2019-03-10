@@ -64,7 +64,7 @@ public abstract class SmOpCodeRegIncAbstract extends AbstractBasicOpCode {
   }
 
   @Override
-  public boolean accessRam() {
+  public boolean readRam() {
     
     if (getRegisterVariant() == SmRegister.SP) {
       return false;
@@ -88,6 +88,96 @@ public abstract class SmOpCodeRegIncAbstract extends AbstractBasicOpCode {
 
     if (getRegisterVariant() == SmRegister.TOS) {
       return false;
+    }
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
+  public boolean writeRam() {
+    
+    if (getRegisterVariant() == SmRegister.SP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.RP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.YP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.XP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.FP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.TOS) {
+      return false;
+    }
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
+  public boolean isStaticRamAddress() {
+    
+    if (getRegisterVariant() == SmRegister.SP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.RP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.YP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.XP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.FP) {
+      return false;
+    }
+
+    if (getRegisterVariant() == SmRegister.TOS) {
+      return false;
+    }
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
+  public int accessRamAddress() throws Exception {
+    
+    if (getRegisterVariant() == SmRegister.SP) {
+      throw new RuntimeException("Unknown ram access type");
+    }
+
+    if (getRegisterVariant() == SmRegister.RP) {
+      throw new RuntimeException("Unknown ram access type");
+    }
+
+    if (getRegisterVariant() == SmRegister.YP) {
+      throw new RuntimeException("Unknown ram access type");
+    }
+
+    if (getRegisterVariant() == SmRegister.XP) {
+      throw new RuntimeException("Unknown ram access type");
+    }
+
+    if (getRegisterVariant() == SmRegister.FP) {
+      throw new RuntimeException("Unknown ram access type");
+    }
+
+    if (getRegisterVariant() == SmRegister.TOS) {
+      throw new RuntimeException("Unknown ram access type");
     }
 
     throw new RuntimeException("Unsupported register variant for this opcode.");

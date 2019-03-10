@@ -41,5 +41,8 @@ public interface ISmOpCode {
    */
   int getProduce();
 
-  boolean accessRam();
+  boolean readRam();
+  boolean writeRam();
+  boolean isStaticRamAddress();
+  int accessRamAddress() throws Exception;
 }

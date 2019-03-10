@@ -58,7 +58,7 @@ public abstract class SmOpCodeDropAbstract extends AbstractBasicOpCode {
   }
 
   @Override
-  public boolean accessRam() {
+  public boolean readRam() {
     
     if (variant == 1) {
       return false;
@@ -77,6 +77,72 @@ public abstract class SmOpCodeDropAbstract extends AbstractBasicOpCode {
     }
 
     throw new RuntimeException("Unsupported variant for this opcode.");
+  }
+
+  @Override
+  public boolean writeRam() {
+    
+    if (variant == 1) {
+      return false;
+    }
+
+    if (variant == 2) {
+      return false;
+    }
+
+    if (variant == 3) {
+      return false;
+    }
+
+    if (variant == 4) {
+      return false;
+    }
+
+    throw new RuntimeException("Unsupported variant for this opcode.");
+  }
+
+  @Override
+  public boolean isStaticRamAddress() {
+    
+    if (variant == 1) {
+      return false;
+    }
+
+    if (variant == 2) {
+      return false;
+    }
+
+    if (variant == 3) {
+      return false;
+    }
+
+    if (variant == 4) {
+      return false;
+    }
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
+  public int accessRamAddress() throws Exception {
+    
+    if (variant == 1) {
+      
+    }
+
+    if (variant == 2) {
+      
+    }
+
+    if (variant == 3) {
+      
+    }
+
+    if (variant == 4) {
+      
+    }
+
+    throw new RuntimeException("Unknown ram access type.");
   }
 
   @Override
