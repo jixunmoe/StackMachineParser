@@ -25,6 +25,7 @@ dependencies {
     compile("com.google.guava:guava:27.0.1-jre")
     compile("org.apache.commons:commons-lang3:3.8.1")
     compile("com.github.adedayo.intellij.sdk:forms_rt:142.1")
+    compile("com.github.vlsi.mxgraph:jgraphx:3.9.8.1")
 }
 
 jar {
