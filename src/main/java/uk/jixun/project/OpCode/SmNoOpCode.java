@@ -34,6 +34,26 @@ public class SmNoOpCode extends AbstractBasicOpCode {
   }
 
   @Override
+  public boolean readRam() {
+    return false;
+  }
+
+  @Override
+  public boolean writeRam() {
+    return false;
+  }
+
+  @Override
+  public boolean isStaticRamAddress() {
+    return false;
+  }
+
+  @Override
+  public int accessRamAddress() {
+    return 0;
+  }
+
+  @Override
   public String toString() {
     return "SmNoOpCode{}";
   }

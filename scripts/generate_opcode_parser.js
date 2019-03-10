@@ -102,10 +102,43 @@ code += `
   }
 
   @Override
-  public boolean accessRam() {
+  public boolean readRam() {
     ${Object.keys(opcode.reg).map(reg => `
     if (getRegisterVariant() == SmRegister.${reg}) {
-      return ${b4s(opcode.reg[reg].ram)};
+      return ${b4s(opcode.reg[reg].ram === 'read')};
+    }`).join('\n')}
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
+  public boolean writeRam() {
+    ${Object.keys(opcode.reg).map(reg => `
+    if (getRegisterVariant() == SmRegister.${reg}) {
+      return ${b4s(opcode.reg[reg].ram === 'write')};
+    }`).join('\n')}
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
+  public boolean isStaticRamAddress() {
+    ${Object.keys(opcode.reg).map(reg => `
+    if (getRegisterVariant() == SmRegister.${reg}) {
+      return ${b4s(opcode.reg[reg].address === 'op1')};
+    }`).join('\n')}
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
+  public int accessRamAddress() throws Exception {
+    ${Object.keys(opcode.reg).map(reg => `
+    if (getRegisterVariant() == SmRegister.${reg}) {
+      ${(opcode.reg[reg].address === 'op1') ?
+        'return (int) getInstruction().getOperand(0).getValue();' :
+        'throw new RuntimeException("Unknown ram access type");'
+      }
     }`).join('\n')}
 
     throw new RuntimeException("Unsupported register variant for this opcode.");
@@ -150,13 +183,43 @@ code += `
   }
 
   @Override
-  public boolean accessRam() {
+  public boolean readRam() {
     ${opcode.Varients.map(v => `
     if (variant == ${v.id}) {
-      return ${b4s(v.ram)};
+      return ${v.ram === 'read'};
     }`).join('\n')}
 
     throw new RuntimeException("Unsupported variant for this opcode.");
+  }
+
+  @Override
+  public boolean writeRam() {
+    ${opcode.Varients.map(v => `
+    if (variant == ${v.id}) {
+      return ${b4s(v.ram === 'write')};
+    }`).join('\n')}
+
+    throw new RuntimeException("Unsupported variant for this opcode.");
+  }
+
+  @Override
+  public boolean isStaticRamAddress() {
+    ${opcode.Varients.map(v => `
+    if (variant == ${v.id}) {
+      return ${b4s(v.address === 'op1')};
+    }`).join('\n')}
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
+  }
+
+  @Override
+  public int accessRamAddress() throws Exception {
+    ${opcode.Varients.map(v => `
+    if (variant == ${v.id}) {
+      ${(v.address === 'op1') ? 'return (int) getInstruction().getOperand(0).getValue();' : '' }
+    }`).join('\n')}
+
+    throw new RuntimeException("Unknown ram access type.");
   }
 
   @Override
@@ -185,10 +248,24 @@ code += `
   }
 
   @Override
-  public boolean accessRam() {
-    return ${b4s(opcode.ram)};
+  public boolean readRam() {
+    return ${b4s(opcode.ram === 'read')};
   }
 
+  @Override
+  public boolean writeRam() {
+    return ${b4s(opcode.ram === 'write')};
+  }
+
+  @Override
+  public boolean isStaticRamAddress() {
+    return ${b4s(opcode.address === 'op1')};
+  }
+
+  @Override
+  public int accessRamAddress() throws Exception {
+    return (int) getInstruction().getOperand(0).getValue();
+  }
   @Override
   public void setVariant(int variant) {
     if (variant != 0) {

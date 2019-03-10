@@ -37,10 +37,24 @@ public abstract class SmOpCodePushIndirectAbsoluteAbstract extends AbstractBasic
   }
 
   @Override
-  public boolean accessRam() {
+  public boolean readRam() {
     return true;
   }
 
+  @Override
+  public boolean writeRam() {
+    return false;
+  }
+
+  @Override
+  public boolean isStaticRamAddress() {
+    return true;
+  }
+
+  @Override
+  public int accessRamAddress() throws Exception {
+    return (int) getInstruction().getOperand(0).getValue();
+  }
   @Override
   public void setVariant(int variant) {
     if (variant != 0) {
