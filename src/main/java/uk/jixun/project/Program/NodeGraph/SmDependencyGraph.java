@@ -24,6 +24,24 @@ public class SmDependencyGraph implements ISmDependencyGraph {
     return nodes;
   }
 
+  private ISmProgramNode getAdjacentNode(ISmProgramNode ref, int delta) {
+    int index = nodes.indexOf(ref) + delta;
+    if (index >= 0 && index < nodes.size()) {
+      return nodes.get(index);
+    }
+    return null;
+  }
+
+  @Override
+  public ISmProgramNode getNextNode(ISmProgramNode ref) {
+    return getAdjacentNode(ref, 1);
+  }
+
+  @Override
+  public ISmProgramNode getPrevNode(ISmProgramNode ref) {
+    return getAdjacentNode(ref, -1);
+  }
+
   @Override
   public void setProgram(ISmProgram program) {
     this.program = program;
@@ -59,9 +77,11 @@ public class SmDependencyGraph implements ISmDependencyGraph {
     ISmDependencyNode node = new SmDependencyNode();
     node.setInstruction(instruction);
 
+    // number of items to consume from or produce to stack
     int consume = instruction.getOpCode().getConsume();
     int produce = instruction.getOpCode().getProduce();
 
+    // Get instruction dependency.
     for(int i = 0; i < consume; i++) {
       node.pushStack(getInstructionStack().pop());
     }

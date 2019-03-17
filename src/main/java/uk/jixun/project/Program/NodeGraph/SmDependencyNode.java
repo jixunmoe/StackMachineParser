@@ -22,6 +22,7 @@ public class SmDependencyNode implements ISmDependencyNode {
 
   private Stack<ISmProgramNode> stack = new Stack<>();
   private ISmInstruction instruction;
+  private List<ISmProgramNode> dependencies = new ArrayList<>();
 
   @Override
   public ISmInstruction getInstruction() {
@@ -63,10 +64,14 @@ public class SmDependencyNode implements ISmDependencyNode {
     return false;
   }
 
+  public SmDependencyNode addDependency(ISmProgramNode dep) {
+    dependencies.add(dep);
+    return this;
+  }
+
   @Override
   public List<ISmProgramNode> getDependencies() {
-    // TODO: Add direct dependency to this node.
-    return null;
+    return dependencies;
   }
 
   @Override
