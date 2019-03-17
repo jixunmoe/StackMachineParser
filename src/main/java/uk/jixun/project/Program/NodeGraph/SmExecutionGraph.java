@@ -27,6 +27,17 @@ public class SmExecutionGraph implements ISmProgramGraph {
   }
 
   @Override
+  public boolean containsNode(ISmProgramNode node) {
+    for (ISmProgramNode n : nodes) {
+      if (n == node) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  @Override
   public Image getImage(IRenderConfig config) {
     if (aluCount != config.getAluCount() || ramCount != config.getMemoryPortCount()) {
       image = null;

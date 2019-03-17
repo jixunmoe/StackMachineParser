@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
 
 public class SmDependencyNode implements ISmDependencyNode {
@@ -28,6 +31,42 @@ public class SmDependencyNode implements ISmDependencyNode {
   @Override
   public void setInstruction(ISmInstruction instruction) {
     this.instruction = instruction;
+  }
+
+  @Override
+  public boolean dependsOn(ISmProgramNode node) {
+    List<ISmProgramNode> dependencies = getDependencies();
+    List<ISmProgramNode> visited = new ArrayList<>();
+
+    while(!dependencies.isEmpty()) {
+      int n = dependencies.size();
+
+      for (int i = 0; i < n; i++) {
+        ISmProgramNode dep = dependencies.get(i);
+        visited.add(dep);
+
+        // Contains dependency to given node?
+        if (dep == node) {
+          return true;
+        }
+
+        // Include dependency of the dependency to the list
+        dependencies.addAll(dep.getDependencies());
+      }
+
+      // Remove checked nodes, so they are not checked again.
+      for (int i = 0; i < n; i++) {
+        dependencies.removeIf(visited::contains);
+      }
+    }
+
+    return false;
+  }
+
+  @Override
+  public List<ISmProgramNode> getDependencies() {
+    // TODO: Add direct dependency to this node.
+    return null;
   }
 
   @Override

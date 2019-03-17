@@ -31,6 +31,17 @@ public class SmDependencyGraph implements ISmDependencyGraph {
   }
 
   @Override
+  public boolean containsNode(ISmProgramNode node) {
+    // null does not contain anything.
+    if (program == null) {
+      return false;
+    }
+
+    ISmInstruction inst = node.getInstruction();
+    return program.getInstructions().contains(inst);
+  }
+
+  @Override
   public Image getImage(IRenderConfig config) {
     return null;
   }
