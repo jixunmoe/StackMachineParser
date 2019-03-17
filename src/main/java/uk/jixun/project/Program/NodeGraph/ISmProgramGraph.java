@@ -12,5 +12,12 @@ public interface ISmProgramGraph {
    */
   void setProgram(ISmProgram program);
 
+  /**
+   * Check of given node exists in this graph
+   * @param node node to check for
+   * @return true if exists
+   */
+  boolean containsNode(ISmProgramNode node);
+
   Image getImage(IRenderConfig config);
 }
