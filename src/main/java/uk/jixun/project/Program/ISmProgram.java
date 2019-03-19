@@ -10,6 +10,7 @@ import java.util.Map;
 
 public interface ISmProgram {
   List<ISmInstruction> getInstructions();
+  ISmInstruction getInstruction(int index) throws ArrayIndexOutOfBoundsException;
   void setInstructions(List<ISmInstruction> instructions);
   void addInstruction(ISmInstruction instruction);
 

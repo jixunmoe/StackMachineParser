@@ -58,4 +58,9 @@ public class CommentInstruction extends AbstractBasicInstruction {
       "comment='" + comment + '\'' +
       '}';
   }
+
+  @Override
+  public boolean notForExecute() {
+    return true;
+  }
 }

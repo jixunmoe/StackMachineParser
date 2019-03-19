@@ -3,6 +3,8 @@ package uk.jixun.project.Program.Simulator;
 import uk.jixun.project.Program.ISmProgram;
 import uk.jixun.project.SimulatorConfig.ISimulatorConfig;
 
+import java.util.List;
+
 public interface ISmSimulator {
   void setConfig(ISimulatorConfig config);
   void setProgram(ISmProgram program);
@@ -17,5 +19,7 @@ public interface ISmSimulator {
    * Dispatch some command.
    * @return Dispatched instructions in this cycle.
    */
-  IDispatchedInstructions dispatchInstruction();
+  List<IDispatchRecord> dispatch();
+
+  List<IDispatchRecord> getDispatchHistory();
 }

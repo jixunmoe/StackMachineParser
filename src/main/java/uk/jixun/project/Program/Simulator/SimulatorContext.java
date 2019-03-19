@@ -56,6 +56,11 @@ public class SimulatorContext implements IExecutionContext {
   }
 
   @Override
+  public void incEip() {
+    eip ++;
+  }
+
+  @Override
   public int getCycles() {
     return cycles;
   }

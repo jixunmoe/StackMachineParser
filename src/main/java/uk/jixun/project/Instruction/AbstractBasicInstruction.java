@@ -103,4 +103,9 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
   public void setOperands(List<ISmOperand> operands) {
     this.operands = operands;
   }
+
+  @Override
+  public boolean notForExecute() {
+    return false;
+  }
 }

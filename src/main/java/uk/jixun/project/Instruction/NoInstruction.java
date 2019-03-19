@@ -36,4 +36,9 @@ public class NoInstruction extends AbstractBasicInstruction {
   public String toAssembly() {
     return "";
   }
+
+  @Override
+  public boolean notForExecute() {
+    return true;
+  }
 }

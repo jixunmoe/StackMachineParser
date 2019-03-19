@@ -57,4 +57,6 @@ public interface ISmInstruction {
 
   ISmProgram getProgram();
   void setProgram(ISmProgram program);
+
+  boolean notForExecute();
 }

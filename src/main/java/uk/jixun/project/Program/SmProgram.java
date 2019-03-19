@@ -22,6 +22,11 @@ public class SmProgram implements ISmProgram {
   }
 
   @Override
+  public ISmInstruction getInstruction(int index) throws ArrayIndexOutOfBoundsException {
+    return instructions.get(index);
+  }
+
+  @Override
   public void setInstructions(List<ISmInstruction> instructions) {
     this.instructions = instructions;
   }
