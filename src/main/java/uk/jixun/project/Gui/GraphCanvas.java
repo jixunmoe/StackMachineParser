@@ -1,8 +1,8 @@
 package uk.jixun.project.Gui;
 
 import uk.jixun.project.Program.NodeGraph.ISmProgramGraph;
-import uk.jixun.project.RenderConfig.IRenderConfig;
-import uk.jixun.project.RenderConfig.RenderConfigImpl;
+import uk.jixun.project.SimulatorConfig.ISimulatorConfig;
+import uk.jixun.project.SimulatorConfig.SimulatorConfigImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,8 +44,8 @@ public class GraphCanvas extends JPanel {
     g.drawImage(graph.getImage(getRenderConfig()), 0, 0, null);
   }
 
-  private IRenderConfig getRenderConfig() {
+  private ISimulatorConfig getRenderConfig() {
     // TODO: Read Config from somewhere.
-    return new RenderConfigImpl(2, 1);
+    return new SimulatorConfigImpl(2, 1);
   }
 }

@@ -2,7 +2,7 @@ package uk.jixun.project.Program.NodeGraph;
 
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Program.ISmProgram;
-import uk.jixun.project.RenderConfig.IRenderConfig;
+import uk.jixun.project.SimulatorConfig.ISimulatorConfig;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class SmDependencyGraph implements ISmDependencyGraph {
   }
 
   @Override
-  public Image getImage(IRenderConfig config) {
+  public Image getImage(ISimulatorConfig config) {
     return null;
   }
 

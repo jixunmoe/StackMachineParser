@@ -1,10 +1,10 @@
-package uk.jixun.project.RenderConfig;
+package uk.jixun.project.SimulatorConfig;
 
-public class RenderConfigImpl implements IRenderConfig {
+public class SimulatorConfigImpl implements ISimulatorConfig {
   private int memoryPortCount = 0;
   private int aluCount = 0;
 
-  public RenderConfigImpl(int memoryPortCount, int aluCount) {
+  public SimulatorConfigImpl(int memoryPortCount, int aluCount) {
     this.memoryPortCount = memoryPortCount;
     this.aluCount = aluCount;
   }

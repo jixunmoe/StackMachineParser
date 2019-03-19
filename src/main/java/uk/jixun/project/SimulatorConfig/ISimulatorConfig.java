@@ -1,6 +1,6 @@
-package uk.jixun.project.RenderConfig;
+package uk.jixun.project.SimulatorConfig;
 
-public interface IRenderConfig {
+public interface ISimulatorConfig {
   /**
    * Get the number of memory ports.
    * @return number of memory ports.

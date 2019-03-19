@@ -1,7 +1,7 @@
 package uk.jixun.project.Program.NodeGraph;
 
 import uk.jixun.project.Program.ISmProgram;
-import uk.jixun.project.RenderConfig.IRenderConfig;
+import uk.jixun.project.SimulatorConfig.ISimulatorConfig;
 
 import java.awt.*;
 
@@ -19,5 +19,5 @@ public interface ISmProgramGraph {
    */
   boolean containsNode(ISmProgramNode node);
 
-  Image getImage(IRenderConfig config);
+  Image getImage(ISimulatorConfig config);
 }

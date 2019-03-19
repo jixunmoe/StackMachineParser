@@ -3,7 +3,7 @@ package uk.jixun.project.Program.NodeGraph;
 import uk.jixun.project.Helper.GridData;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Program.ISmProgram;
-import uk.jixun.project.RenderConfig.IRenderConfig;
+import uk.jixun.project.SimulatorConfig.ISimulatorConfig;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -32,7 +32,7 @@ public class SmExecutionGraph implements ISmProgramGraph {
   }
 
   @Override
-  public Image getImage(IRenderConfig config) {
+  public Image getImage(ISimulatorConfig config) {
     if (aluCount != config.getAluCount() || ramCount != config.getMemoryPortCount()) {
       image = null;
 
