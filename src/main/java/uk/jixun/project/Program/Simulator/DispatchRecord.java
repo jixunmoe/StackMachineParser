@@ -2,10 +2,10 @@ package uk.jixun.project.Program.Simulator;
 
 import uk.jixun.project.Instruction.ISmInstruction;
 
-public class DispatchRecord implements IDispatchRecord {
   private int cycle;
   private int cycleStart;
   private int cycleEnd;
+public class DispatchRecord implements IDispatchRecord, IResourceUsage {
   private ISmInstruction inst = null;
   private IResourceUsage res = null;
 
@@ -31,10 +31,6 @@ public class DispatchRecord implements IDispatchRecord {
     this.inst = inst;
   }
 
-  public void setRes(IResourceUsage res) {
-    this.res = res;
-  }
-
   @Override
   public int getCycle() {
     return cycle;
@@ -51,12 +47,67 @@ public class DispatchRecord implements IDispatchRecord {
   }
 
   @Override
+  public int getCycleLength() {
+    // Because both start and end cycle are inclusive, add 1 to it.
+    return getInstEndCycle() - getInstStartCycle() + 1;
+  }
+
+  @Override
+  public boolean executesAt(int cycle) {
+    return getInstEndCycle() >= cycle && cycle >= getInstStartCycle();
+  }
+
+  @Override
   public ISmInstruction getInstruction() {
     return inst;
   }
 
   @Override
   public IResourceUsage getResourceUsed() {
-    return res;
+    return this;
+  }
+
+  @Override
+  public boolean usesAlu() {
+    return getInstruction().usesAlu();
+  }
+
+  @Override
+  public boolean reads() {
+    return getInstruction().readRam();
+  }
+
+  @Override
+  public boolean writes() {
+    return getInstruction().writeRam();
+  }
+
+  @Override
+  public boolean readOrWrite() {
+    return getInstruction().readOrWriteRam();
+  }
+
+  @Override
+  public int getReadAddress() {
+    return readAddress;
+  }
+
+  @Override
+  public void setReadAddress(int address) {
+    if (reads()) {
+      readAddress = address;
+    }
+  }
+
+  @Override
+  public int getWriteAddress() {
+    return writeAddress;
+  }
+
+  @Override
+  public void setWriteAddress(int address) {
+    if (writes()) {
+      writeAddress = address;
+    }
   }
 }

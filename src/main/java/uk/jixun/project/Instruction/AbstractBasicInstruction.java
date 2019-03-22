@@ -40,6 +40,32 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
   }
 
   @Override
+  public boolean isBranch() {
+    return getOpCode().isBranch();
+  }
+
+  @Override
+  public boolean usesAlu() {
+    // FIXME: Assume all instructions uses ALU.
+    return true;
+  }
+
+  @Override
+  public boolean readRam() {
+    return getOpCode().readRam();
+  }
+
+  @Override
+  public boolean writeRam() {
+    return getOpCode().writeRam();
+  }
+
+  @Override
+  public boolean readOrWriteRam() {
+    return readRam() || writeRam();
+  }
+
+  @Override
   public long getLine() {
     return line;
   }

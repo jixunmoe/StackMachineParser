@@ -57,6 +57,13 @@ public interface ISmInstruction {
 
   ISmProgram getProgram();
   void setProgram(ISmProgram program);
+  boolean isBranch();
 
   boolean notForExecute();
+
+  boolean usesAlu();
+
+  boolean readRam();
+  boolean writeRam();
+  boolean readOrWriteRam();
 }
