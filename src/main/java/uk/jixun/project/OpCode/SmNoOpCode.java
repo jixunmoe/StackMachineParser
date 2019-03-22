@@ -54,6 +54,11 @@ public class SmNoOpCode extends AbstractBasicOpCode {
   }
 
   @Override
+  public boolean isBranch() {
+    return false;
+  }
+
+  @Override
   public String toString() {
     return "SmNoOpCode{}";
   }

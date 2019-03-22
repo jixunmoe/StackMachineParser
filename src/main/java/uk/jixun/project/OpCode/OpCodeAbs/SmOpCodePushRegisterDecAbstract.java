@@ -42,6 +42,11 @@ public abstract class SmOpCodePushRegisterDecAbstract extends AbstractBasicOpCod
   }
 
   @Override
+  public boolean isBranch() {
+    return false;
+  }
+
+  @Override
   public int getProduce() {
     return mapProduce.getOrDefault(getRegisterVariant(), 0);
   }

@@ -86,6 +86,11 @@ code += `
   public SmOpCodeEnum getOpCodeId() {
     return SmOpCodeEnum.${id};
   }
+
+  @Override
+  public boolean isBranch() {
+    return ${b4s(opcode.braching)};
+  }
 `
 
   // reg variant

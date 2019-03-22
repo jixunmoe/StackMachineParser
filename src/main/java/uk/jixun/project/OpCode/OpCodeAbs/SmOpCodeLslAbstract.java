@@ -27,6 +27,11 @@ public abstract class SmOpCodeLslAbstract extends AbstractBasicOpCode {
   }
 
   @Override
+  public boolean isBranch() {
+    return false;
+  }
+
+  @Override
   public int getProduce() {
     return 0;
   }

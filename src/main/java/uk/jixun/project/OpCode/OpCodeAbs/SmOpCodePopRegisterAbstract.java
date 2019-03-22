@@ -48,6 +48,11 @@ public abstract class SmOpCodePopRegisterAbstract extends AbstractBasicOpCode {
   }
 
   @Override
+  public boolean isBranch() {
+    return false;
+  }
+
+  @Override
   public int getProduce() {
     return mapProduce.getOrDefault(getRegisterVariant(), 0);
   }

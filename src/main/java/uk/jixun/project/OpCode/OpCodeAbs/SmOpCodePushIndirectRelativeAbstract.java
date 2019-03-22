@@ -27,6 +27,11 @@ public abstract class SmOpCodePushIndirectRelativeAbstract extends AbstractBasic
   }
 
   @Override
+  public boolean isBranch() {
+    return false;
+  }
+
+  @Override
   public int getProduce() {
     return 0;
   }

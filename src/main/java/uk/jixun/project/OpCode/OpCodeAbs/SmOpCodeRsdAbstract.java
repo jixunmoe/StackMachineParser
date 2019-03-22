@@ -42,6 +42,11 @@ public abstract class SmOpCodeRsdAbstract extends AbstractBasicOpCode {
   }
 
   @Override
+  public boolean isBranch() {
+    return false;
+  }
+
+  @Override
   public int getProduce() {
     return mapProduce.getOrDefault(getVariant(), 0);
   }

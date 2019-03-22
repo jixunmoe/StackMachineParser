@@ -27,6 +27,11 @@ public abstract class SmOpCodeRelativeJumpAbstract extends AbstractBasicOpCode {
   }
 
   @Override
+  public boolean isBranch() {
+    return true;
+  }
+
+  @Override
   public int getProduce() {
     return 0;
   }

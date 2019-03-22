@@ -27,6 +27,11 @@ public abstract class SmOpCodeCondRelativeCallAbstract extends AbstractBasicOpCo
   }
 
   @Override
+  public boolean isBranch() {
+    return true;
+  }
+
+  @Override
   public int getProduce() {
     return 0;
   }

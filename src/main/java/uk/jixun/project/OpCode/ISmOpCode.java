@@ -45,4 +45,7 @@ public interface ISmOpCode {
   boolean writeRam();
   boolean isStaticRamAddress();
   int accessRamAddress() throws Exception;
+
+  // If this opcode indicates a branch
+  boolean isBranch();
 }

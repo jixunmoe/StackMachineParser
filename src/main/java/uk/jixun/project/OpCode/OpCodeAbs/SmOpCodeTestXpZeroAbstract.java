@@ -27,6 +27,11 @@ public abstract class SmOpCodeTestXpZeroAbstract extends AbstractBasicOpCode {
   }
 
   @Override
+  public boolean isBranch() {
+    return false;
+  }
+
+  @Override
   public int getProduce() {
     return 0;
   }
