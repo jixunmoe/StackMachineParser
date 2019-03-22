@@ -17,7 +17,7 @@ public interface ISmSimulator {
 
   /**
    * Dispatch some command.
-   * @return Dispatched instructions in this cycle.
+   * @return Dispatched instructions in this cycle, that were not dispatched earlier.
    */
   List<IDispatchRecord> dispatch();
 

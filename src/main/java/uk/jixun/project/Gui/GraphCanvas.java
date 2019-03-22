@@ -41,11 +41,11 @@ public class GraphCanvas extends JPanel {
       return;
     }
 
-    g.drawImage(graph.getImage(getRenderConfig()), 0, 0, null);
+    g.drawImage(graph.getImage(getSimulatorConfig()), 0, 0, null);
   }
 
-  private ISimulatorConfig getRenderConfig() {
+  private ISimulatorConfig getSimulatorConfig() {
     // TODO: Read Config from somewhere.
-    return new SimulatorConfigImpl(2, 1);
+    return new SimulatorConfigImpl(2, 1, 5);
   }
 }

@@ -3,8 +3,6 @@ package uk.jixun.project.Program.Simulator;
 import uk.jixun.project.Instruction.ISmInstruction;
 
 public interface IDispatchRecord {
-  int getCycle();
-
   int getInstStartCycle();
   int getInstEndCycle();
   int getCycleLength();

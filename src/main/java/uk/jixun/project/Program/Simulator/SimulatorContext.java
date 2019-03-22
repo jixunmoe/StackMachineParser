@@ -66,6 +66,11 @@ public class SimulatorContext implements IExecutionContext {
   }
 
   @Override
+  public void nextCycle() {
+    addCycles(1);
+  }
+
+  @Override
   public void addCycles(int cycles) {
     this.cycles += cycles;
   }

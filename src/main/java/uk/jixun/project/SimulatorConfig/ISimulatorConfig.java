@@ -12,4 +12,10 @@ public interface ISimulatorConfig {
    * @return number of ALU.
    */
   int getAluCount();
+
+  /**
+   * Get the number of instructions to look ahead (for pipeline)
+   * @return The number of instructions to look ahead
+   */
+  int getSearchDepth();
 }

@@ -2,21 +2,19 @@ package uk.jixun.project.Program.Simulator;
 
 import uk.jixun.project.Instruction.ISmInstruction;
 
-  private int cycle;
-  private int cycleStart;
-  private int cycleEnd;
 public class DispatchRecord implements IDispatchRecord, IResourceUsage {
-  private ISmInstruction inst = null;
-  private IResourceUsage res = null;
+  private int cycleStart = 0;
+  private int cycleEnd = 0;
+  private int readAddress = 0;
+  private int writeAddress = 0;
 
-  public DispatchRecord(int cycle, int cycleStart, int cycleEnd) {
-    this.cycle = cycle;
-    this.cycleStart = cycleStart;
-    this.cycleEnd = cycleEnd;
+  private ISmInstruction inst = null;
+
+  public DispatchRecord() {
   }
 
-  public void setCycle(int cycle) {
-    this.cycle = cycle;
+  public DispatchRecord(ISmInstruction inst) {
+    this.inst = inst;
   }
 
   public void setCycleStart(int cycleStart) {
@@ -29,11 +27,6 @@ public class DispatchRecord implements IDispatchRecord, IResourceUsage {
 
   public void setInst(ISmInstruction inst) {
     this.inst = inst;
-  }
-
-  @Override
-  public int getCycle() {
-    return cycle;
   }
 
   @Override
