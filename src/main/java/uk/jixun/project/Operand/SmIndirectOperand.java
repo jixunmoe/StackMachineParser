@@ -1,5 +1,7 @@
 package uk.jixun.project.Operand;
 
+import uk.jixun.project.Program.Simulator.IExecutionContext;
+
 /**
  * Stack Machine Indirect Operand.
  */
@@ -19,6 +21,11 @@ public class SmIndirectOperand extends SmBasicOperandAbstract {
   @Override
   public String toAssembly() {
     return "ptr:[" + getValue() + "]";
+  }
+
+  @Override
+  public int resolve(IExecutionContext ctx) {
+    return ctx.read((int)getValue());
   }
 
   @Override

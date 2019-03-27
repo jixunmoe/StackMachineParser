@@ -1,5 +1,7 @@
 package uk.jixun.project.Operand;
 
+import uk.jixun.project.Program.Simulator.IExecutionContext;
+
 public class SmTextOperand extends SmBasicOperandAbstract {
   private String text;
 
@@ -33,6 +35,12 @@ public class SmTextOperand extends SmBasicOperandAbstract {
   @Override
   public String toAssembly() {
     return "\"" + text + "\"";
+  }
+
+  @Override
+  public int resolve(IExecutionContext ctx) {
+    // Nothing to resolve
+    return 0;
   }
 
   @Override
