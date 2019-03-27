@@ -38,7 +38,7 @@ public abstract class SmOpCodeReturnAbstract extends AbstractBasicOpCode {
 
   @Override
   public int getConsume() {
-    return 0;
+    return 1;
   }
 
   @Override

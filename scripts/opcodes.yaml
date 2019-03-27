@@ -246,7 +246,7 @@ opcodes:
   - id: RETURN
     scan: EXIT
     braching: true
-    consume: 0
+    consume: 1
     produce: 0
 
   # Conditional
@@ -278,7 +278,7 @@ opcodes:
   - id: COND_RETURN
     scan: "?EXIT"
     braching: true
-    consume: 0
+    consume: 1
     produce: 0
 
   # Memory & Data Access
