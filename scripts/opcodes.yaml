@@ -71,21 +71,61 @@ opcodes:
     consume: 1
     produce: 1
   - id: EXTRACT_RIGHT_BYTE
-    scan: XBYTE_N
-    consume: 1
-    produce: 1
+    Varients:
+      - id: 1
+        scan: XBYTE_1
+        consume: 1
+        produce: 1
+      - id: 2
+        scan: XBYTE_2
+        consume: 1
+        produce: 1
+      - id: 3
+        scan: XBYTE_3
+        consume: 1
+        produce: 1
+      - id: 4
+        scan: XBYTE_4
+        consume: 1
+        produce: 1
   - id: EXTRACT_RIGHT_WORD
-    scan: XWRD_N
-    consume: 1
-    produce: 1
+    Varients:
+      - id: 1
+        scan: XWRD_1
+        consume: 1
+        produce: 1
+      - id: 2
+        scan: XWRD_2
+        consume: 1
+        produce: 1
   - id: INSERT_BYTE
-    scan: IBYTE_N
-    consume: 1
-    produce: 1
+    Varients:
+      - id: 1
+        scan: IBYTE_1
+        consume: 2
+        produce: 1
+      - id: 2
+        scan: IBYTE_2
+        consume: 2
+        produce: 1
+      - id: 3
+        scan: IBYTE_3
+        consume: 2
+        produce: 1
+      - id: 4
+        scan: IBYTE_4
+        consume: 2
+        produce: 1
   - id: INSERT_WORD
-    scan: IWRD_N
-    consume: 1
-    produce: 1
+    Varients:
+      - id: 1
+        scan: IWRD_1
+        consume: 2
+        produce: 1
+      - id: 2
+        scan: IWRD_2
+        consume: 2
+        produce: 1
   # Stack & Register Manipulation
   - id: COPY
     Varients:

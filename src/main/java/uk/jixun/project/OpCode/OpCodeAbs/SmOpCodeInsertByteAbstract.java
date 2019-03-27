@@ -17,9 +17,30 @@ import uk.jixun.project.OpCode.AbstractBasicOpCode;
 import uk.jixun.project.OpCode.SmOpCodeEnum;
 import uk.jixun.project.Register.SmRegister;
 
-
+import java.util.HashMap;
 
 public abstract class SmOpCodeInsertByteAbstract extends AbstractBasicOpCode {
+
+  private static HashMap<Integer, Integer> mapConsume = new HashMap<>();
+  private static HashMap<Integer, Integer> mapProduce = new HashMap<>();
+
+  static {
+    
+
+    
+      mapConsume.put(1, 2);
+      mapProduce.put(1, 1);
+    
+      mapConsume.put(2, 2);
+      mapProduce.put(2, 1);
+    
+      mapConsume.put(3, 2);
+      mapProduce.put(3, 1);
+    
+      mapConsume.put(4, 2);
+      mapProduce.put(4, 1);
+    
+  }
 
   @Override
   public SmOpCodeEnum getOpCodeId() {
@@ -33,37 +54,106 @@ public abstract class SmOpCodeInsertByteAbstract extends AbstractBasicOpCode {
 
   @Override
   public int getProduce() {
-    return 1;
+    return mapProduce.getOrDefault(getVariant(), 0);
   }
 
   @Override
   public int getConsume() {
-    return 1;
+    return mapConsume.getOrDefault(getVariant(), 0);
   }
 
   @Override
   public boolean readRam() {
-    return false;
+    
+    if (variant == 1) {
+      return false;
+    }
+
+    if (variant == 2) {
+      return false;
+    }
+
+    if (variant == 3) {
+      return false;
+    }
+
+    if (variant == 4) {
+      return false;
+    }
+
+    throw new RuntimeException("Unsupported variant for this opcode.");
   }
 
   @Override
   public boolean writeRam() {
-    return false;
+    
+    if (variant == 1) {
+      return false;
+    }
+
+    if (variant == 2) {
+      return false;
+    }
+
+    if (variant == 3) {
+      return false;
+    }
+
+    if (variant == 4) {
+      return false;
+    }
+
+    throw new RuntimeException("Unsupported variant for this opcode.");
   }
 
   @Override
   public boolean isStaticRamAddress() {
-    return false;
+    
+    if (variant == 1) {
+      return false;
+    }
+
+    if (variant == 2) {
+      return false;
+    }
+
+    if (variant == 3) {
+      return false;
+    }
+
+    if (variant == 4) {
+      return false;
+    }
+
+    throw new RuntimeException("Unsupported register variant for this opcode.");
   }
 
   @Override
   public int accessRamAddress() throws Exception {
-    return (int) getInstruction().getOperand(0).getValue();
+    
+    if (variant == 1) {
+      
+    }
+
+    if (variant == 2) {
+      
+    }
+
+    if (variant == 3) {
+      
+    }
+
+    if (variant == 4) {
+      
+    }
+
+    throw new RuntimeException("Unknown ram access type.");
   }
+
   @Override
   public void setVariant(int variant) {
-    if (variant != 0) {
-      throw new RuntimeException("Variant does not apply for this opcode.");
+    if ((variant == 1) || (variant == 2) || (variant == 3) || (variant == 4)) {
+      this.variant = variant;
     }
   }
 
