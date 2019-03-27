@@ -1,5 +1,6 @@
 package uk.jixun.project.Util;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class FifoList<T> extends LinkedList<T> {
@@ -36,5 +37,21 @@ public class FifoList<T> extends LinkedList<T> {
 
   public T last() {
     return super.peekLast();
+  }
+
+  public T at(int index) {
+    if (index >= 0) {
+      return get(index);
+    }
+
+    return get(size() + index);
+  }
+
+  public static <T> FifoList<T> create(T ...elements) {
+    FifoList<T> result = new FifoList<T>();
+    for (T v : elements) {
+      result.push(v);
+    }
+    return result;
   }
 }

@@ -72,17 +72,33 @@ public class SmOpcodeParser {
     if ("RHWD".equals(opcode)) {
       return OpCodeFactory.create(SmOpCodeEnum.ROTATE_RIGHT_WORD);
     }
-    if ("XBYTE_N".equals(opcode)) {
-      return OpCodeFactory.create(SmOpCodeEnum.EXTRACT_RIGHT_BYTE);
+    if (
+      "EXTRACT_RIGHT_BYTE".equals(opcode.substring(0, opcode.length() - 1))
+      && (lastChar == '1' || lastChar == '2' || lastChar == '3' || lastChar == '4')
+    ) {
+      return OpCodeFactory.create(SmOpCodeEnum.EXTRACT_RIGHT_BYTE,
+        Character.getNumericValue(lastChar));
     }
-    if ("XWRD_N".equals(opcode)) {
-      return OpCodeFactory.create(SmOpCodeEnum.EXTRACT_RIGHT_WORD);
+    if (
+      "EXTRACT_RIGHT_WORD".equals(opcode.substring(0, opcode.length() - 1))
+      && (lastChar == '1' || lastChar == '2')
+    ) {
+      return OpCodeFactory.create(SmOpCodeEnum.EXTRACT_RIGHT_WORD,
+        Character.getNumericValue(lastChar));
     }
-    if ("IBYTE_N".equals(opcode)) {
-      return OpCodeFactory.create(SmOpCodeEnum.INSERT_BYTE);
+    if (
+      "INSERT_BYTE".equals(opcode.substring(0, opcode.length() - 1))
+      && (lastChar == '1' || lastChar == '2' || lastChar == '3' || lastChar == '4')
+    ) {
+      return OpCodeFactory.create(SmOpCodeEnum.INSERT_BYTE,
+        Character.getNumericValue(lastChar));
     }
-    if ("IWRD_N".equals(opcode)) {
-      return OpCodeFactory.create(SmOpCodeEnum.INSERT_WORD);
+    if (
+      "INSERT_WORD".equals(opcode.substring(0, opcode.length() - 1))
+      && (lastChar == '1' || lastChar == '2')
+    ) {
+      return OpCodeFactory.create(SmOpCodeEnum.INSERT_WORD,
+        Character.getNumericValue(lastChar));
     }
     if (
       "COPY".equals(opcode.substring(0, opcode.length() - 1))

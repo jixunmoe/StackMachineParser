@@ -2,7 +2,13 @@
 package uk.jixun.project.OpCode.OpCodeImpl;
 
 import uk.jixun.project.OpCode.OpCodeAbs.SmOpCodeNotAbstract;
+import uk.jixun.project.Program.Simulator.IExecutionContext;
+import uk.jixun.project.Util.FifoList;
 
 public class SmOpCodeNot extends SmOpCodeNotAbstract {
-  // TODO: Override any opcode specific methods here.
+  @Override
+  public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) {
+    int value = stack.pop();
+    stack.push(~value);
+  }
 }

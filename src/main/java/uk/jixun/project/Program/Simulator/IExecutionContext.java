@@ -16,4 +16,15 @@ public interface IExecutionContext extends IMemoryModel {
   int getCycles();
   void nextCycle();
   void addCycles(int cycles);
+
+  /**
+   * Get previous test result.
+   * @return Jump flag.
+   */
+  boolean getJumpFlag();
+
+  /**
+   * Set new jump flag (test result)
+   */
+  void setJumpFlag(boolean flag);
 }

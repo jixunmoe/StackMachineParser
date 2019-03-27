@@ -1,5 +1,6 @@
 package uk.jixun.project.OpCode;
 
+import uk.jixun.project.Exceptions.OutOfRangeOperand;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Program.Simulator.IExecutionContext;
 import uk.jixun.project.Register.SmRegister;
@@ -57,6 +58,8 @@ public interface ISmOpCode {
    *              Last {@link ISmOpCode#getProduce()} values will be treated as output, and
    *              the first {@link ISmOpCode#getConsume()} items are located from the front of the stack.
    * @param ctx Execution context, if memory access or context is required, this variable will be handy.
+   * @exception Exception Exception might be thrown when evaluating instruction.
+   *                      Any exception should be treated as a system panic.
    */
-  void evaluate(FifoList<Integer> stack, IExecutionContext ctx);
+  void evaluate(FifoList<Integer> stack, IExecutionContext ctx) throws Exception;
 }

@@ -8,6 +8,7 @@ public class SimulatorContext implements IExecutionContext {
   private Stack<Integer> stack;
   private int eip = 0;
   private int cycles = 0;
+  private boolean testFlag = false;
 
   public SimulatorContext() {
     memory = new ArrayList<>(256);
@@ -73,5 +74,15 @@ public class SimulatorContext implements IExecutionContext {
   @Override
   public void addCycles(int cycles) {
     this.cycles += cycles;
+  }
+
+  @Override
+  public boolean getJumpFlag() {
+    return testFlag;
+  }
+
+  @Override
+  public void setJumpFlag(boolean flag) {
+    testFlag = flag;
   }
 }

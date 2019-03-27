@@ -2,7 +2,15 @@
 package uk.jixun.project.OpCode.OpCodeImpl;
 
 import uk.jixun.project.OpCode.OpCodeAbs.SmOpCodeRolAbstract;
+import uk.jixun.project.Program.Simulator.IExecutionContext;
+import uk.jixun.project.Util.FifoList;
 
 public class SmOpCodeRol extends SmOpCodeRolAbstract {
-  // TODO: Override any opcode specific methods here.
+  @Override
+  public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) {
+    int shift = stack.pop();
+    int value = stack.pop();
+
+    stack.push(value << shift | value >> (32 - shift));
+  }
 }
