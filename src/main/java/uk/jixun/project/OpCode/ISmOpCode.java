@@ -1,7 +1,9 @@
 package uk.jixun.project.OpCode;
 
 import uk.jixun.project.Instruction.ISmInstruction;
+import uk.jixun.project.Program.Simulator.IExecutionContext;
 import uk.jixun.project.Register.SmRegister;
+import uk.jixun.project.Util.FifoList;
 
 public interface ISmOpCode {
   SmOpCodeEnum getOpCodeId();
@@ -48,4 +50,13 @@ public interface ISmOpCode {
 
   // If this opcode indicates a branch
   boolean isBranch();
+
+  /**
+   * Executes instruction on given stack.
+   * @param stack Stack to manipulate.
+   *              Last {@link ISmOpCode#getProduce()} values will be treated as output, and
+   *              the first {@link ISmOpCode#getConsume()} items are located from the front of the stack.
+   * @param ctx Execution context, if memory access or context is required, this variable will be handy.
+   */
+  void evaluate(FifoList<Integer> stack, IExecutionContext ctx);
 }
