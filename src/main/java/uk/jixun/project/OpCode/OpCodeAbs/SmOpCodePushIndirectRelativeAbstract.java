@@ -33,7 +33,7 @@ public abstract class SmOpCodePushIndirectRelativeAbstract extends AbstractBasic
 
   @Override
   public int getProduce() {
-    return 0;
+    return 1;
   }
 
   @Override

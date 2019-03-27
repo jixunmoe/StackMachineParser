@@ -244,12 +244,12 @@ code += `
     code += `
   @Override
   public int getProduce() {
-    return 0;
+    return ${opcode.produce};
   }
 
   @Override
   public int getConsume() {
-    return 0;
+    return ${opcode.consume};
   }
 
   @Override

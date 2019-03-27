@@ -38,7 +38,7 @@ public abstract class SmOpCodePopFrameAddrAbstract extends AbstractBasicOpCode {
 
   @Override
   public int getConsume() {
-    return 0;
+    return 1;
   }
 
   @Override

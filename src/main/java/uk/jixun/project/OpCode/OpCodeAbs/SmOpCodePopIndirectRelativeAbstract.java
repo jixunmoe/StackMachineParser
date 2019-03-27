@@ -38,7 +38,7 @@ public abstract class SmOpCodePopIndirectRelativeAbstract extends AbstractBasicO
 
   @Override
   public int getConsume() {
-    return 0;
+    return 1;
   }
 
   @Override

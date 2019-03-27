@@ -33,12 +33,12 @@ public abstract class SmOpCodeExtractRightWordAbstract extends AbstractBasicOpCo
 
   @Override
   public int getProduce() {
-    return 0;
+    return 1;
   }
 
   @Override
   public int getConsume() {
-    return 0;
+    return 1;
   }
 
   @Override

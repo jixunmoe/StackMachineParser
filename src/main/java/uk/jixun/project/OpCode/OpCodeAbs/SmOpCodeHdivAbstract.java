@@ -33,12 +33,12 @@ public abstract class SmOpCodeHdivAbstract extends AbstractBasicOpCode {
 
   @Override
   public int getProduce() {
-    return 0;
+    return 1;
   }
 
   @Override
   public int getConsume() {
-    return 0;
+    return 2;
   }
 
   @Override
