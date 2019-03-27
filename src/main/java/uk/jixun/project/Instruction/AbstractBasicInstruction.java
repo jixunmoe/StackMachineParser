@@ -1,6 +1,5 @@
 package uk.jixun.project.Instruction;
 
-import org.apache.commons.lang3.NotImplementedException;
 import uk.jixun.project.Exceptions.OutOfRangeOperand;
 import uk.jixun.project.OpCode.ISmOpCode;
 import uk.jixun.project.Operand.ISmOperand;

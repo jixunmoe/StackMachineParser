@@ -13,7 +13,9 @@ import uk.jixun.project.Operand.ISmOperand;
 import uk.jixun.project.Operand.SmOperandParser;
 import uk.jixun.project.Program.SmProgram;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**

@@ -3,7 +3,6 @@ package uk.jixun.project.Program;
 import uk.jixun.project.Exceptions.LabelDuplicationException;
 import uk.jixun.project.Exceptions.LabelNotFoundException;
 import uk.jixun.project.Instruction.ISmInstruction;
-import uk.jixun.project.OpCode.SmNoOpCode;
 import uk.jixun.project.Program.NodeGraph.ISmProgramGraph;
 import uk.jixun.project.Program.NodeGraph.SmDependencyGraph;
 

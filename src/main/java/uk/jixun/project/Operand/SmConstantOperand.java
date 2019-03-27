@@ -1,7 +1,5 @@
 package uk.jixun.project.Operand;
 
-import uk.jixun.project.Helper.ParseHelper;
-import uk.jixun.project.Instruction.ISmInstruction;
 
 /**
  * Stack Machine Constant Operand.

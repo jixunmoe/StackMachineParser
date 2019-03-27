@@ -2,7 +2,7 @@ package uk.jixun.project.Program.NodeGraph;
 
 import uk.jixun.project.Instruction.ISmInstruction;
 
-import java.awt.Image;
+import java.awt.*;
 import java.util.List;
 
 public interface ISmProgramNode {

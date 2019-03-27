@@ -1,7 +1,6 @@
 package uk.jixun.project.Instruction;
 
 import com.google.common.collect.ImmutableList;
-import uk.jixun.project.Exceptions.OutOfRangeOperand;
 import uk.jixun.project.OpCode.ISmOpCode;
 import uk.jixun.project.Operand.ISmOperand;
 
