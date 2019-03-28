@@ -112,7 +112,11 @@ public class SmSimulator implements ISmSimulator {
       }
     }
 
+    // TODO: Sync main stack when execution queue is empty.
+
     // TODO: Simulate instructions that should complete in this cycle.
+    // get all instruction ends this cycle, and populate their values.
+
     ctx.nextCycle();
 
     return results;
