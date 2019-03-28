@@ -6,10 +6,10 @@ import uk.jixun.project.Program.Simulator.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
 public class SmOpCodeTestGt extends SmOpCodeTestGtAbstract {
-  // TODO: Override any opcode specific methods here.
-
   @Override
-  public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) throws Exception {
-    throw new Exception("not implemented");
+  public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) {
+    int param2 = stack.pop();
+    int param1 = stack.pop();
+    ctx.setJumpFlag(param1 > param2);
   }
 }

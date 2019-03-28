@@ -6,10 +6,27 @@ import uk.jixun.project.Program.Simulator.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
 public class SmOpCodeRsd extends SmOpCodeRsdAbstract {
-  // TODO: Override any opcode specific methods here.
-
   @Override
   public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) throws Exception {
-    throw new Exception("not implemented");
+    // local is reversed of stack.
+    // orig  rsu4  rsd4
+    // 4th   3rd   1st
+    // 3rd   2nd   4th
+    // 2nd   1st   3rd
+    // 1st   4th   2nd
+
+    // orig  rsu3  rsd3
+    // 3rd   2nd   1st
+    // 2nd   1st   3rd
+    // 1nd   3rd   2nd
+
+    // rsd: pop last item and push it to beginning of the list.
+
+    int index = getVariant();
+    int value = stack.pop();
+
+    // new index. -1 because the item already removed.
+    index = -(index - 1);
+    stack.insertBefore(value, index);
   }
 }
