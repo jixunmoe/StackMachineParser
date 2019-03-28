@@ -11,7 +11,16 @@ public class FifoList<T> extends LinkedList<T> {
 
   @Override
   public T pop() {
-    return this.poll();
+    return super.removeLast();
+  }
+
+  /**
+   * Recalculate address when index is negative (goes backwards)
+   * @param i index to be fixed
+   * @return  Fixed index (positive or zero)
+   */
+  private int idx(int i) {
+    return i + (i < 0 ? size() : 0);
   }
 
   /**
@@ -20,10 +29,25 @@ public class FifoList<T> extends LinkedList<T> {
    * @return Popped item.
    */
   public T pop(int index) {
+    index = idx(index);
+
     T result = this.get(index);
-    this.remove(result);
     this.remove(index);
     return result;
+  }
+
+  /**
+   * Insert an element before given index (move all elements from this index back by 1).
+   * @param el    Element
+   * @param index index to insert before
+   */
+  public void insertBefore(T el, int index) {
+    index = idx(index);
+    if (index >= size()) {
+      push(el);
+    } else {
+      add(index, el);
+    }
   }
 
   @Override
@@ -39,12 +63,8 @@ public class FifoList<T> extends LinkedList<T> {
     return super.peekLast();
   }
 
-  public T at(int index) {
-    if (index >= 0) {
-      return get(index);
-    }
-
-    return get(size() + index);
+  public T get(int index) {
+    return super.get(idx(size() + index));
   }
 
   public static <T> FifoList<T> create(T ...elements) {
