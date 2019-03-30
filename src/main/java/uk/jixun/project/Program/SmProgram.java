@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SmProgram implements ISmProgram {
+  private final Object lock = new Object();
   private List<ISmInstruction> instructions = new ArrayList<>();
   private HashMap<String, Long> labelMapping = new HashMap<>();
 
@@ -27,12 +29,25 @@ public class SmProgram implements ISmProgram {
 
   @Override
   public void setInstructions(List<ISmInstruction> instructions) {
-    this.instructions = instructions;
+    synchronized (lock) {
+      this.instructions = instructions;
+
+      AtomicInteger index = new AtomicInteger(0);
+      // assign eip.
+      this.instructions.forEach(inst -> {
+        inst.setEip(index.getAndIncrement());
+      });
+    }
   }
 
   @Override
   public void addInstruction(ISmInstruction instruction) {
-    instructions.add(instruction);
+    synchronized (lock) {
+      int nextEip = instructions.size();
+
+      instructions.add(instruction);
+      instruction.setEip(nextEip);
+    }
   }
 
   @Override

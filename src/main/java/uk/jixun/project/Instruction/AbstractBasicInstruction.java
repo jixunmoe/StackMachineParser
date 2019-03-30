@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractBasicInstruction implements ISmInstruction {
-  long line = 0;
-  long virtualAddress = 0;
+  private long line = 0;
+  private long virtualAddress = 0;
+  private int eip = 0;
   private ISmOpCode opcode;
   private ISmProgram program;
   private List<ISmOperand> operands = new ArrayList<>();
@@ -131,6 +132,24 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
 
   @Override
   public boolean notForExecute() {
+    return false;
+  }
+
+  @Override
+  public void setEip(int eip) {
+    if (eip >= 0) {
+      this.eip = eip;
+    }
+  }
+
+  @Override
+  public int getEip() {
+    return eip;
+  }
+
+  @Override
+  public boolean depends(ISmInstruction inst) {
+    // FIXME: Implement a working dependency check algorithm
     return false;
   }
 }

@@ -62,7 +62,7 @@ public class SimulatorContext implements IExecutionContext {
   }
 
   @Override
-  public int getCycles() {
+  public int getCurrentCycle() {
     return cycles;
   }
 

@@ -13,7 +13,7 @@ public interface IExecutionContext extends IMemoryModel {
   void incEip();
 
   // Simulator should know how many cycles has passed.
-  int getCycles();
+  int getCurrentCycle();
   void nextCycle();
   void addCycles(int cycles);
 

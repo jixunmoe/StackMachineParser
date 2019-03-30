@@ -66,4 +66,9 @@ public interface ISmInstruction {
   boolean readRam();
   boolean writeRam();
   boolean readOrWriteRam();
+
+  void setEip(int eip);
+  int getEip();
+
+  boolean depends(ISmInstruction inst);
 }

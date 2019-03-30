@@ -8,6 +8,7 @@ public interface IDispatchRecord {
   int getCycleLength();
 
   boolean executesAt(int cycle);
+  boolean isFinished(IExecutionContext cxt);
 
   ISmInstruction getInstruction();
   IResourceUsage getResourceUsed();

@@ -51,6 +51,11 @@ public class DispatchRecord implements IDispatchRecord, IResourceUsage {
   }
 
   @Override
+  public boolean isFinished(IExecutionContext ctx) {
+    return getInstEndCycle() > ctx.getCurrentCycle();
+  }
+
+  @Override
   public ISmInstruction getInstruction() {
     return inst;
   }
