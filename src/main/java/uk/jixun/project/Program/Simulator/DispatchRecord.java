@@ -9,6 +9,7 @@ public class DispatchRecord implements IDispatchRecord, IResourceUsage {
   private int writeAddress = 0;
 
   private ISmInstruction inst = null;
+  private int exeId = -1;
 
   public DispatchRecord() {
   }
@@ -71,6 +72,11 @@ public class DispatchRecord implements IDispatchRecord, IResourceUsage {
   }
 
   @Override
+  public boolean readOrWriteRam() {
+    return readOrWrite();
+  }
+
+  @Override
   public boolean reads() {
     return getInstruction().readRam();
   }
@@ -83,6 +89,26 @@ public class DispatchRecord implements IDispatchRecord, IResourceUsage {
   @Override
   public boolean readOrWrite() {
     return getInstruction().readOrWriteRam();
+  }
+
+  @Override
+  public int getEip() {
+    return getInstruction().getEip();
+  }
+
+  @Override
+  public void setEip(int eip) {
+    getInstruction().setEip(eip);
+  }
+
+  @Override
+  public void setExecutionId(int index) {
+    exeId = index;
+  }
+
+  @Override
+  public int getExecutionId() {
+    return exeId;
   }
 
   @Override

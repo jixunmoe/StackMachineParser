@@ -18,8 +18,15 @@ public interface IDispatchRecord {
    * @return true if the instruction uses ALU.
    */
   boolean usesAlu();
+  boolean readOrWriteRam();
 
   boolean reads();
   boolean writes();
   boolean readOrWrite();
+
+  int getEip();
+  void setEip(int eip);
+
+  void setExecutionId(int index);
+  int getExecutionId();
 }

@@ -7,7 +7,9 @@ import uk.jixun.project.Util.FifoList;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 public class SmSimulator implements ISmSimulator {
@@ -21,12 +23,13 @@ public class SmSimulator implements ISmSimulator {
   private int stackBalance = 0;
 
   private ISmProgram program;
-  private List<IDispatchRecord> history = new ArrayList<>();
+  private List<IDispatchRecord> history = new LinkedList<>();
+  private AtomicInteger exeId = new AtomicInteger(0);
 
   /**
    * Instruction held in the "to be processed" queue.
    */
-  private FifoList<ISmInstruction> queuedInst = new FifoList<>();
+  private FifoList<IDispatchRecord> queuedInst = new FifoList<>();
 
   private SimulatorContext context;
 
@@ -74,26 +77,37 @@ public class SmSimulator implements ISmSimulator {
 
     while(queuedInst.size() < searchDepth) {
       // If the last item is a branch, don't continue.
-      if (queuedInst.last().isBranch()) {
+      if (queuedInst.last().getInstruction().isBranch()) {
         break;
       }
 
-      ISmInstruction inst = program.getInstruction(ctx.getEip());
+      int eip = ctx.getEip();
+      ISmInstruction inst = program.getInstruction(eip);
       stackBalance += inst.getOpCode().getProduce() - inst.getOpCode().getConsume();
-      queuedInst.push(inst);
+      DispatchRecord record = new DispatchRecord();
+      record.setInst(inst);
+
+      // Execution id if the program is executed without any optimisation.
+      record.setExecutionId(exeId.getAndIncrement());
+      queuedInst.push(record);
+
+      // EIP read from the record must be the same as the instruction eip
+      assert record.getEip() == eip;
+
       ctx.incEip();
     }
 
     // Only try to dispatch if we still have some resource to use.
     if (aluCount > 0 || ramCount > 0) {
       // Try to dispatch instructions, and remove if they are dispatched.
-      Iterator<ISmInstruction> iter = queuedInst.iterator();
+      Iterator<IDispatchRecord> iter = queuedInst.iterator();
       for (int peekIndex = -1; iter.hasNext(); peekIndex++) {
         // Ensure they are legal in debug build
         assert aluCount >= 0;
         assert ramCount >= 0;
 
-        ISmInstruction inst = iter.next();
+        IDispatchRecord record = iter.next();
+        ISmInstruction inst = record.getInstruction();
         if (inst.usesAlu() && aluCount > 0) {
           // Not enough ALU available
           continue;
@@ -103,7 +117,6 @@ public class SmSimulator implements ISmSimulator {
           continue;
         }
 
-        // FIXME: Instruction dependency check here.
         // Due to the nature of instruction queue,
         // all inserted elements are only dependent on the following condition:
         // (1) - instructions queued before executing instruction;
@@ -112,7 +125,7 @@ public class SmSimulator implements ISmSimulator {
 
         // Checking for (1), instructions queued before current instruction.
         for(int i = 0; i < peekIndex; i++) {
-          if (inst.depends(queuedInst.get(i))) {
+          if (inst.depends(queuedInst.get(i).getInstruction())) {
             canFulfill = false;
             break;
           }
@@ -134,10 +147,15 @@ public class SmSimulator implements ISmSimulator {
         if (inst.usesAlu()) aluCount--;
         if (inst.readOrWriteRam()) ramCount--;
 
-        // FIXME: Assume each instruction uses 1 cycle.
-        DispatchRecord record = new DispatchRecord(inst);
-        record.setCycleStart(cycle);
-        record.setCycleEnd(cycle);
+        if (record instanceof DispatchRecord) {
+          DispatchRecord r = (DispatchRecord) record;
+          r.setCycleStart(cycle);
+
+          // FIXME: Assume each instruction uses 1 cycle.
+          r.setCycleEnd(cycle);
+        } else {
+          System.out.println("record is not an instance of DispatchRecord!");
+        }
 
         // Remove from the queue, and decrease the index to sync index.
         iter.remove();
