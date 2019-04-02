@@ -9,6 +9,7 @@ public class SimulatorContext implements IExecutionContext {
   private int eip = 0;
   private int cycles = 0;
   private boolean testFlag = false;
+  private ISmHistory history = null;
 
   public SimulatorContext() {
     memory = new ArrayList<>(256);
@@ -84,5 +85,15 @@ public class SimulatorContext implements IExecutionContext {
   @Override
   public void setJumpFlag(boolean flag) {
     testFlag = flag;
+  }
+
+  @Override
+  public void setHistory(ISmHistory smHistory) {
+    history = smHistory;
+  }
+
+  @Override
+  public ISmHistory getHistory() {
+    return history;
   }
 }

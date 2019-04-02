@@ -27,4 +27,16 @@ public interface IExecutionContext extends IMemoryModel {
    * Set new jump flag (test result)
    */
   void setJumpFlag(boolean flag);
+
+  /**
+   * Provide method to track back.
+   * @param smHistory History object.
+   */
+  void setHistory(ISmHistory smHistory);
+
+  /**
+   * Get history object
+   * @return history object.
+   */
+  ISmHistory getHistory();
 }

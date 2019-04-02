@@ -29,4 +29,7 @@ public interface IDispatchRecord {
 
   void setExecutionId(int index);
   int getExecutionId();
+
+  void setContext(IExecutionContext context);
+  IExecutionContext getContext();
 }

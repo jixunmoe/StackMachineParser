@@ -151,6 +151,9 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
   public boolean depends(ISmInstruction inst) {
     // FIXME: Implement a working dependency check algorithm
     // FIXME: Instruction dependency check here.
+
+
+
     return false;
   }
 }

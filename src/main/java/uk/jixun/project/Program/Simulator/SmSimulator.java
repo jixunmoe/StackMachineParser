@@ -5,14 +5,16 @@ import uk.jixun.project.Program.ISmProgram;
 import uk.jixun.project.SimulatorConfig.ISimulatorConfig;
 import uk.jixun.project.Util.FifoList;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SmSimulator implements ISmSimulator {
+public class SmSimulator implements ISmSimulator, ISmHistory {
+  private static Logger logger = Logger.getLogger(SmSimulator.class.getName());
+
   private int aluLimit;
   private int ramLimit;
   private int searchDepth;
@@ -36,6 +38,7 @@ public class SmSimulator implements ISmSimulator {
   public SmSimulator() {
     // Initialise context.
     context = new SimulatorContext();
+    context.setHistory(this);
   }
 
   @Override
@@ -85,7 +88,9 @@ public class SmSimulator implements ISmSimulator {
       ISmInstruction inst = program.getInstruction(eip);
       stackBalance += inst.getOpCode().getProduce() - inst.getOpCode().getConsume();
       DispatchRecord record = new DispatchRecord();
+
       record.setInst(inst);
+      record.setContext(ctx);
 
       // Execution id if the program is executed without any optimisation.
       record.setExecutionId(exeId.getAndIncrement());
@@ -192,5 +197,42 @@ public class SmSimulator implements ISmSimulator {
   @Override
   public List<IDispatchRecord> getDispatchHistory() {
     return history;
+  }
+
+  @Override
+  public List<IDispatchRecord> getSortedHistoryBetween(int start, int end) {
+    return Stream
+      .concat(history.stream(), queuedInst.stream())
+      .filter(x -> x.getExecutionId() >= start && x.getExecutionId() <= end)
+      .sorted(Comparator.comparing(IDispatchRecord::getExecutionId))
+      .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<IDispatchRecord> getHistoryBetween(IDispatchRecord a, IDispatchRecord b) {
+    if (a == null || b == null) {
+      logger.log(Level.WARNING, "param for getHistoryBetween() contains null.");
+      return null;
+    }
+
+    int start = a.getExecutionId();
+    int end = b.getExecutionId();
+
+    assert start <= end;
+
+    return getSortedHistoryBetween(start, end);
+  }
+
+  private IDispatchRecord fromInstruction(ISmInstruction inst) {
+    return Stream
+      .concat(history.stream(), queuedInst.stream())
+      .filter(x -> x.getInstruction() == inst)
+      .findFirst()
+      .orElse(null);
+  }
+
+  @Override
+  public List<IDispatchRecord> getHistoryBetween(ISmInstruction a, ISmInstruction b) {
+    return getHistoryBetween(fromInstruction(a), fromInstruction(b));
   }
 }

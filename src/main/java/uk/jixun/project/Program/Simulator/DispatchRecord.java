@@ -10,6 +10,7 @@ public class DispatchRecord implements IDispatchRecord, IResourceUsage {
 
   private ISmInstruction inst = null;
   private int exeId = -1;
+  private IExecutionContext context = null;
 
   public DispatchRecord() {
   }
@@ -109,6 +110,16 @@ public class DispatchRecord implements IDispatchRecord, IResourceUsage {
   @Override
   public int getExecutionId() {
     return exeId;
+  }
+
+  @Override
+  public void setContext(IExecutionContext context) {
+    this.context = context;
+  }
+
+  @Override
+  public IExecutionContext getContext() {
+    return context;
   }
 
   @Override
