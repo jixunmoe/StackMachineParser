@@ -1,15 +1,15 @@
 package uk.jixun.project.Operand;
 
 import uk.jixun.project.Instruction.ISmInstruction;
-import uk.jixun.project.Program.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.IExecutionContext;
 
 public interface ISmOperand {
   // Get operand type
   SmOperandType getOperandType();
 
-  void setValue(Object val);
-
   Object getValue();
+
+  void setValue(Object val);
 
   void fromString(String value);
 
@@ -17,10 +17,12 @@ public interface ISmOperand {
   String toAssembly();
 
   ISmInstruction getInstruction();
+
   void setInstruction(ISmInstruction instruction);
 
   /**
    * Resolve operand to integer.
+   *
    * @param ctx Execution context to resolve.
    * @return Resolved value.
    */

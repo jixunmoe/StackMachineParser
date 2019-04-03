@@ -17,7 +17,7 @@ public class GuiManager {
 
   static {
     affinetransform = new AffineTransform();
-    frc = new FontRenderContext(affinetransform,true,true);
+    frc = new FontRenderContext(affinetransform, true, true);
     fontMono = Font.getFont(Font.MONOSPACED);
     fontDialog = Font.getFont(Font.DIALOG);
   }

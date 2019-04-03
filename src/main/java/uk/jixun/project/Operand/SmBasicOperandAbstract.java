@@ -8,13 +8,13 @@ public abstract class SmBasicOperandAbstract implements ISmOperand {
   private ISmInstruction instruction;
 
   @Override
-  public void setValue(Object val) {
-    this.value = (long) val;
+  public Object getValue() {
+    return value;
   }
 
   @Override
-  public Object getValue() {
-    return value;
+  public void setValue(Object val) {
+    this.value = (long) val;
   }
 
   @Override

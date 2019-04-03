@@ -1,4 +1,4 @@
-package uk.jixun.project.Program.Simulator;
+package uk.jixun.project.Simulator;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -59,7 +59,7 @@ public class SimulatorContext implements IExecutionContext {
 
   @Override
   public void incEip() {
-    eip ++;
+    eip++;
   }
 
   @Override
@@ -88,12 +88,12 @@ public class SimulatorContext implements IExecutionContext {
   }
 
   @Override
-  public void setHistory(ISmHistory smHistory) {
-    history = smHistory;
+  public ISmHistory getHistory() {
+    return history;
   }
 
   @Override
-  public ISmHistory getHistory() {
-    return history;
+  public void setHistory(ISmHistory smHistory) {
+    history = smHistory;
   }
 }

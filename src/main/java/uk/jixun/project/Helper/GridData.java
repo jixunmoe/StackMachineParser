@@ -11,7 +11,7 @@ public class GridData<T> {
     if (index >= data.size()) {
       int toAdd = index - (data.size() - 1);
 
-      while(toAdd-->0) {
+      while (toAdd-- > 0) {
         data.add(null);
       }
     }
@@ -42,7 +42,7 @@ public class GridData<T> {
     int rows = getRows();
     List<T> result = new ArrayList<>(rows);
 
-    for(int i = 0; i < rows; i++) {
+    for (int i = 0; i < rows; i++) {
       result.add(get(i, col));
     }
 

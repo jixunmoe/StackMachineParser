@@ -2,8 +2,8 @@ package uk.jixun.project.Helper;
 
 public class LogicalRotate {
   public static int rotateRight(int value, int shift) {
-    long v = (long)value;
-    return (int)((v >> shift) | (v << (32 - shift)));
+    long v = (long) value;
+    return (int) ((v >> shift) | (v << (32 - shift)));
   }
 
   public static int rotateRightByte(int value) {

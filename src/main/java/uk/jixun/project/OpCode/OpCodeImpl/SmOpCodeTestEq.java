@@ -1,8 +1,7 @@
-
 package uk.jixun.project.OpCode.OpCodeImpl;
 
 import uk.jixun.project.OpCode.OpCodeAbs.SmOpCodeTestEqAbstract;
-import uk.jixun.project.Program.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
 public class SmOpCodeTestEq extends SmOpCodeTestEqAbstract {

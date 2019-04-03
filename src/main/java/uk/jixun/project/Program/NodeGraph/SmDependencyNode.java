@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Stack;
 
 public class SmDependencyNode implements ISmDependencyNode {
-  private static Font nodeFont;
   private static final int padding = 3;
+  private static Font nodeFont;
 
   static {
     nodeFont = GuiManager.getFontMono();
@@ -37,7 +37,7 @@ public class SmDependencyNode implements ISmDependencyNode {
     List<ISmProgramNode> dependencies = getDependencies();
     List<ISmProgramNode> visited = new ArrayList<>();
 
-    while(!dependencies.isEmpty()) {
+    while (!dependencies.isEmpty()) {
       int n = dependencies.size();
 
       for (int i = 0; i < n; i++) {
@@ -87,8 +87,8 @@ public class SmDependencyNode implements ISmDependencyNode {
     String text = getInstruction().toAssembly();
     Rectangle2D rect = GuiManager.getFontBound(nodeFont, text);
 
-    int w = (int)(rect.getWidth())  + padding * 2;
-    int h = (int)(rect.getHeight()) + padding * 2;
+    int w = (int) (rect.getWidth()) + padding * 2;
+    int h = (int) (rect.getHeight()) + padding * 2;
 
     BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
 
@@ -101,7 +101,7 @@ public class SmDependencyNode implements ISmDependencyNode {
     g.fillRect(1, 1, w - 2, h - 2);
 
     g.setColor(GuiManager.getNodeTextColour());
-    g.drawString(text, padding, padding + (int)rect.getHeight());
+    g.drawString(text, padding, padding + (int) rect.getHeight());
 
     return image;
   }

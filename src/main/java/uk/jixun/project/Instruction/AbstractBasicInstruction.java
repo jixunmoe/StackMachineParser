@@ -21,6 +21,11 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
   }
 
   @Override
+  public void setOperands(List<ISmOperand> operands) {
+    this.operands = operands;
+  }
+
+  @Override
   public ISmOpCode getOpCode() {
     return opcode;
   }
@@ -100,7 +105,7 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
     StringBuilder result = new StringBuilder();
     result.append(getOpCode().toAssembly());
 
-    for(int i = 0; i < getOperandCount(); i++) {
+    for (int i = 0; i < getOperandCount(); i++) {
       result.append(" ");
 
       try {
@@ -112,7 +117,7 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
     }
 
     return result.toString();
-}
+  }
 
   @Override
   public void setOperand(int index, ISmOperand operand) throws OutOfRangeOperand {
@@ -126,13 +131,13 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
   }
 
   @Override
-  public void setOperands(List<ISmOperand> operands) {
-    this.operands = operands;
+  public boolean notForExecute() {
+    return false;
   }
 
   @Override
-  public boolean notForExecute() {
-    return false;
+  public int getEip() {
+    return eip;
   }
 
   @Override
@@ -143,15 +148,9 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
   }
 
   @Override
-  public int getEip() {
-    return eip;
-  }
-
-  @Override
   public boolean depends(ISmInstruction inst) {
     // FIXME: Implement a working dependency check algorithm
     // FIXME: Instruction dependency check here.
-
 
 
     return false;

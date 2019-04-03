@@ -1,4 +1,4 @@
-package uk.jixun.project.Program.Simulator;
+package uk.jixun.project.Simulator;
 
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Program.ISmProgram;
@@ -78,7 +78,7 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
       .filter(IDispatchRecord::readOrWrite)
       .count();
 
-    while(queuedInst.size() < searchDepth) {
+    while (queuedInst.size() < searchDepth) {
       // If the last item is a branch, don't continue.
       if (queuedInst.last().getInstruction().isBranch()) {
         break;
@@ -129,7 +129,7 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
         boolean canFulfill = true;
 
         // Checking for (1), instructions queued before current instruction.
-        for(int i = 0; i < peekIndex; i++) {
+        for (int i = 0; i < peekIndex; i++) {
           if (inst.depends(queuedInst.get(i).getInstruction())) {
             canFulfill = false;
             break;
@@ -173,7 +173,7 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
 
     // Balance stack when nothing is queued.
     if (queuedInst.isEmpty() && stackBalance != 0) {
-      while(stackBalance < 0) {
+      while (stackBalance < 0) {
         stackBalance++;
         ctx.pop();
       }

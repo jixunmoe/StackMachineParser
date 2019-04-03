@@ -1,7 +1,6 @@
 package uk.jixun.project.OpCode;
 
 
-
 // !!!                               !!!
 // !!!             STOP              !!!
 // !!!                               !!!
@@ -12,12 +11,11 @@ package uk.jixun.project.OpCode;
 // See 'scripts' directory for more information
 
 
-
 import uk.jixun.project.OpCode.OpCodeImpl.*;
 
 class OpCodeRegistry {
   static void registerAll() {
-    
+
     OpCodeFactory.register(SmOpCodeEnum.ADD, SmOpCodeAdd.class);
     OpCodeFactory.register(SmOpCodeEnum.SUB, SmOpCodeSub.class);
     OpCodeFactory.register(SmOpCodeEnum.HMUL, SmOpCodeHmul.class);

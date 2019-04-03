@@ -1,7 +1,7 @@
 package uk.jixun.project.Operand;
 
 import uk.jixun.project.Exceptions.LabelNotFoundException;
-import uk.jixun.project.Program.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.IExecutionContext;
 
 public class SmLabelOperand extends SmBasicOperandAbstract {
   private String label = "";
@@ -12,12 +12,12 @@ public class SmLabelOperand extends SmBasicOperandAbstract {
   }
 
   @Override
-  public void setValue(Object val) {
+  public Object getValue() {
     throw new RuntimeException("Do not use setValue/getValue on SmLabelOperand.");
   }
 
   @Override
-  public Object getValue() {
+  public void setValue(Object val) {
     throw new RuntimeException("Do not use setValue/getValue on SmLabelOperand.");
   }
 

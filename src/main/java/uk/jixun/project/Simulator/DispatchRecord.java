@@ -1,4 +1,4 @@
-package uk.jixun.project.Program.Simulator;
+package uk.jixun.project.Simulator;
 
 import uk.jixun.project.Instruction.ISmInstruction;
 
@@ -103,23 +103,23 @@ public class DispatchRecord implements IDispatchRecord, IResourceUsage {
   }
 
   @Override
-  public void setExecutionId(int index) {
-    exeId = index;
-  }
-
-  @Override
   public int getExecutionId() {
     return exeId;
   }
 
   @Override
-  public void setContext(IExecutionContext context) {
-    this.context = context;
+  public void setExecutionId(int index) {
+    exeId = index;
   }
 
   @Override
   public IExecutionContext getContext() {
     return context;
+  }
+
+  @Override
+  public void setContext(IExecutionContext context) {
+    this.context = context;
   }
 
   @Override

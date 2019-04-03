@@ -23,11 +23,6 @@ public class SmProgram implements ISmProgram {
   }
 
   @Override
-  public ISmInstruction getInstruction(int index) throws ArrayIndexOutOfBoundsException {
-    return instructions.get(index);
-  }
-
-  @Override
   public void setInstructions(List<ISmInstruction> instructions) {
     synchronized (lock) {
       this.instructions = instructions;
@@ -38,6 +33,11 @@ public class SmProgram implements ISmProgram {
         inst.setEip(index.getAndIncrement());
       });
     }
+  }
+
+  @Override
+  public ISmInstruction getInstruction(int index) throws ArrayIndexOutOfBoundsException {
+    return instructions.get(index);
   }
 
   @Override

@@ -17,6 +17,7 @@ public class ParseHelper {
 
   /**
    * Parsing an integer(long) from given string with prefix.
+   *
    * @param value String representation
    * @return Parsed long
    * @throws NumberFormatException When string is mal-formatted.

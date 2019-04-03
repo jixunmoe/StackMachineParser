@@ -10,12 +10,17 @@ import java.util.Map;
 
 public interface ISmProgram {
   List<ISmInstruction> getInstructions();
-  ISmInstruction getInstruction(int index) throws ArrayIndexOutOfBoundsException;
+
   void setInstructions(List<ISmInstruction> instructions);
+
+  ISmInstruction getInstruction(int index) throws ArrayIndexOutOfBoundsException;
+
   void addInstruction(ISmInstruction instruction);
 
   Map<String, Long> getLabelMapping();
+
   void registerLabel(String label, long address) throws LabelDuplicationException;
+
   long resolveLabel(String label) throws LabelNotFoundException;
 
   ISmProgramGraph createGraph();

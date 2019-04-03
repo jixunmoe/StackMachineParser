@@ -82,7 +82,7 @@ public class SmDependencyGraph implements ISmDependencyGraph {
     int produce = instruction.getOpCode().getProduce();
 
     // Get instruction dependency.
-    for(int i = 0; i < consume; i++) {
+    for (int i = 0; i < consume; i++) {
       node.pushStack(getInstructionStack().pop());
     }
 
@@ -94,7 +94,7 @@ public class SmDependencyGraph implements ISmDependencyGraph {
       // now just work with instructions produces 1 values.
       assert produce == 1;
 
-      for(int i = 0; i < produce; i++) {
+      for (int i = 0; i < produce; i++) {
         getInstructionStack().push(node);
       }
     }

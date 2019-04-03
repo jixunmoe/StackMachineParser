@@ -12,10 +12,6 @@ public class GraphCanvas extends JPanel {
   private Font msgFont;
   private int msgFontHeight;
 
-  public ISmProgramGraph getGraph() {
-    return graph;
-  }
-
   public GraphCanvas() {
     setBorder(BorderFactory.createLineBorder(Color.black));
     msgFont = new Font("Courier New", Font.PLAIN, 12);
@@ -23,12 +19,16 @@ public class GraphCanvas extends JPanel {
     msgFontHeight = metrics.getAscent();
   }
 
-  public Dimension getPreferredSize() {
-    return new Dimension(400,400);
+  public ISmProgramGraph getGraph() {
+    return graph;
   }
 
   public void setGraph(ISmProgramGraph graph) {
     this.graph = graph;
+  }
+
+  public Dimension getPreferredSize() {
+    return new Dimension(400, 400);
   }
 
   @Override

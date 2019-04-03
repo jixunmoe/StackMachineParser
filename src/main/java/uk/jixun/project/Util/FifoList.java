@@ -1,9 +1,16 @@
 package uk.jixun.project.Util;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 
 public class FifoList<T> extends LinkedList<T> {
+  public static <T> FifoList<T> create(T... elements) {
+    FifoList<T> result = new FifoList<T>();
+    for (T v : elements) {
+      result.push(v);
+    }
+    return result;
+  }
+
   @Override
   public void push(T o) {
     this.add(o);
@@ -16,8 +23,9 @@ public class FifoList<T> extends LinkedList<T> {
 
   /**
    * Recalculate address when index is negative (goes backwards)
+   *
    * @param i index to be fixed
-   * @return  Fixed index (positive or zero)
+   * @return Fixed index (positive or zero)
    */
   private int idx(int i) {
     return i + (i < 0 ? size() : 0);
@@ -25,6 +33,7 @@ public class FifoList<T> extends LinkedList<T> {
 
   /**
    * Pop n-th item.
+   *
    * @param index Index of the element to pop.
    * @return Popped item.
    */
@@ -38,6 +47,7 @@ public class FifoList<T> extends LinkedList<T> {
 
   /**
    * Insert an element before given index (move all elements from this index back by 1).
+   *
    * @param el    Element
    * @param index index to insert before
    */
@@ -65,13 +75,5 @@ public class FifoList<T> extends LinkedList<T> {
 
   public T get(int index) {
     return super.get(idx(size() + index));
-  }
-
-  public static <T> FifoList<T> create(T ...elements) {
-    FifoList<T> result = new FifoList<T>();
-    for (T v : elements) {
-      result.push(v);
-    }
-    return result;
   }
 }

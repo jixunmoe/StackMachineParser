@@ -1,4 +1,4 @@
-package uk.jixun.project.Program.Simulator;
+package uk.jixun.project.Simulator;
 
 import uk.jixun.project.Instruction.ISmInstruction;
 
@@ -8,5 +8,6 @@ public interface ISmHistory {
   List<IDispatchRecord> getSortedHistoryBetween(int start, int end);
 
   List<IDispatchRecord> getHistoryBetween(IDispatchRecord a, IDispatchRecord b);
+
   List<IDispatchRecord> getHistoryBetween(ISmInstruction a, ISmInstruction b);
 }

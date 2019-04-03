@@ -1,4 +1,4 @@
-package uk.jixun.project.Program.Simulator;
+package uk.jixun.project.Simulator;
 
 public class ResourceUsage implements IResourceUsage {
   private int readAddress = 0;

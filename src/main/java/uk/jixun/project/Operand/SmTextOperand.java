@@ -1,6 +1,6 @@
 package uk.jixun.project.Operand;
 
-import uk.jixun.project.Program.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.IExecutionContext;
 
 public class SmTextOperand extends SmBasicOperandAbstract {
   private String text;
@@ -8,6 +8,7 @@ public class SmTextOperand extends SmBasicOperandAbstract {
   public SmTextOperand() {
     this.text = "";
   }
+
   public SmTextOperand(String text) {
     this.text = text;
   }
@@ -18,13 +19,13 @@ public class SmTextOperand extends SmBasicOperandAbstract {
   }
 
   @Override
-  public void setValue(Object val) {
-    this.text = String.valueOf(val);
+  public Object getValue() {
+    return text;
   }
 
   @Override
-  public Object getValue() {
-    return text;
+  public void setValue(Object val) {
+    this.text = String.valueOf(val);
   }
 
   @Override

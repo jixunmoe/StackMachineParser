@@ -8,6 +8,7 @@ import java.util.HashMap;
 public class OpCodeFactory {
   private static boolean registered = false;
   private static HashMap<SmOpCodeEnum, Class<? extends ISmOpCode>> opcodes = new HashMap<>();
+
   public static void register(SmOpCodeEnum opcode, Class<? extends ISmOpCode> cls) {
     if (opcodes.containsKey(opcode)) {
       throw new IllegalArgumentException("OpCode " + opcode.toString() + " already defined.");

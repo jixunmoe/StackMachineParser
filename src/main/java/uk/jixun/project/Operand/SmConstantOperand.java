@@ -1,6 +1,6 @@
 package uk.jixun.project.Operand;
 
-import uk.jixun.project.Program.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.IExecutionContext;
 
 /**
  * Stack Machine Constant Operand.
@@ -9,6 +9,7 @@ public class SmConstantOperand extends SmBasicOperandAbstract {
   SmConstantOperand() {
     setValue(0);
   }
+
   SmConstantOperand(long value) {
     setValue(value);
   }
@@ -20,7 +21,7 @@ public class SmConstantOperand extends SmBasicOperandAbstract {
 
   @Override
   public int resolve(IExecutionContext ctx) {
-    return (int)getValue();
+    return (int) getValue();
   }
 
   @Override

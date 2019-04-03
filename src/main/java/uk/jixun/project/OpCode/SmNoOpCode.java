@@ -1,7 +1,7 @@
 package uk.jixun.project.OpCode;
 
-import uk.jixun.project.Program.Simulator.IExecutionContext;
 import uk.jixun.project.Register.SmRegister;
+import uk.jixun.project.Simulator.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
 public class SmNoOpCode extends AbstractBasicOpCode {

@@ -22,19 +22,15 @@ import java.util.stream.Collectors;
  * Parsing a stream of asm code text.
  */
 public class StackMachineInstParser {
+  long virtualAddress = 0;
+  long lineNumber = 0;
   private SmProgram program = new SmProgram();
   private Scanner source;
+  private ArrayList<ISmInstruction> results = new ArrayList<>();
+
   public StackMachineInstParser(Scanner scanner) {
     source = scanner;
   }
-  private ArrayList<ISmInstruction> results = new ArrayList<>();
-
-  private enum ParseInstructionState {
-    Opcode, Operand
-  }
-
-  long virtualAddress = 0;
-  long lineNumber = 0;
 
   private boolean parseInstruction(String line) throws LabelDuplicationException {
     boolean skipWhiteSpace = true;
@@ -151,5 +147,9 @@ public class StackMachineInstParser {
     program.addInstruction(instruction);
     results.remove(0);
     return instruction;
+  }
+
+  private enum ParseInstructionState {
+    Opcode, Operand
   }
 }

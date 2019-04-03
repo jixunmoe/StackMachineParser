@@ -1,6 +1,6 @@
 package uk.jixun.project.Operand;
 
-import uk.jixun.project.Program.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.IExecutionContext;
 
 /**
  * Stack Machine Indirect Operand.
@@ -9,6 +9,7 @@ public class SmIndirectOperand extends SmBasicOperandAbstract {
   SmIndirectOperand() {
     setValue(0);
   }
+
   SmIndirectOperand(long value) {
     setValue(value);
   }
@@ -25,7 +26,7 @@ public class SmIndirectOperand extends SmBasicOperandAbstract {
 
   @Override
   public int resolve(IExecutionContext ctx) {
-    return ctx.read((int)getValue());
+    return ctx.read((int) getValue());
   }
 
   @Override
