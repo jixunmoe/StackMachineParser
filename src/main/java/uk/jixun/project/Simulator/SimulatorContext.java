@@ -49,7 +49,7 @@ public class SimulatorContext implements IExecutionContext {
   public List<Integer> resolveStack(int offset, int exeId, int size) {
     LinkedList<Integer> stack = new LinkedList<>();
 
-    int paramSkips = 0;
+    int paramSkips = offset;
     int nextId = exeId - 1;
 
     while (size > 0) {
