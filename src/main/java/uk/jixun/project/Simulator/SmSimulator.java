@@ -1,5 +1,6 @@
 package uk.jixun.project.Simulator;
 
+import com.google.common.base.Throwables;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Program.ISmProgram;
 import uk.jixun.project.SimulatorConfig.ISimulatorConfig;
@@ -186,8 +187,9 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
       }
     }
 
-    // TODO: Simulate instructions that should complete in this cycle.
-    // get all instruction ends this cycle, and populate their values.
+    history.stream()
+      .filter(record -> record.endAtCycle(cycle) && !record.executed())
+      .forEach(record -> record.executeAndRecord(ctx));
 
     ctx.nextCycle();
 
@@ -201,6 +203,14 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
 
   @Override
   public List<IDispatchRecord> getSortedHistoryBetween(int start, int end) {
+    if (start > end) {
+      logger.info("getSortedHistoryBetween: start is later then end, swap two around.");
+      if (logger.isLoggable(Level.FINER)) {
+        logger.fine(Throwables.getStackTraceAsString(new Exception()));
+      }
+      return getSortedHistoryBetween(end, start);
+    }
+
     return Stream
       .concat(history.stream(), queuedInst.stream())
       .filter(x -> x.getExecutionId() >= start && x.getExecutionId() <= end)
@@ -212,13 +222,14 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
   public List<IDispatchRecord> getHistoryBetween(IDispatchRecord a, IDispatchRecord b) {
     if (a == null || b == null) {
       logger.log(Level.WARNING, "param for getHistoryBetween() contains null.");
+      if (logger.isLoggable(Level.FINER)) {
+        logger.fine(Throwables.getStackTraceAsString(new Exception()));
+      }
       return null;
     }
 
     int start = a.getExecutionId();
     int end = b.getExecutionId();
-
-    assert start <= end;
 
     return getSortedHistoryBetween(start, end);
   }
@@ -234,5 +245,14 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
   @Override
   public List<IDispatchRecord> getHistoryBetween(ISmInstruction a, ISmInstruction b) {
     return getHistoryBetween(fromInstruction(a), fromInstruction(b));
+  }
+
+  @Override
+  public IDispatchRecord getRecordAt(int exeId) {
+    return history
+      .stream()
+      .filter(x -> x.getExecutionId() == exeId)
+      .findFirst()
+      .orElse(null);
   }
 }

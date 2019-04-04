@@ -2,6 +2,8 @@ package uk.jixun.project.Simulator;
 
 import uk.jixun.project.Instruction.ISmInstruction;
 
+import java.util.List;
+
 public interface IDispatchRecord {
   int getInstStartCycle();
 
@@ -43,4 +45,25 @@ public interface IDispatchRecord {
   IExecutionContext getContext();
 
   void setContext(IExecutionContext context);
+
+  /**
+   * Check if current instruction executed yet.
+   * @return True if already executed.
+   */
+  boolean executed();
+
+  /**
+   * Execute current instruction with given context, then save the result.
+   * @param context Context where the instruction executes.
+   */
+  void executeAndRecord(IExecutionContext context);
+
+  /**
+   * Get instruction stack after execution.
+   * @return `null` if not executed.
+   */
+  List<Integer> getInstructionStack();
+
+  boolean endAtCycle(int cycle);
+  boolean endAtCycle(IExecutionContext context);
 }

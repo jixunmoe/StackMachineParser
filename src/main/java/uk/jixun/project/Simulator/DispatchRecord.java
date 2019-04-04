@@ -1,8 +1,15 @@
 package uk.jixun.project.Simulator;
 
 import uk.jixun.project.Instruction.ISmInstruction;
+import uk.jixun.project.OpCode.ISmOpCode;
+import uk.jixun.project.Util.FifoList;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 public class DispatchRecord implements IDispatchRecord, IResourceUsage {
+  private static Logger logger = Logger.getLogger(DispatchRecord.class.getName());
+
   private int cycleStart = 0;
   private int cycleEnd = 0;
   private int readAddress = 0;
@@ -11,6 +18,8 @@ public class DispatchRecord implements IDispatchRecord, IResourceUsage {
   private ISmInstruction inst = null;
   private int exeId = -1;
   private IExecutionContext context = null;
+  private boolean executed = false;
+  private List<Integer> executionStack = null;
 
   public DispatchRecord() {
   }
@@ -120,6 +129,53 @@ public class DispatchRecord implements IDispatchRecord, IResourceUsage {
   @Override
   public void setContext(IExecutionContext context) {
     this.context = context;
+  }
+
+  @Override
+  public boolean executed() {
+    return executed;
+  }
+
+  @Override
+  public void executeAndRecord(IExecutionContext context) {
+    // Should not be executed yet
+    if (executed || getInstruction().notForExecute()) {
+      return;
+    }
+
+    // Resolve input stack
+    ISmOpCode opcode = getInstruction().getOpCode();
+    FifoList<Integer> stack = new FifoList<>();
+    stack.addAll(context.resolveStack(0, getExecutionId(), opcode.getConsume()));
+
+    try {
+      opcode.evaluate(stack, context);
+      executed = true;
+    } catch (Exception e) {
+      logger.warning("Instruction evaluation failed: " + opcode.toAssembly() + " - check stack trace");
+      e.printStackTrace();
+    }
+
+    this.executionStack = stack;
+  }
+
+  @Override
+  public List<Integer> getInstructionStack() {
+    if (!executed) {
+      return null;
+    }
+
+    return executionStack;
+  }
+
+  @Override
+  public boolean endAtCycle(int cycle) {
+    return cycle == getInstEndCycle();
+  }
+
+  @Override
+  public boolean endAtCycle(IExecutionContext context) {
+    return endAtCycle(context.getCurrentCycle());
   }
 
   @Override
