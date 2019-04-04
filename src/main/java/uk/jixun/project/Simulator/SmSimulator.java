@@ -179,12 +179,16 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
         ctx.pop();
       }
 
-      while (stackBalance > 0) {
-        stackBalance--;
+      // Sync with stack.
+      IDispatchRecord record = history
+        .stream()
+        .max(Comparator.comparing(IDispatchRecord::getExecutionId))
+        .orElse(null);
+      assert record != null;
 
-        // FIXME: Fetch the correct value to push.
-        ctx.push(1);
-      }
+      List<Integer> subStack = ctx.resolveStack(0, record.getExecutionId(), stackBalance);
+      assert subStack.size() == stackBalance;
+      ctx.push(subStack);
     }
 
     history.stream()

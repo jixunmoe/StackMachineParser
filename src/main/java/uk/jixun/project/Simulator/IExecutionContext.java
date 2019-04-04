@@ -46,6 +46,13 @@ public interface IExecutionContext extends IMemoryModel {
   void push(int value);
 
   /**
+   * Push an item to the stack.
+   * @apiNote This method may not sync with the system.
+   * @param value Values to push to the stack (end of the stack).
+   */
+  void push(List<Integer> value);
+
+  /**
    * Pop a value from the stack (removing the top-of-stack value).
    * @apiNote This method may not sync with the system.
    * @return Top of stack value.

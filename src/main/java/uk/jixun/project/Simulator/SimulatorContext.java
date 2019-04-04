@@ -97,6 +97,11 @@ public class SimulatorContext implements IExecutionContext {
   }
 
   @Override
+  public void push(List<Integer> value) {
+    stack.addAll(value);
+  }
+
+  @Override
   public int pop() {
     return stack.pop();
   }
