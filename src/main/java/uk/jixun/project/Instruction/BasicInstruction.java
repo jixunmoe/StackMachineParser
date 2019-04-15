@@ -5,8 +5,17 @@ import uk.jixun.project.Exceptions.OutOfRangeOperand;
 public class BasicInstruction extends AbstractBasicInstruction {
   @Override
   public int getCycleTime() {
-    // TODO: get actual cycle time based on opcode / operand processing
-    return 1;
+    int time = 0;
+
+    if (usesAlu()) {
+      time += 2;
+    }
+
+    if (readOrWriteRam()) {
+      time += 1;
+    }
+
+    return time;
   }
 
   @Override

@@ -156,9 +156,7 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
         if (record instanceof DispatchRecord) {
           DispatchRecord r = (DispatchRecord) record;
           r.setCycleStart(cycle);
-
-          // FIXME: Assume each instruction uses 1 cycle.
-          r.setCycleEnd(cycle);
+          r.setCycleEnd(cycle + record.getInstruction().getCycleTime());
         } else {
           System.out.println("record is not an instance of DispatchRecord!");
         }
