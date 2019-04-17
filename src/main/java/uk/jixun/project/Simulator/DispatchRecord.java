@@ -16,28 +16,38 @@ import java.util.logging.Logger;
 public class DispatchRecord extends AbstractDispatchRecord implements IDispatchRecord {
   private final static Logger logger = Logger.getLogger(DispatchRecord.class.getName());
 
-  private LazyCache<List<IDispatchRecord>> dependencies = new LazyCache<>();
-  private LazyCache<IResourceUsage> resourceUsage = new LazyCache<>();
-  private LazyCache<List<Integer>> executionStack = new LazyCache<>();
+  private LazyCache<List<IDispatchRecord>> dependencies = new LazyCache<>(this::explicitGetDependencies);
+  private LazyCache<IResourceUsage> resourceUsage = new LazyCache<>(this::explicitGetResourceUsed);
+  private LazyCache<List<Integer>> executionStack = new LazyCache<>(this::explicitExecuteAndRecordStack);
 
   public DispatchRecord() {
     setInst(null);
+    init();
   }
 
   public DispatchRecord(ISmInstruction inst) {
     setInst(inst);
+    init();
+  }
+
+  private void init() {
+
   }
 
   @Override
   public IResourceUsage getResourceUsed() {
-    return resourceUsage.cache(() -> ResourceUsage.fromInstruction(getInstruction()));
+    return resourceUsage.get();
+  }
+
+  private IResourceUsage explicitGetResourceUsed() {
+    return ResourceUsage.fromInstruction(getInstruction());
   }
 
   // Instruction execution
 
   @Override
   public boolean executed() {
-    return executionStack.cached();
+    return executionStack.isCached();
   }
 
   @Override
@@ -47,21 +57,23 @@ public class DispatchRecord extends AbstractDispatchRecord implements IDispatchR
       return Collections.emptyList();
     }
 
-    return executionStack.cache(() -> {
-      ISmOpCode opcode = getInstruction().getOpCode();
-      FifoList<Integer> stack = new FifoList<>();
-      stack.addAll(getContext().resolveStack(0, getExecutionId(), opcode.getConsume()));
-      try {
-        opcode.evaluate(stack, getContext());
-      } catch (Exception e) {
-        logger.warning(
-          "Instruction failed when executing " + getInstruction().toAssembly() + "; " +
-            "trace: " + Throwables.getStackTraceAsString(e)
-        );
-        return Collections.emptyList();
-      }
-      return stack;
-    });
+    return executionStack.get();
+  }
+
+  private List<Integer> explicitExecuteAndRecordStack() {
+    ISmOpCode opcode = getInstruction().getOpCode();
+    FifoList<Integer> stack = new FifoList<>();
+    stack.addAll(getContext().resolveStack(0, getExecutionId(), opcode.getConsume()));
+    try {
+      opcode.evaluate(stack, getContext());
+    } catch (Exception e) {
+      logger.warning(
+        "Instruction failed when executing " + getInstruction().toAssembly() + "; " +
+          "trace: " + Throwables.getStackTraceAsString(e)
+      );
+      return Collections.emptyList();
+    }
+    return stack;
   }
 
   // Resolve Dependency
@@ -69,44 +81,45 @@ public class DispatchRecord extends AbstractDispatchRecord implements IDispatchR
   @Override
   public List<IDispatchRecord> getDependencies() {
     assert getExecutionId() != -1;
+    return dependencies.get();
+  }
 
-    return dependencies.cache(() -> {
-      List<IDispatchRecord> dependencies = new LinkedList<>();
-      // Begin resolve dependency node
-      int paramSkips = 0;
-      int size = getInstruction().getOpCode().getConsume();
-      AtomicInteger nextId = new AtomicInteger(getExecutionId() - 1);
+  private List<IDispatchRecord> explicitGetDependencies() {
+    List<IDispatchRecord> dependencies = new LinkedList<>();
+    // Begin resolve dependency node
+    int paramSkips = 0;
+    int size = getInstruction().getOpCode().getConsume();
+    AtomicInteger nextId = new AtomicInteger(getExecutionId() - 1);
 
-      while (size > 0) {
-        // Current record have resolved without requested id.
-        IDispatchRecord record = getContext().getHistory().getRecordAt(nextId.getAndDecrement());
-        if (record == null) {
-          // No more items on the chain, break.
-          break;
-        }
-
-        ISmOpCode opcode = record.getInstruction().getOpCode();
-        int consumes = opcode.getConsume();
-        int produces = opcode.getProduce();
-
-        // Skip if required.
-        int skipThisTime = Math.min(paramSkips, produces);
-        if (paramSkips > 0) {
-          paramSkips -= skipThisTime;
-          produces -= skipThisTime;
-        }
-
-        // If previous instruction produces any useful result, count it.
-        if (produces > 0) {
-          size -= produces;
-          dependencies.add(record);
-        }
-
-        // Increase the number of items to skip next round.
-        paramSkips += consumes;
+    while (size > 0) {
+      // Current record have resolved without requested id.
+      IDispatchRecord record = getContext().getHistory().getRecordAt(nextId.getAndDecrement());
+      if (record == null) {
+        // No more items on the chain, break.
+        break;
       }
 
-      return Lists.reverse(dependencies);
-    });
+      ISmOpCode opcode = record.getInstruction().getOpCode();
+      int consumes = opcode.getConsume();
+      int produces = opcode.getProduce();
+
+      // Skip if required.
+      int skipThisTime = Math.min(paramSkips, produces);
+      if (paramSkips > 0) {
+        paramSkips -= skipThisTime;
+        produces -= skipThisTime;
+      }
+
+      // If previous instruction produces any useful result, count it.
+      if (produces > 0) {
+        size -= produces;
+        dependencies.add(record);
+      }
+
+      // Increase the number of items to skip next round.
+      paramSkips += consumes;
+    }
+
+    return Lists.reverse(dependencies);
   }
 }

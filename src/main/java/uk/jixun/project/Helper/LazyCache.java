@@ -1,28 +1,21 @@
 package uk.jixun.project.Helper;
 
-import uk.jixun.project.Exceptions.NotCachedException;
-
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LazyCache<T> {
   private final AtomicBoolean cached = new AtomicBoolean(false);
   private T cache = null;
 
-  public T cache(GetResult<T> fn) {
-    synchronized (cached) {
-      if (!cached.getAndSet(true)) {
-        cache = fn.resolve();
-      }
-    }
+  private GetResult<T> callback;
 
-    return cache;
+  public LazyCache(GetResult<T> callback) {
+    this.callback = callback;
   }
 
-  public T exceptionalCache(GetResultWithException<T> fn) throws Exception {
+  public T get() {
     synchronized (cached) {
-      if (!cached.get()) {
-        cache = fn.resolve();
-        cached.set(true);
+      if (!cached.getAndSet(true)) {
+        cache = callback.resolve();
       }
     }
 
@@ -31,8 +24,8 @@ public class LazyCache<T> {
 
   /**
    * Cache data if not present.
-   * @param data Data to be cached.
-   * @return {@code true} if cached; {@code false} if a cache already present.
+   * @param data Data to be isCached.
+   * @return {@code true} if isCached; {@code false} if a cache already present.
    */
   public boolean cache(T data) {
     synchronized (cached) {
@@ -45,17 +38,7 @@ public class LazyCache<T> {
     return false;
   }
 
-  public T get() throws NotCachedException {
-    synchronized (cached) {
-      if (!cached.get()) {
-        throw new NotCachedException();
-      }
-    }
-
-    return cache;
-  }
-
-  public boolean cached() {
+  public boolean isCached() {
     synchronized (cached) {
       return cached.get();
     }
@@ -71,8 +54,5 @@ public class LazyCache<T> {
 
   public interface GetResult<T> {
     T resolve();
-  }
-  public interface GetResultWithException<T> {
-    T resolve() throws Exception;
   }
 }
