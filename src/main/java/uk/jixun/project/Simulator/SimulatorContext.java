@@ -1,6 +1,5 @@
 package uk.jixun.project.Simulator;
 
-import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.OpCode.ISmOpCode;
 
 import java.util.ArrayList;
@@ -8,16 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-public class SimulatorContext implements IExecutionContext {
+public class SimulatorContext extends AbstractExecutionContext {
   private ArrayList<Integer> memory;
   private Stack<Integer> stack;
-  private int eip = 0;
-  private int cycles = 0;
-  private boolean testFlag = false;
-  private ISmHistory history = null;
 
   public SimulatorContext() {
     memory = new ArrayList<>(256);
+    stack = new Stack<>();
   }
 
   @Override
@@ -104,57 +100,5 @@ public class SimulatorContext implements IExecutionContext {
   @Override
   public int pop() {
     return stack.pop();
-  }
-
-  @Override
-  public int getEip() {
-    return eip;
-  }
-
-  @Override
-  public void setEip(int eip) {
-    if (eip >= 0) {
-      this.eip = eip;
-    }
-  }
-
-  @Override
-  public void incEip() {
-    eip++;
-  }
-
-  @Override
-  public int getCurrentCycle() {
-    return cycles;
-  }
-
-  @Override
-  public void nextCycle() {
-    addCycles(1);
-  }
-
-  @Override
-  public void addCycles(int cycles) {
-    this.cycles += cycles;
-  }
-
-  @Override
-  public boolean getJumpFlag() {
-    return testFlag;
-  }
-
-  @Override
-  public void setJumpFlag(boolean flag) {
-    testFlag = flag;
-  }
-
-  @Override
-  public ISmHistory getHistory() {
-    return history;
-  }
-
-  @Override
-  public void setHistory(ISmHistory smHistory) {
-    history = smHistory;
   }
 }

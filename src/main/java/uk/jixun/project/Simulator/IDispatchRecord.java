@@ -48,22 +48,36 @@ public interface IDispatchRecord {
 
   /**
    * Check if current instruction executed yet.
+   *
    * @return True if already executed.
    */
   boolean executed();
 
   /**
    * Execute current instruction with given context, then save the result.
+   *
    * @param context Context where the instruction executes.
    */
   void executeAndRecord(IExecutionContext context);
 
   /**
    * Get instruction stack after execution.
+   *
    * @return `null` if not executed.
    */
   List<Integer> getInstructionStack();
 
   boolean endAtCycle(int cycle);
+
   boolean endAtCycle(IExecutionContext context);
+
+  List<IDispatchRecord> getDependencies();
+
+  /**
+   * Check if current record depends on a given record.
+   *
+   * @param record Record to check on.
+   * @return Check result, {@code true} if they do depends on.
+   */
+  boolean depends(IDispatchRecord record);
 }

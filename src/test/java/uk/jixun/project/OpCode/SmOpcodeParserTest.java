@@ -6,7 +6,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import uk.jixun.project.Exceptions.UnknownOpCodeException;
 import uk.jixun.project.Register.SmRegister;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SmOpcodeParserTest {

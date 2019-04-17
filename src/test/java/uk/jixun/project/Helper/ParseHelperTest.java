@@ -3,7 +3,8 @@ package uk.jixun.project.Helper;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ParseHelperTest {
   @ParameterizedTest(name = "{0} should be parsed as {1}")

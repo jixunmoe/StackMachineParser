@@ -4,22 +4,24 @@ import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.OpCode.ISmOpCode;
 import uk.jixun.project.Util.FifoList;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 public class DispatchRecord implements IDispatchRecord, IResourceUsage {
   private static Logger logger = Logger.getLogger(DispatchRecord.class.getName());
-
+  final private List<IDispatchRecord> dependencies = new LinkedList<>();
   private int cycleStart = 0;
   private int cycleEnd = 0;
   private int readAddress = 0;
   private int writeAddress = 0;
-
   private ISmInstruction inst = null;
   private int exeId = -1;
   private IExecutionContext context = null;
   private boolean executed = false;
   private List<Integer> executionStack = null;
+  private AtomicBoolean dependencyResolved = new AtomicBoolean(false);
 
   public DispatchRecord() {
   }
@@ -176,6 +178,67 @@ public class DispatchRecord implements IDispatchRecord, IResourceUsage {
   @Override
   public boolean endAtCycle(IExecutionContext context) {
     return endAtCycle(context.getCurrentCycle());
+  }
+
+  @Override
+  public List<IDispatchRecord> getDependencies() {
+    synchronized (dependencies) {
+      if (!dependencyResolved.get()) {
+        // Begin resolve dependency node
+        int paramSkips = 0;
+        int size = getInstruction().getOpCode().getConsume();
+        int nextId = getExecutionId() - 1;
+
+        while (size > 0) {
+          // Current record have resolved without requested id.
+          IDispatchRecord record = getContext().getHistory().getRecordAt(nextId);
+          if (record == null) {
+            // No more items on the chain, break.
+            break;
+          }
+
+          ISmOpCode opcode = record.getInstruction().getOpCode();
+          int consumes = opcode.getConsume();
+          int produces = opcode.getProduce();
+
+          // Skip if required.
+          int skipThisTime = Math.min(paramSkips, produces);
+          if (paramSkips > 0) {
+            paramSkips -= skipThisTime;
+            produces -= skipThisTime;
+          }
+
+          // If previous instruction produces any useful result, count it.
+          if (produces > 0) {
+            size -= produces;
+            dependencies.add(record);
+          }
+
+          // Increase the number of items to skip next round.
+          paramSkips += consumes;
+        }
+
+        dependencyResolved.set(true);
+      } // if (!dependencyResolved)
+    }
+
+    return dependencies;
+  }
+
+  @Override
+  public boolean depends(IDispatchRecord target) {
+    // Not in the same program space.
+    if (target.getContext() == getContext()) {
+      logger.warning("Checking instructions with different context.");
+      return false;
+    }
+
+    if (target == this) {
+      logger.warning("Don't check self dependency!!!");
+      return false;
+    }
+
+    return getDependencies().contains(target);
   }
 
   @Override

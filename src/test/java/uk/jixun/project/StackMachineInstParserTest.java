@@ -13,7 +13,8 @@ import uk.jixun.project.Register.SmRegister;
 import java.net.URL;
 import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StackMachineInstParserTest {
 
@@ -27,7 +28,7 @@ class StackMachineInstParserTest {
     inst = parser.next();
     assertEquals(SmOpCodeEnum.ABSOLUTE_JUMP, inst.getOpCode().getOpCodeId());
     assertEquals(1, inst.getOperandCount());
-    assertEquals("start", ((SmLabelOperand)inst.getOperand(0)).getLabel());
+    assertEquals("start", ((SmLabelOperand) inst.getOperand(0)).getLabel());
 
     inst = parser.next();
     assertEquals(SmOpCodeEnum.NONE, inst.getOpCode().getOpCodeId());
@@ -50,7 +51,7 @@ class StackMachineInstParserTest {
 
     inst = parser.next();
     assertEquals(SmOpCodeEnum.COND_RELATIVE_JUMP, inst.getOpCode().getOpCodeId());
-    assertEquals("loop", ((SmLabelOperand)inst.getOperand(0)).getLabel());
+    assertEquals("loop", ((SmLabelOperand) inst.getOperand(0)).getLabel());
 
     // Check for registered labels
     assertEquals(1, inst.getProgram().resolveLabel("loop"));

@@ -84,5 +84,13 @@ public interface ISmInstruction {
 
   void setEip(int eip);
 
+  /**
+   * Check dependency for a given instruction.
+   *
+   * @param inst Instruction to check
+   * @return check if instruction is depends on the given instruction.
+   * @apiNote DO NOT USE! The result is not correct.
+   */
+  @Deprecated
   boolean depends(ISmInstruction inst);
 }

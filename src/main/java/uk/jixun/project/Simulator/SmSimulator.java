@@ -107,7 +107,7 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
     if (aluCount > 0 || ramCount > 0) {
       // Try to dispatch instructions, and remove if they are dispatched.
       Iterator<IDispatchRecord> iter = queuedInst.iterator();
-      for (int peekIndex = -1; iter.hasNext(); peekIndex++) {
+      for (int peekIndex = 0; iter.hasNext(); peekIndex++) {
         // Ensure they are legal in debug build
         assert aluCount >= 0;
         assert ramCount >= 0;
@@ -127,22 +127,17 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
         // all inserted elements are only dependent on the following condition:
         // (1) - instructions queued before executing instruction;
         // (2) - instructions not yet finished (dispatched but not complete)
-        boolean canFulfill = true;
+        boolean canFulfill;
 
         // Checking for (1), instructions queued before current instruction.
-        for (int i = 0; i < peekIndex; i++) {
-          if (inst.depends(queuedInst.get(i).getInstruction())) {
-            canFulfill = false;
-            break;
-          }
-        }
+        canFulfill = queuedInst.stream().limit(peekIndex).allMatch(record::depends);
 
         // Can only fulfill if none of executing instructions
         // were depended by current instruction.
         canFulfill = canFulfill && history.stream()
           // Only keep the one executes in this cycle.
           .filter(x -> !x.isFinished(ctx))
-          .noneMatch(x -> inst.depends(x.getInstruction()));
+          .noneMatch(record::depends);
 
         // If the instruction can't be fulfilled, don't schedule it (yet).
         if (!canFulfill) {
@@ -234,19 +229,6 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
     int end = b.getExecutionId();
 
     return getSortedHistoryBetween(start, end);
-  }
-
-  private IDispatchRecord fromInstruction(ISmInstruction inst) {
-    return Stream
-      .concat(history.stream(), queuedInst.stream())
-      .filter(x -> x.getInstruction() == inst)
-      .findFirst()
-      .orElse(null);
-  }
-
-  @Override
-  public List<IDispatchRecord> getHistoryBetween(ISmInstruction a, ISmInstruction b) {
-    return getHistoryBetween(fromInstruction(a), fromInstruction(b));
   }
 
   @Override
