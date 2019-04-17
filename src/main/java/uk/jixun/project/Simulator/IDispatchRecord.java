@@ -1,5 +1,6 @@
 package uk.jixun.project.Simulator;
 
+import org.jetbrains.annotations.Nullable;
 import uk.jixun.project.Instruction.ISmInstruction;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface IDispatchRecord {
 
   boolean executesAt(int cycle);
 
-  boolean isFinished(IExecutionContext cxt);
+  boolean isFinished();
 
   ISmInstruction getInstruction();
 
@@ -25,8 +26,6 @@ public interface IDispatchRecord {
    * @return true if the instruction uses ALU.
    */
   boolean usesAlu();
-
-  boolean readOrWriteRam();
 
   boolean reads();
 
@@ -54,22 +53,16 @@ public interface IDispatchRecord {
   boolean executed();
 
   /**
-   * Execute current instruction with given context, then save the result.
+   * Get instruction stack after execution, and execute if not executed yet.
    *
-   * @param context Context where the instruction executes.
+   * @return Instruction stack.
    */
-  void executeAndRecord(IExecutionContext context);
-
-  /**
-   * Get instruction stack after execution.
-   *
-   * @return `null` if not executed.
-   */
-  List<Integer> getInstructionStack();
+  @Nullable
+  List<Integer> executeAndGetStack();
 
   boolean endAtCycle(int cycle);
 
-  boolean endAtCycle(IExecutionContext context);
+  boolean endAtCycle();
 
   List<IDispatchRecord> getDependencies();
 

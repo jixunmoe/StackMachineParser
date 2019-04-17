@@ -2,12 +2,11 @@ package uk.jixun.project.Simulator;
 
 import uk.jixun.project.OpCode.ISmOpCode;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
+import java.util.logging.Logger;
 
 public class SimulatorContext extends AbstractExecutionContext {
+  private final static Logger logger = Logger.getLogger(SimulatorContext.class.getName());
   private ArrayList<Integer> memory;
   private Stack<Integer> stack;
 
@@ -68,7 +67,14 @@ public class SimulatorContext extends AbstractExecutionContext {
 
       // If previous instruction produces any result, use it.
       if (produces > 0) {
-        List<Integer> prevStack = record.getInstructionStack();
+        List<Integer> prevStack = record.executeAndGetStack();
+        if (prevStack == null) {
+          logger.warning(
+            "Could not resolve stack: " +
+            "execution of instruction " + record.getInstruction().toAssembly() + " failed."
+          );
+          return Collections.emptyList();
+        }
 
         // It should satisfy "produces" number of params.
         size -= produces;

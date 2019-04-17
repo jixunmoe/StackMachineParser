@@ -5,10 +5,7 @@ import uk.jixun.project.Exceptions.LabelNotFoundException;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Program.NodeGraph.ISmProgramGraph;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MockProgram implements ISmProgram {
   private List<ISmInstruction> instructions;
@@ -36,6 +33,11 @@ public class MockProgram implements ISmProgram {
   @Override
   public void addInstruction(ISmInstruction instruction) {
     instructions.add(instruction);
+  }
+
+  public MockProgram add(ISmInstruction ...instructions) {
+    this.instructions.addAll(Arrays.asList(instructions));
+    return this;
   }
 
   @Override

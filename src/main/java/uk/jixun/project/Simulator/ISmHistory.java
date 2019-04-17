@@ -1,6 +1,6 @@
 package uk.jixun.project.Simulator;
 
-import jdk.internal.jline.internal.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 

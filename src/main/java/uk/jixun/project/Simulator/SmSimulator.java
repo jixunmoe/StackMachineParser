@@ -136,7 +136,7 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
         // were depended by current instruction.
         canFulfill = canFulfill && history.stream()
           // Only keep the one executes in this cycle.
-          .filter(x -> !x.isFinished(ctx))
+          .filter(x -> !x.isFinished())
           .noneMatch(record::depends);
 
         // If the instruction can't be fulfilled, don't schedule it (yet).
@@ -185,8 +185,8 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
     }
 
     history.stream()
-      .filter(record -> record.endAtCycle(cycle) && !record.executed())
-      .forEach(record -> record.executeAndRecord(ctx));
+      .filter(record -> record.endAtCycle(cycle))
+      .forEach(IDispatchRecord::executeAndGetStack);
 
     ctx.nextCycle();
 
