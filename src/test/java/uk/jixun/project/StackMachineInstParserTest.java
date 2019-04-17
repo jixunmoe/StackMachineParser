@@ -35,13 +35,13 @@ class StackMachineInstParserTest {
     assertTrue(inst instanceof CommentInstruction);
 
     inst = parser.next();
-    assertEquals(SmOpCodeEnum.POP_REGISTER_DEC, inst.getOpCode().getOpCodeId());
+    assertEquals(SmOpCodeEnum.PUSH_REGISTER_DEC, inst.getOpCode().getOpCodeId());
     assertEquals(SmRegister.XP, inst.getOpCode().getRegisterVariant());
     assertEquals(0, inst.getOpCode().getVariant());
     assertEquals(0, inst.getOperandCount());
 
     inst = parser.next();
-    assertEquals(SmOpCodeEnum.PUSH_REGISTER_DEC, inst.getOpCode().getOpCodeId());
+    assertEquals(SmOpCodeEnum.POP_REGISTER_DEC, inst.getOpCode().getOpCodeId());
     assertEquals(SmRegister.YP, inst.getOpCode().getRegisterVariant());
     assertEquals(0, inst.getOpCode().getVariant());
     assertEquals(0, inst.getOperandCount());

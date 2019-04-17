@@ -13,7 +13,7 @@ class SmOpcodeParserTest {
   @ParameterizedTest(name = "should parse {0} correctly => {1}-{2}-{3}")
   @CsvSource({
     "ADD, ADD, 0, NONE",
-    "@[XP++], POP_REGISTER_INC, 0, XP",
+    "@[XP++], PUSH_REGISTER_INC, 0, XP",
     "COPY3, COPY, 3, NONE",
     "COPY4, COPY, 4, NONE",
   })
