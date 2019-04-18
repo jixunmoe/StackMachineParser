@@ -1,8 +1,18 @@
 package uk.jixun.project.Simulator;
 
+import uk.jixun.project.Register.SmRegister;
+
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public interface IExecutionContext extends IMemoryModel {
+  /**
+   * Get a specific register.
+   * @param register register.
+   * @return Given register.
+   */
+  AtomicInteger getRegister(SmRegister register);
+
   /**
    * Set stack value.
    *

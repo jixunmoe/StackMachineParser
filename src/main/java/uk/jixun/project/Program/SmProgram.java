@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SmProgram implements ISmProgram {
+  private static final int sysCallBaseAddress = 0x10000;
   private final Object lock = new Object();
   private List<ISmInstruction> instructions = new ArrayList<>();
   private HashMap<String, Long> labelMapping = new HashMap<>();
@@ -56,10 +57,7 @@ public class SmProgram implements ISmProgram {
   }
 
   @Override
-  public void registerLabel(String label, long address) throws LabelDuplicationException {
-    if (labelMapping.containsKey(label)) {
-      throw new LabelDuplicationException(label);
-    }
+  public void registerLabel(String label, long address) {
     labelMapping.put(label, address);
   }
 
@@ -77,5 +75,15 @@ public class SmProgram implements ISmProgram {
     ISmProgramGraph graph = new SmDependencyGraph();
     graph.setProgram(this);
     return graph;
+  }
+
+  @Override
+  public void registerSysCall(String name, int sysCallId) {
+    registerLabel(name, sysCallBaseAddress | sysCallId);
+  }
+
+  @Override
+  public boolean isSysCall(int address) {
+    return (sysCallBaseAddress & address) == sysCallBaseAddress;
   }
 }

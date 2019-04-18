@@ -16,23 +16,27 @@ import uk.jixun.project.Program.SmProgram;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
  * Parsing a stream of asm code text.
  */
 public class StackMachineInstParser {
-  long virtualAddress = 0;
-  long lineNumber = 0;
+  private static Logger logger = Logger.getLogger(StackMachineInstParser.class.getName());
+
+  private long virtualAddress = 0;
+  private long lineNumber = 0;
   private SmProgram program = new SmProgram();
   private Scanner source;
   private ArrayList<ISmInstruction> results = new ArrayList<>();
 
   public StackMachineInstParser(Scanner scanner) {
     source = scanner;
+    program.registerSysCall("Allocate", 1);
   }
 
-  private boolean parseInstruction(String line) throws LabelDuplicationException {
+  private boolean parseInstruction(String line) {
     boolean skipWhiteSpace = true;
     StringBuilder buffer = new StringBuilder();
     String opcodeStr = "";
@@ -56,13 +60,13 @@ public class StackMachineInstParser {
 
             buffer = new StringBuilder();
             skipWhiteSpace = true;
-          } else if (c == '#') {
+          } else if (c == '#' || c == ';') {
+            opcodeStr = buffer.toString();
+            buffer = new StringBuilder();
+
             // Is a comment
-            ISmInstruction instruction = new CommentInstruction(line.substring(i + 1));
-            instruction.setLine(lineNumber);
-            instruction.setVirtualAddress(virtualAddress);
-            results.add(instruction);
-            return true;
+            state = ParseInstructionState.Comment;
+            continue;
           } else if (ParseHelper.isWhiteSpace(c)) {
             skipWhiteSpace = true;
 
@@ -77,9 +81,21 @@ public class StackMachineInstParser {
           if (ParseHelper.isWhiteSpace(c)) {
             operandsStr.add(buffer.toString());
             buffer = new StringBuilder();
+          } else if (c == '#' || c == ';') {
+            operandsStr.add(buffer.toString());
+            state = ParseInstructionState.Comment;
+            continue;
           } else {
             buffer.append(c);
           }
+          break;
+        case Comment:
+          ISmInstruction instruction = new CommentInstruction(line.substring(i));
+          instruction.setLine(lineNumber);
+          instruction.setVirtualAddress(virtualAddress);
+          // FIXME: Add comment to the program not as an instruction.
+          // results.add(instruction);
+          i += line.length();
           break;
         default:
           break;
@@ -87,19 +103,15 @@ public class StackMachineInstParser {
     }
 
     if (state == ParseInstructionState.Opcode) {
-      opcodeStr = buffer.toString();
+      opcodeStr = buffer.toString().strip();
+    } else if (state == ParseInstructionState.Operand) {
+      operandsStr.add(buffer.toString());
+    }
 
-      // Check for empty line
-      if (opcodeStr.length() == 0) {
-        // results.add(new NoInstruction());
-        return true;
-      }
-    } else {
-      // state == ParseInstructionState.Operand
-      // If there's anything in the buffer that can be an operand
-      if (buffer.length() > 0) {
-        operandsStr.add(buffer.toString());
-      }
+    // Check for empty line
+    if (opcodeStr.length() == 0) {
+      // results.add(new NoInstruction());
+      return true;
     }
 
     // Initialise instruction object
@@ -114,6 +126,9 @@ public class StackMachineInstParser {
     // Convert operands to nodes
     List<ISmOperand> operands = operandsStr
       .stream()
+      // Remove any empty operands
+      .map(String::stripTrailing)
+      .filter(s -> !s.isEmpty())
       .map((String operandStr) -> SmOperandParser.parse(operandStr, instruction))
       .collect(Collectors.toList());
     instruction.setOperands(operands);
@@ -126,7 +141,7 @@ public class StackMachineInstParser {
   }
 
   public boolean hasNext() {
-    return source.hasNext();
+    return source.hasNext() || results.size() > 0;
   }
 
   public ISmInstruction next() throws LabelDuplicationException, ParseException {
@@ -150,6 +165,6 @@ public class StackMachineInstParser {
   }
 
   private enum ParseInstructionState {
-    Opcode, Operand
+    Opcode, Operand, Comment
   }
 }

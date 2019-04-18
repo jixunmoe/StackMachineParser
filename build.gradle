@@ -10,7 +10,7 @@ tasks.withType(JavaCompile) {
 
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 11.0
 
 repositories {
     mavenCentral()

@@ -119,6 +119,10 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
     return result.toString();
   }
 
+  public String toAssemblyWithAddress(int prefix) {
+    return String.format("%0" + prefix + "d: l %0" + prefix + "d: %s", getVirtualAddress(), getLine(), toAssembly());
+  }
+
   @Override
   public void setOperand(int index, ISmOperand operand) throws OutOfRangeOperand {
     if (index < getOperandCount()) {

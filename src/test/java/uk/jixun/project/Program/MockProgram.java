@@ -46,7 +46,7 @@ public class MockProgram implements ISmProgram {
   }
 
   @Override
-  public void registerLabel(String label, long address) throws LabelDuplicationException {
+  public void registerLabel(String label, long address) {
     mapping.put(label, address);
   }
 
@@ -58,5 +58,15 @@ public class MockProgram implements ISmProgram {
   @Override
   public ISmProgramGraph createGraph() {
     return null;
+  }
+
+  @Override
+  public void registerSysCall(String name, int sysCallId) {
+
+  }
+
+  @Override
+  public boolean isSysCall(int address) {
+    return false;
   }
 }

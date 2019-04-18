@@ -19,9 +19,23 @@ public interface ISmProgram {
 
   Map<String, Long> getLabelMapping();
 
-  void registerLabel(String label, long address) throws LabelDuplicationException;
+  void registerLabel(String label, long address);
 
   long resolveLabel(String label) throws LabelNotFoundException;
 
   ISmProgramGraph createGraph();
+
+  /**
+   * Register sys call label.
+   * @param name SysCall Name
+   * @param sysCallId SysCall function id.
+   */
+  void registerSysCall(String name, int sysCallId);
+
+  /**
+   * Check if given address is syscall
+   * @param address Address to check
+   * @return {@code true} if this is an syscall.
+   */
+  boolean isSysCall(int address);
 }

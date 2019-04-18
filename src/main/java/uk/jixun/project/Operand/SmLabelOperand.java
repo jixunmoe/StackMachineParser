@@ -24,7 +24,11 @@ public class SmLabelOperand extends SmBasicOperandAbstract {
   @Override
   public int resolve(IExecutionContext ctx) {
     // Nothing to resolve.
-    return 0;
+    try {
+      return (int) resolveAddress();
+    } catch (LabelNotFoundException e) {
+      return 0;
+    }
   }
 
   public String getLabel() {
@@ -37,5 +41,17 @@ public class SmLabelOperand extends SmBasicOperandAbstract {
 
   public long resolveAddress() throws LabelNotFoundException {
     return this.getInstruction().getProgram().resolveLabel(label);
+  }
+
+  @Override
+  public String toAssembly() {
+    String resolvedAddress;
+    try {
+      resolvedAddress = String.valueOf(resolveAddress());
+    } catch (LabelNotFoundException ex) {
+      resolvedAddress = "<UNKNOWN>";
+    }
+
+    return "<label(" + label + ": " + resolvedAddress + ")>";
   }
 }

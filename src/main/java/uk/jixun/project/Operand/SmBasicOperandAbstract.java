@@ -14,7 +14,11 @@ public abstract class SmBasicOperandAbstract implements ISmOperand {
 
   @Override
   public void setValue(Object val) {
-    this.value = (long) val;
+    if (val instanceof Integer) {
+      this.value = Long.valueOf((Integer) val);
+    } else {
+      this.value = (long) val;
+    }
   }
 
   @Override

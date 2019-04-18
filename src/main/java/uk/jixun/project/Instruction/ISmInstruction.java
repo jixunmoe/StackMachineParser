@@ -64,6 +64,13 @@ public interface ISmInstruction {
    */
   String toAssembly();
 
+  /**
+   * Convert instruction to assembly code representation (not byte code)
+   * @param prefix Size of the address in front of the code.
+   * @return Compiled assembly code.
+   */
+  String toAssemblyWithAddress(int prefix);
+
   ISmProgram getProgram();
 
   void setProgram(ISmProgram program);
