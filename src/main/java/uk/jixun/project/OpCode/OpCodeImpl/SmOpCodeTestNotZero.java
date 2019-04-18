@@ -10,4 +10,9 @@ public class SmOpCodeTestNotZero extends SmOpCodeTestNotZeroAbstract {
     int value = stack.pop();
     ctx.setJumpFlag(value != 0);
   }
+
+  @Override
+  public String toAssembly() {
+    return "TEST: IF NOT ZERO";
+  }
 }

@@ -17,4 +17,9 @@ public class SmOpCodePushFrameAddr extends SmOpCodePushFrameAddrAbstract {
 
     stack.push(value);
   }
+
+  @Override
+  public String toAssembly() {
+    return "PUSH  FP+";
+  }
 }

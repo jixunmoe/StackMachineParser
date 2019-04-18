@@ -9,4 +9,9 @@ public class SmOpCodePushExtend extends SmOpCodePushExtendAbstract {
   public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) throws Exception {
     stack.push(getInstruction().getOperand(0).resolve(ctx));
   }
+
+  @Override
+  public String toAssembly() {
+    return "PUSH";
+  }
 }

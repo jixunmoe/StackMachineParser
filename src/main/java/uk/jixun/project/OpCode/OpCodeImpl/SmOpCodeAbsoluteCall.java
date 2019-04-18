@@ -23,4 +23,9 @@ public class SmOpCodeAbsoluteCall extends SmOpCodeAbsoluteCallAbstract {
     int functionAddress = operand.resolve(ctx);
     ctx.setEip(functionAddress);
   }
+
+  @Override
+  public String toAssembly() {
+    return "CALL ";
+  }
 }

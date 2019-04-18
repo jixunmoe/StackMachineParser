@@ -10,4 +10,9 @@ public class SmOpCodeTestNegative extends SmOpCodeTestNegativeAbstract {
     int value = stack.pop();
     ctx.setJumpFlag(value < 0);
   }
+
+  @Override
+  public String toAssembly() {
+    return "TEST: IF NEGATIVE (< 0)";
+  }
 }

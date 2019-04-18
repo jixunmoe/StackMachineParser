@@ -11,4 +11,9 @@ public class SmOpCodeTestNeq extends SmOpCodeTestNeqAbstract {
     int param1 = stack.pop();
     ctx.setJumpFlag(param1 != param2);
   }
+
+  @Override
+  public String toAssembly() {
+    return "TEST: IF NOT EQUAL";
+  }
 }

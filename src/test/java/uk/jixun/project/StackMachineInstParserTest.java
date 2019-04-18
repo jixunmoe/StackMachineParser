@@ -36,9 +36,9 @@ class StackMachineInstParserTest {
     assertEquals(1, inst.getOperandCount());
     assertEquals("start", ((SmLabelOperand) inst.getOperand(0)).getLabel());
 
-    inst = parser.next();
-    assertEquals(SmOpCodeEnum.NONE, inst.getOpCode().getOpCodeId());
-    assertTrue(inst instanceof CommentInstruction);
+//    inst = parser.next();
+//    assertEquals(SmOpCodeEnum.NONE, inst.getOpCode().getOpCodeId());
+//    assertTrue(inst instanceof CommentInstruction);
 
     inst = parser.next();
     assertEquals(SmOpCodeEnum.PUSH_REGISTER_DEC, inst.getOpCode().getOpCodeId());

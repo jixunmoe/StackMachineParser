@@ -24,4 +24,9 @@ public class SmOpCodeCondAbsoluteJump extends SmOpCodeCondAbsoluteJumpAbstract {
     int functionAddress = operand.resolve(ctx);
     ctx.setEip(functionAddress);
   }
+
+  @Override
+  public String toAssembly() {
+    return "JMP?";
+  }
 }

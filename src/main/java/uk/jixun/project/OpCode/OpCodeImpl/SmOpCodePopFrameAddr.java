@@ -19,4 +19,9 @@ public class SmOpCodePopFrameAddr extends SmOpCodePopFrameAddrAbstract {
     int value = stack.pop();
     ctx.write(address, value);
   }
+
+  @Override
+  public String toAssembly() {
+    return "STORE  FP+";
+  }
 }

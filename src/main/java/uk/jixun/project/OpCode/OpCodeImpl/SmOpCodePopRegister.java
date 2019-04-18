@@ -24,4 +24,13 @@ public class SmOpCodePopRegister extends SmOpCodePopRegisterAbstract {
       ctx.getRegister(reg).set(stack.pop());
     }
   }
+
+  @Override
+  public String toAssembly() {
+    if (getRegisterVariant() == SmRegister.NOS) {
+      return "STORE";
+    }
+
+    return super.toAssembly();
+  }
 }

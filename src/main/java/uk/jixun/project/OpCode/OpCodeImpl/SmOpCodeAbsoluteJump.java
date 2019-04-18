@@ -14,4 +14,9 @@ public class SmOpCodeAbsoluteJump extends SmOpCodeAbsoluteJumpAbstract {
       outOfRangeOperand.printStackTrace();
     }
   }
+
+  @Override
+  public String toAssembly() {
+    return "JMP ";
+  }
 }

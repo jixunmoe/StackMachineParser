@@ -12,4 +12,9 @@ public class SmOpCodeTestPositive extends SmOpCodeTestPositiveAbstract {
     int value = stack.pop();
     ctx.setJumpFlag(value >= 0);
   }
+
+  @Override
+  public String toAssembly() {
+    return "TEST: IF POSITIVE (>= 0)";
+  }
 }
