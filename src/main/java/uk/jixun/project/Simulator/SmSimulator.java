@@ -1,6 +1,5 @@
 package uk.jixun.project.Simulator;
 
-import com.google.common.base.Throwables;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Program.ISmProgram;
 import uk.jixun.project.SimulatorConfig.ISimulatorConfig;
@@ -8,13 +7,12 @@ import uk.jixun.project.Util.FifoList;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SmSimulator implements ISmSimulator, ISmHistory {
+public class SmSimulator implements ISmSimulator {
   private static Logger logger = Logger.getLogger(SmSimulator.class.getName());
+  private final SmHistory history;
 
   private int aluLimit;
   private int ramLimit;
@@ -26,7 +24,6 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
   private int stackBalance = 0;
 
   private ISmProgram program;
-  private List<IDispatchRecord> history = new LinkedList<>();
   private AtomicInteger exeId = new AtomicInteger(0);
 
   /**
@@ -39,7 +36,8 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
   public SmSimulator() {
     // Initialise context.
     context = new SimulatorContext();
-    context.setHistory(this);
+    history = new SmHistory();
+    context.setHistory(history);
   }
 
   @Override
@@ -68,7 +66,7 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
 
     // Calculate current available ALU and ram port.
     int cycle = ctx.getCurrentCycle();
-    Stream<IDispatchRecord> executeStream = history.stream()
+    Stream<IDispatchRecord> executeStream = history
       .filter(record -> record.executesAt(cycle));
 
     // Get the available resource counts
@@ -134,7 +132,7 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
 
         // Can only fulfill if none of executing instructions
         // were depended by current instruction.
-        canFulfill = canFulfill && history.stream()
+        canFulfill = canFulfill && history
           // Only keep the one executes in this cycle.
           .filter(x -> !x.isFinished())
           .noneMatch(record::depends);
@@ -153,7 +151,7 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
           r.setCycleStart(cycle);
           r.setCycleEnd(cycle + record.getInstruction().getCycleTime());
         } else {
-          System.out.println("record is not an instance of DispatchRecord!");
+          logger.warning("record is not an instance of DispatchRecord!");
         }
 
         // Remove from the queue, and decrease the index to sync index.
@@ -173,10 +171,7 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
       }
 
       // Sync with stack.
-      IDispatchRecord record = history
-        .stream()
-        .max(Comparator.comparing(IDispatchRecord::getExecutionId))
-        .orElse(null);
+      IDispatchRecord record = history.getLastRecord();
       assert record != null;
 
       List<Integer> subStack = ctx.resolveStack(0, record.getExecutionId(), stackBalance);
@@ -184,59 +179,12 @@ public class SmSimulator implements ISmSimulator, ISmHistory {
       ctx.push(subStack);
     }
 
-    history.stream()
+    history
       .filter(record -> record.endAtCycle(cycle))
       .forEach(IDispatchRecord::executeAndGetStack);
 
     ctx.nextCycle();
 
     return results;
-  }
-
-  @Override
-  public List<IDispatchRecord> getDispatchHistory() {
-    return history;
-  }
-
-  @Override
-  public List<IDispatchRecord> getSortedHistoryBetween(int start, int end) {
-    if (start > end) {
-      logger.info("getSortedHistoryBetween: start is later then end, swap two around.");
-      if (logger.isLoggable(Level.FINER)) {
-        logger.fine(Throwables.getStackTraceAsString(new Exception()));
-      }
-      return getSortedHistoryBetween(end, start);
-    }
-
-    return Stream
-      .concat(history.stream(), queuedInst.stream())
-      .filter(x -> x.getExecutionId() >= start && x.getExecutionId() <= end)
-      .sorted(Comparator.comparing(IDispatchRecord::getExecutionId))
-      .collect(Collectors.toList());
-  }
-
-  @Override
-  public List<IDispatchRecord> getHistoryBetween(IDispatchRecord a, IDispatchRecord b) {
-    if (a == null || b == null) {
-      logger.log(Level.WARNING, "param for getHistoryBetween() contains null.");
-      if (logger.isLoggable(Level.FINER)) {
-        logger.fine(Throwables.getStackTraceAsString(new Exception()));
-      }
-      return null;
-    }
-
-    int start = a.getExecutionId();
-    int end = b.getExecutionId();
-
-    return getSortedHistoryBetween(start, end);
-  }
-
-  @Override
-  public IDispatchRecord getRecordAt(int exeId) {
-    return history
-      .stream()
-      .filter(x -> x.getExecutionId() == exeId)
-      .findFirst()
-      .orElse(null);
   }
 }

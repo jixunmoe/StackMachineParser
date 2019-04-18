@@ -3,6 +3,8 @@ package uk.jixun.project.Simulator;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public interface ISmHistory {
   /**
@@ -31,4 +33,7 @@ public interface ISmHistory {
    */
   @Nullable
   IDispatchRecord getRecordAt(int exeId);
+
+  IDispatchRecord getLastRecord();
+  Stream<IDispatchRecord> filter(Predicate<? super IDispatchRecord> predicate);
 }

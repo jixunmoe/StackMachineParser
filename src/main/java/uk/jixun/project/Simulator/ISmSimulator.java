@@ -23,6 +23,4 @@ public interface ISmSimulator {
    * @return Dispatched instructions in this cycle, that were not dispatched earlier.
    */
   List<IDispatchRecord> dispatch();
-
-  List<IDispatchRecord> getDispatchHistory();
 }
