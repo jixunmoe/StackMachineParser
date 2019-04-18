@@ -3,7 +3,10 @@ package uk.jixun.project.OpCode;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Register.SmRegister;
 
+import java.util.logging.Logger;
+
 public abstract class AbstractBasicOpCode implements ISmOpCode {
+  protected static Logger logger = Logger.getLogger(AbstractBasicOpCode.class.getName());
   protected int variant = 0;
   protected SmRegister regVariant = SmRegister.NONE;
   protected ISmInstruction instruction;

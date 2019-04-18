@@ -5,10 +5,10 @@ import uk.jixun.project.Simulator.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
 public class SmOpCodePushRegisterDec extends SmOpCodePushRegisterDecAbstract {
-  // TODO: Override any opcode specific methods here.
-
   @Override
   public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) throws Exception {
-    throw new Exception("not implemented");
+    // load value at register and decrement register
+    int reg = ctx.getRegister(getRegisterVariant()).getAndDecrement();
+    stack.push(ctx.read(reg));
   }
 }

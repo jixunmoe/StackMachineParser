@@ -1,6 +1,7 @@
 package uk.jixun.project.OpCode.OpCodeImpl;
 
 import uk.jixun.project.OpCode.OpCodeAbs.SmOpCodePopRegisterAbstract;
+import uk.jixun.project.Register.SmRegister;
 import uk.jixun.project.Simulator.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
@@ -9,6 +10,18 @@ public class SmOpCodePopRegister extends SmOpCodePopRegisterAbstract {
 
   @Override
   public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) throws Exception {
-    throw new Exception("not implemented");
+    SmRegister reg = getRegisterVariant();
+
+    if (reg == SmRegister.NOS) {
+      int data = stack.pop();
+      int addr = stack.pop();
+      ctx.write(addr, data);
+    } else if (reg == SmRegister.TOS) {
+      int addr = stack.pop();
+      int data = stack.pop();
+      ctx.write(addr, data);
+    } else {
+      ctx.getRegister(reg).set(stack.pop());
+    }
   }
 }

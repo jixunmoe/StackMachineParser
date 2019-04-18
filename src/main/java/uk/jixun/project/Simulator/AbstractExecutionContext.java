@@ -1,13 +1,59 @@
 package uk.jixun.project.Simulator;
 
+import uk.jixun.project.Register.SmRegister;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractExecutionContext implements IExecutionContext {
+  private final static int memoryCapacity = 0x4000;
   private ISmHistory history;
   private AtomicInteger eip = new AtomicInteger(0);
   private AtomicInteger cycle = new AtomicInteger(0);
   private AtomicBoolean jumpFlag = new AtomicBoolean(false);
+  private ArrayList<Integer> memory = new ArrayList<>(memoryCapacity);
+  private final Map<SmRegister, AtomicInteger> registers = setupRegisters();
+
+  private static Map<SmRegister, AtomicInteger> setupRegisters() {
+    Map<SmRegister, AtomicInteger> registers = new HashMap<>();
+    registers.put(SmRegister.FP, new AtomicInteger(memoryCapacity - 1));
+    registers.put(SmRegister.SP, new AtomicInteger(memoryCapacity - 0x1000));
+    return registers;
+  }
+
+  @Override
+  public int read(int address) {
+    return memory.get(address);
+  }
+
+  @Override
+  public void write(int address, int value) {
+    memory.set(address, value);
+  }
+
+  @Override
+  public AtomicInteger getRegister(SmRegister register) {
+    // NOS is an alias of TOS-1
+    if (register == SmRegister.NOS) {
+      return new AtomicInteger(getRegister(SmRegister.TOS).get() - 1);
+    }
+
+    // TOS is really SP.
+    if (register == SmRegister.TOS) {
+      return getRegister(SmRegister.SP);
+    }
+
+    synchronized (registers) {
+      if (!registers.containsKey(register)) {
+        registers.put(register, new AtomicInteger(0));
+      }
+
+      return registers.get(register);
+    }
+  }
 
   @Override
   public int getEip() {

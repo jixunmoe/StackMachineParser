@@ -10,8 +10,12 @@ public class SmOpCodePopFrameAddr extends SmOpCodePopFrameAddrAbstract {
   public void evaluate(FifoList<Integer> stack, IExecutionContext ctx)
     throws OutOfRangeOperand {
 
+    // pop [fp + n], val
+    int fp = ctx.getRegister(getRegisterVariant()).get();
+    int offset = getInstruction().getOperand(0).resolve(ctx);
+    int address = fp + offset;
+
     // pop data from stack to operand 1
-    int address = getInstruction().getOperand(0).resolve(ctx);
     int value = stack.pop();
     ctx.write(address, value);
   }

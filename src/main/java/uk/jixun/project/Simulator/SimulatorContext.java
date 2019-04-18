@@ -7,23 +7,7 @@ import java.util.logging.Logger;
 
 public class SimulatorContext extends AbstractExecutionContext {
   private final static Logger logger = Logger.getLogger(SimulatorContext.class.getName());
-  private ArrayList<Integer> memory;
-  private Stack<Integer> stack;
-
-  public SimulatorContext() {
-    memory = new ArrayList<>(256);
-    stack = new Stack<>();
-  }
-
-  @Override
-  public int read(int address) {
-    return memory.get(address);
-  }
-
-  @Override
-  public void write(int address, int value) {
-    memory.set(address, value);
-  }
+  private Stack<Integer> stack = new Stack<>();
 
   @Override
   public void setStack(int offset, int value) {

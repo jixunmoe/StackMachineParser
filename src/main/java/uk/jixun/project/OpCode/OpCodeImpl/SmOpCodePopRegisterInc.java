@@ -5,10 +5,9 @@ import uk.jixun.project.Simulator.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
 public class SmOpCodePopRegisterInc extends SmOpCodePopRegisterIncAbstract {
-  // TODO: Override any opcode specific methods here.
-
   @Override
   public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) throws Exception {
-    throw new Exception("not implemented");
+    int reg = ctx.getRegister(getRegisterVariant()).getAndIncrement();
+    ctx.write(reg, stack.pop());
   }
 }

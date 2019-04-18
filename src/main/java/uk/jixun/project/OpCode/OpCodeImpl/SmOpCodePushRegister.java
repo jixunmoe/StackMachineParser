@@ -1,14 +1,18 @@
 package uk.jixun.project.OpCode.OpCodeImpl;
 
 import uk.jixun.project.OpCode.OpCodeAbs.SmOpCodePushRegisterAbstract;
+import uk.jixun.project.Register.SmRegister;
 import uk.jixun.project.Simulator.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
 public class SmOpCodePushRegister extends SmOpCodePushRegisterAbstract {
-  // TODO: Override any opcode specific methods here.
-
   @Override
   public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) throws Exception {
-    throw new Exception("not implemented");
+    SmRegister reg = getRegisterVariant();
+    if (reg == SmRegister.TOS) {
+      stack.push(ctx.read(stack.pop()));
+    } else {
+      stack.push(ctx.read(ctx.getRegister(reg).get()));
+    }
   }
 }
