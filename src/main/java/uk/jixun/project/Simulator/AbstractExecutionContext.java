@@ -22,6 +22,11 @@ public abstract class AbstractExecutionContext implements IExecutionContext {
   }
 
   @Override
+  public int resolveStack(int offset, int exeId) {
+    return resolveStack(offset, exeId, 1).get(0);
+  }
+
+  @Override
   public void incEip() {
     this.eip.incrementAndGet();
   }

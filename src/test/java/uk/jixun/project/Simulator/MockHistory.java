@@ -51,6 +51,12 @@ public class MockHistory implements ISmHistory {
     }
   }
 
+  public void add(IDispatchRecord ...records) {
+    for (IDispatchRecord inst : records) {
+      add(inst);
+    }
+  }
+
   public static MockHistory create() {
     return new MockHistory();
   }

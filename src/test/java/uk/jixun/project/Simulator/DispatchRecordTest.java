@@ -4,21 +4,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import uk.jixun.project.Instruction.MockInstruction;
+import uk.jixun.project.OpCode.MockOpCode;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static uk.jixun.project.Instruction.MockInstruction.createFromOpCode;
-import static uk.jixun.project.Simulator.MockOpCode.createDependencyTestOpCode;
+import static uk.jixun.project.OpCode.MockOpCode.createDependencyTestOpCode;
 
 import static org.junit.Assert.*;
 
 @DisplayName("DispatchRecord implementation test")
 class DispatchRecordTest {
   private MockExecutionContext mockContext = null;
+  private MockHistory mockHistory = null;
 
   @BeforeEach
   void setUp() {
+    mockHistory = new MockHistory();
     mockContext = new MockExecutionContext();
+    mockContext.setHistory(mockHistory);
   }
 
   @Test
@@ -57,8 +63,6 @@ class DispatchRecordTest {
   @Test
   @DisplayName("Indirect Dependency Resolve")
   void dependencyTestIndirect() {
-    MockHistory history = MockHistory.create();
-
     MockInstruction push1 = createFromOpCode(createDependencyTestOpCode(0, 1));
     MockInstruction push2 = createFromOpCode(createDependencyTestOpCode(0, 1));
     MockInstruction push3 = createFromOpCode(createDependencyTestOpCode(0, 1));
@@ -70,17 +74,12 @@ class DispatchRecordTest {
     MockDispatchRecord push3Record = MockDispatchRecord.createFromInstruction(push3);
     MockDispatchRecord incRecord = MockDispatchRecord.createFromInstruction(inc);
 
-    history.add(push1Record);
-    history.add(push2Record);
-    history.add(push3Record);
-    history.add(incRecord);
-
-    mockContext.setHistory(history);
+    mockHistory.add(push1Record, push2Record, push3Record, incRecord);
 
     DispatchRecord addRecord = new DispatchRecord();
     addRecord.setContext(mockContext);
     addRecord.setInst(add);
-    history.add(addRecord);
+    mockHistory.add(addRecord);
     List<IDispatchRecord> dependencies = addRecord.getDependencies();
 
     assertArrayEquals(
@@ -88,5 +87,26 @@ class DispatchRecordTest {
       new MockDispatchRecord[]{push2Record, incRecord},
       dependencies.toArray()
     );
+  }
+
+  @Test
+  @DisplayName("Execute virtual instruction")
+  void executeAndGetStack() {
+    mockContext.setStackResolver((offset, exeId, size) -> {
+      assertEquals("offset = 0", offset, 0);
+      assertEquals("exeId = 0", exeId, 1);
+      return new ArrayList<>(Arrays.asList(2, 4));
+    });
+
+    MockInstruction add = createFromOpCode(MockOpCode.createMockCalculation(2, 6));
+    DispatchRecord record = new DispatchRecord();
+    record.setContext(mockContext);
+    record.setInst(add);
+    record.setExecutionId(1);
+    assertFalse("should not be marked as executed", record.executed());
+
+    List<Integer> result = record.executeAndGetStack();
+    assert result != null;
+    assertArrayEquals("Result stack", new Integer[]{6}, result.toArray());
   }
 }

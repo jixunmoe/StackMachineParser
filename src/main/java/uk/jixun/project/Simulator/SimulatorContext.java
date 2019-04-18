@@ -36,11 +36,6 @@ public class SimulatorContext extends AbstractExecutionContext {
   }
 
   @Override
-  public int resolveStack(int offset, int exeId) {
-    return resolveStack(offset, exeId, 1).get(0);
-  }
-
-  @Override
   public List<Integer> resolveStack(int offset, int exeId, int size) {
     LinkedList<Integer> stack = new LinkedList<>();
 

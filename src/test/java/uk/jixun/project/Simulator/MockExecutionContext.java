@@ -6,6 +6,7 @@ import java.util.Stack;
 
 public class MockExecutionContext extends AbstractExecutionContext {
   private Stack<Integer> stack;
+  private StackResolver stackResolver = null;
 
   public MockExecutionContext() {
     stack = new Stack<>();
@@ -28,14 +29,13 @@ public class MockExecutionContext extends AbstractExecutionContext {
     return 0;
   }
 
-  @Override
-  public int resolveStack(int offset, int exeId) {
-    return 0;
+  public void setStackResolver(StackResolver stackResolver) {
+    this.stackResolver = stackResolver;
   }
 
   @Override
   public List<Integer> resolveStack(int offset, int exeId, int size) {
-    return null;
+    return stackResolver.resolve(offset, exeId, size);
   }
 
   @Override
@@ -61,5 +61,9 @@ public class MockExecutionContext extends AbstractExecutionContext {
   @Override
   public void write(int address, int value) {
 
+  }
+
+  public interface StackResolver {
+    List<Integer> resolve(int offset, int exeId, int size);
   }
 }

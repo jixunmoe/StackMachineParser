@@ -1,11 +1,14 @@
 package uk.jixun.project.Simulator;
 
 import uk.jixun.project.Instruction.ISmInstruction;
+import uk.jixun.project.Util.FifoList;
 
+import java.util.Collections;
 import java.util.List;
 
 public class MockDispatchRecord extends AbstractDispatchRecord {
   private List<IDispatchRecord> dependencies = null;
+  private FifoList<Integer> initialStack = new FifoList<>();
 
   @Override
   public IResourceUsage getResourceUsed() {
@@ -19,7 +22,13 @@ public class MockDispatchRecord extends AbstractDispatchRecord {
 
   @Override
   public List<Integer> executeAndGetStack() {
-    return null;
+    FifoList<Integer> stack = initialStack.copy();
+    try {
+      getInstruction().getOpCode().evaluate(stack, this.getContext());
+    } catch (Exception e) {
+      return Collections.emptyList();
+    }
+    return stack;
   }
 
   @Override

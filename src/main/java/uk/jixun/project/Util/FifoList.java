@@ -1,13 +1,23 @@
 package uk.jixun.project.Util;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.LinkedList;
+import java.util.List;
 
 public class FifoList<T> extends LinkedList<T> {
+  @SafeVarargs
   public static <T> FifoList<T> create(T... elements) {
     FifoList<T> result = new FifoList<T>();
     for (T v : elements) {
       result.push(v);
     }
+    return result;
+  }
+
+  public static <T> FifoList<T> fromList(List<T> src) {
+    FifoList<T> result = new FifoList<T>();
+    result.addAll(src);
     return result;
   }
 
@@ -75,5 +85,11 @@ public class FifoList<T> extends LinkedList<T> {
 
   public T get(int index) {
     return super.get(idx(size() + index));
+  }
+
+  public FifoList<T> copy() {
+    FifoList<T> result = new FifoList<>();
+    result.addAll(ImmutableList.copyOf(this));
+    return result;
   }
 }
