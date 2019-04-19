@@ -3,6 +3,7 @@ package uk.jixun.project.Program;
 import uk.jixun.project.Exceptions.LabelDuplicationException;
 import uk.jixun.project.Exceptions.LabelNotFoundException;
 import uk.jixun.project.Instruction.ISmInstruction;
+import uk.jixun.project.OpCode.SysCall.ISysCall;
 import uk.jixun.project.Program.NodeGraph.ISmProgramGraph;
 
 import java.util.List;
@@ -28,9 +29,9 @@ public interface ISmProgram {
   /**
    * Register sys call label.
    * @param name SysCall Name
-   * @param sysCallId SysCall function id.
+   * @param sysCall SysCall item
    */
-  void registerSysCall(String name, int sysCallId);
+  void registerSysCall(String name, ISysCall sysCall);
 
   /**
    * Check if given address is syscall
@@ -38,4 +39,6 @@ public interface ISmProgram {
    * @return {@code true} if this is an syscall.
    */
   boolean isSysCall(int address);
+
+  ISysCall getSysCall(int address);
 }

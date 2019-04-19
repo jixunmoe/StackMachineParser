@@ -145,4 +145,6 @@ public enum SmOpCodeEnum {
   // reg+; reg-; reg++; reg--
   REG_ADD, REG_SUB,
   REG_INC, REG_DEC,
+
+  SYS_CALL,
 }

@@ -3,6 +3,7 @@ package uk.jixun.project.Program;
 import uk.jixun.project.Exceptions.LabelDuplicationException;
 import uk.jixun.project.Exceptions.LabelNotFoundException;
 import uk.jixun.project.Instruction.ISmInstruction;
+import uk.jixun.project.OpCode.SysCall.ISysCall;
 import uk.jixun.project.Program.NodeGraph.ISmProgramGraph;
 
 import java.util.*;
@@ -61,12 +62,17 @@ public class MockProgram implements ISmProgram {
   }
 
   @Override
-  public void registerSysCall(String name, int sysCallId) {
+  public void registerSysCall(String name, ISysCall sysCall) {
 
   }
 
   @Override
   public boolean isSysCall(int address) {
     return false;
+  }
+
+  @Override
+  public ISysCall getSysCall(int address) {
+    return null;
   }
 }

@@ -24,5 +24,7 @@ public enum SmRegister {
   // icr and psw may be implemented as a combined single register (DWORD)
   // ICR: Interrupt ContRol Word
   // PSW: Processor Status Word
-  ICR, PSW
+  ICR, PSW,
+
+  ALLOC_REGISTER
 }
