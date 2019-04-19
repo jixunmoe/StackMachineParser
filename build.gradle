@@ -12,6 +12,13 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 11.0
 
+test {
+    useJUnitPlatform()
+    reports {
+        html.enabled = true
+    }
+}
+
 repositories {
     mavenCentral()
 }
