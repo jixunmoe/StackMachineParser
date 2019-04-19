@@ -16,6 +16,7 @@ package uk.jixun.project.OpCode.OpCodeAbs;
 import uk.jixun.project.OpCode.AbstractBasicOpCode;
 import uk.jixun.project.OpCode.SmOpCodeEnum;
 import uk.jixun.project.Register.SmRegister;
+import uk.jixun.project.Simulator.IExecutionContext;
 
 
 
@@ -67,7 +68,7 @@ public abstract class SmOpCodeCondAbsoluteJumpAbstract extends AbstractBasicOpCo
   }
 
   @Override
-  public int accessRamAddress() throws Exception {
+  public int resolveRamAddress(IExecutionContext ctx) throws Exception {
     return (int) getInstruction().getOperand(0).getValue();
   }
   @Override

@@ -51,7 +51,7 @@ public class SmNoOpCode extends AbstractBasicOpCode {
   }
 
   @Override
-  public int accessRamAddress() {
+  public int resolveRamAddress(IExecutionContext ctx) {
     return 0;
   }
 

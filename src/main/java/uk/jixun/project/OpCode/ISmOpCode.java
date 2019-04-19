@@ -55,7 +55,7 @@ public interface ISmOpCode {
 
   boolean isStaticRamAddress();
 
-  int accessRamAddress() throws Exception;
+  int resolveRamAddress(IExecutionContext ctx) throws Exception;
 
   // If this opcode indicates a branch
   boolean isBranch();

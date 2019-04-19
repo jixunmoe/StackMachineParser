@@ -23,4 +23,20 @@ public class SmOpCodePushFrameAddr extends SmOpCodePushFrameAddrAbstract {
   public String toAssembly() {
     return "PUSH  FP+";
   }
+
+  @Override
+  public boolean readRam() {
+    return true;
+  }
+
+  @Override
+  public boolean isStaticRamAddress() {
+    return false;
+  }
+
+  @Override
+  public int resolveRamAddress(IExecutionContext ctx) throws Exception {
+    return ctx.getRegister(SmRegister.FP).get()
+      + getInstruction().getOperand(0).resolve(ctx);
+  }
 }

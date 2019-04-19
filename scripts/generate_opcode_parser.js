@@ -53,6 +53,7 @@ ${editWarning}
 import uk.jixun.project.OpCode.AbstractBasicOpCode;
 import uk.jixun.project.OpCode.SmOpCodeEnum;
 import uk.jixun.project.Register.SmRegister;
+import uk.jixun.project.Simulator.IExecutionContext;
 
 ${!importHashMap ? '' : 'import java.util.HashMap;'}
 
@@ -147,7 +148,7 @@ code += `
   }
 
   @Override
-  public int accessRamAddress() throws Exception {
+  public int resolveRamAddress(IExecutionContext ctx) throws Exception {
     ${Object.keys(opcode.reg).map(reg => `
     if (getRegisterVariant() == SmRegister.${reg}) {
       ${(opcode.reg[reg].address === 'op1') ?
@@ -228,7 +229,7 @@ code += `
   }
 
   @Override
-  public int accessRamAddress() throws Exception {
+  public int resolveRamAddress(IExecutionContext ctx) throws Exception {
     ${opcode.Varients.map(v => `
     if (variant == ${v.id}) {
       ${(v.address === 'op1') ? 'return (int) getInstruction().getOperand(0).getValue();' : '' }
@@ -278,7 +279,7 @@ code += `
   }
 
   @Override
-  public int accessRamAddress() throws Exception {
+  public int resolveRamAddress(IExecutionContext ctx) throws Exception {
     return (int) getInstruction().getOperand(0).getValue();
   }
   @Override

@@ -15,7 +15,7 @@ public class MockOpCode extends AbstractBasicOpCode {
   private boolean readRam = false;
   private boolean writeRam = false;
   private boolean staticRamAddress = true;
-  private int accessRamAddress = 0;
+  private int resolveRamAddress = 0;
   private boolean isBranch = false;
   private int produce = 0;
   private int consume = 0;
@@ -68,8 +68,8 @@ public class MockOpCode extends AbstractBasicOpCode {
   }
 
   @Override
-  public int accessRamAddress() throws Exception {
-    return accessRamAddress;
+  public int resolveRamAddress(IExecutionContext ctx) throws Exception {
+    return resolveRamAddress;
   }
 
   @Override
@@ -103,8 +103,8 @@ public class MockOpCode extends AbstractBasicOpCode {
     this.staticRamAddress = staticRamAddress;
   }
 
-  public void setAccessRamAddress(int accessRamAddress) {
-    this.accessRamAddress = accessRamAddress;
+  public void setresolveRamAddress(int resolveRamAddress) {
+    this.resolveRamAddress = resolveRamAddress;
   }
 
   public void setBranch(boolean branch) {

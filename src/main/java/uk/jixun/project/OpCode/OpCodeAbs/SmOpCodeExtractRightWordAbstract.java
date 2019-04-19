@@ -16,6 +16,7 @@ package uk.jixun.project.OpCode.OpCodeAbs;
 import uk.jixun.project.OpCode.AbstractBasicOpCode;
 import uk.jixun.project.OpCode.SmOpCodeEnum;
 import uk.jixun.project.Register.SmRegister;
+import uk.jixun.project.Simulator.IExecutionContext;
 
 import java.util.HashMap;
 
@@ -109,7 +110,7 @@ public abstract class SmOpCodeExtractRightWordAbstract extends AbstractBasicOpCo
   }
 
   @Override
-  public int accessRamAddress() throws Exception {
+  public int resolveRamAddress(IExecutionContext ctx) throws Exception {
     
     if (variant == 1) {
       
