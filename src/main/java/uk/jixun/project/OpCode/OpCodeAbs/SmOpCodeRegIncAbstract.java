@@ -59,6 +59,16 @@ public abstract class SmOpCodeRegIncAbstract extends AbstractBasicOpCode {
   }
 
   @Override
+  public boolean isWriteFlag() {
+    return false;
+  }
+
+  @Override
+  public boolean isReadFlag() {
+    return false;
+  }
+
+  @Override
   public int getProduce() {
     return mapProduce.getOrDefault(getRegisterVariant(), 0);
   }

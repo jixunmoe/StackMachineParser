@@ -32,6 +32,16 @@ public abstract class SmOpCodePushIndirectRelativeAbstract extends AbstractBasic
   }
 
   @Override
+  public boolean isWriteFlag() {
+    return false;
+  }
+
+  @Override
+  public boolean isReadFlag() {
+    return false;
+  }
+
+  @Override
   public int getProduce() {
     return 1;
   }

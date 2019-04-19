@@ -32,6 +32,16 @@ public abstract class SmOpCodeCondRelativeCallAbstract extends AbstractBasicOpCo
   }
 
   @Override
+  public boolean isWriteFlag() {
+    return false;
+  }
+
+  @Override
+  public boolean isReadFlag() {
+    return true;
+  }
+
+  @Override
   public int getProduce() {
     return 0;
   }

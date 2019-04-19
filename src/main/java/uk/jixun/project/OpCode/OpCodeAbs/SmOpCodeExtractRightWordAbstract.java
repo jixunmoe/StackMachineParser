@@ -47,6 +47,16 @@ public abstract class SmOpCodeExtractRightWordAbstract extends AbstractBasicOpCo
   }
 
   @Override
+  public boolean isWriteFlag() {
+    return false;
+  }
+
+  @Override
+  public boolean isReadFlag() {
+    return false;
+  }
+
+  @Override
   public int getProduce() {
     return mapProduce.getOrDefault(getVariant(), 0);
   }

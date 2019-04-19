@@ -60,6 +60,9 @@ public interface ISmOpCode {
   // If this opcode indicates a branch
   boolean isBranch();
 
+  boolean isWriteFlag();
+  boolean isReadFlag();
+
   /**
    * Executes instruction on given stack.
    *

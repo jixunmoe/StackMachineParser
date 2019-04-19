@@ -89,7 +89,17 @@ code += `
 
   @Override
   public boolean isBranch() {
-    return ${b4s(opcode.braching)};
+    return ${b4s(opcode.branching)};
+  }
+
+  @Override
+  public boolean isWriteFlag() {
+    return ${b4s(opcode.flag === "write")};
+  }
+
+  @Override
+  public boolean isReadFlag() {
+    return ${b4s(opcode.flag === "read")};
   }
 `
 

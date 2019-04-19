@@ -32,6 +32,16 @@ public abstract class SmOpCodeTestNeqAbstract extends AbstractBasicOpCode {
   }
 
   @Override
+  public boolean isWriteFlag() {
+    return true;
+  }
+
+  @Override
+  public boolean isReadFlag() {
+    return false;
+  }
+
+  @Override
   public int getProduce() {
     return 0;
   }

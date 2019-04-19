@@ -1,6 +1,7 @@
 package uk.jixun.project.OpCode;
 
 
+
 // !!!                               !!!
 // !!!             STOP              !!!
 // !!!                               !!!
@@ -9,6 +10,7 @@ package uk.jixun.project.OpCode;
 
 // This file was generated using an automated script.
 // See 'scripts' directory for more information
+
 
 
 import uk.jixun.project.Exceptions.UnknownOpCodeException;
@@ -72,56 +74,56 @@ public class SmOpcodeParser {
     }
     if (
       "EXTRACT_RIGHT_BYTE".equals(opcode.substring(0, opcode.length() - 1))
-        && (lastChar == '1' || lastChar == '2' || lastChar == '3' || lastChar == '4')
+      && (lastChar == '1' || lastChar == '2' || lastChar == '3' || lastChar == '4')
     ) {
       return OpCodeFactory.create(SmOpCodeEnum.EXTRACT_RIGHT_BYTE,
         Character.getNumericValue(lastChar));
     }
     if (
       "EXTRACT_RIGHT_WORD".equals(opcode.substring(0, opcode.length() - 1))
-        && (lastChar == '1' || lastChar == '2')
+      && (lastChar == '1' || lastChar == '2')
     ) {
       return OpCodeFactory.create(SmOpCodeEnum.EXTRACT_RIGHT_WORD,
         Character.getNumericValue(lastChar));
     }
     if (
       "INSERT_BYTE".equals(opcode.substring(0, opcode.length() - 1))
-        && (lastChar == '1' || lastChar == '2' || lastChar == '3' || lastChar == '4')
+      && (lastChar == '1' || lastChar == '2' || lastChar == '3' || lastChar == '4')
     ) {
       return OpCodeFactory.create(SmOpCodeEnum.INSERT_BYTE,
         Character.getNumericValue(lastChar));
     }
     if (
       "INSERT_WORD".equals(opcode.substring(0, opcode.length() - 1))
-        && (lastChar == '1' || lastChar == '2')
+      && (lastChar == '1' || lastChar == '2')
     ) {
       return OpCodeFactory.create(SmOpCodeEnum.INSERT_WORD,
         Character.getNumericValue(lastChar));
     }
     if (
       "COPY".equals(opcode.substring(0, opcode.length() - 1))
-        && (lastChar == '1' || lastChar == '2' || lastChar == '3' || lastChar == '4')
+      && (lastChar == '1' || lastChar == '2' || lastChar == '3' || lastChar == '4')
     ) {
       return OpCodeFactory.create(SmOpCodeEnum.COPY,
         Character.getNumericValue(lastChar));
     }
     if (
       "DROP".equals(opcode.substring(0, opcode.length() - 1))
-        && (lastChar == '1' || lastChar == '2' || lastChar == '3' || lastChar == '4')
+      && (lastChar == '1' || lastChar == '2' || lastChar == '3' || lastChar == '4')
     ) {
       return OpCodeFactory.create(SmOpCodeEnum.DROP,
         Character.getNumericValue(lastChar));
     }
     if (
       "RSU".equals(opcode.substring(0, opcode.length() - 1))
-        && (lastChar == '2' || lastChar == '3' || lastChar == '4')
+      && (lastChar == '2' || lastChar == '3' || lastChar == '4')
     ) {
       return OpCodeFactory.create(SmOpCodeEnum.RSU,
         Character.getNumericValue(lastChar));
     }
     if (
       "RSD".equals(opcode.substring(0, opcode.length() - 1))
-        && (lastChar == '3' || lastChar == '4')
+      && (lastChar == '3' || lastChar == '4')
     ) {
       return OpCodeFactory.create(SmOpCodeEnum.RSD,
         Character.getNumericValue(lastChar));

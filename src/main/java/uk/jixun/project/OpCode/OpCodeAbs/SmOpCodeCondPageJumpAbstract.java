@@ -32,6 +32,16 @@ public abstract class SmOpCodeCondPageJumpAbstract extends AbstractBasicOpCode {
   }
 
   @Override
+  public boolean isWriteFlag() {
+    return false;
+  }
+
+  @Override
+  public boolean isReadFlag() {
+    return true;
+  }
+
+  @Override
   public int getProduce() {
     return 0;
   }

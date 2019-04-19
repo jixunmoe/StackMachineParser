@@ -61,6 +61,16 @@ public class SmNoOpCode extends AbstractBasicOpCode {
   }
 
   @Override
+  public boolean isWriteFlag() {
+    return false;
+  }
+
+  @Override
+  public boolean isReadFlag() {
+    return false;
+  }
+
+  @Override
   public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) throws Exception {
 
   }

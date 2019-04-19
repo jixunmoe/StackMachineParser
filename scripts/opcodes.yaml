@@ -186,38 +186,47 @@ opcodes:
 
   # Control & Compare
   - id: TEST_EQ
+    flag: write
     scan: TEQ
     consume: 2
     produce: 0
   - id: TEST_NEQ
+    flag: write
     scan: TNE
     consume: 2
     produce: 0
   - id: TEST_GT
+    flag: write
     scan: TGT
     consume: 2
     produce: 0
   - id: TEST_LT
+    flag: write
     scan: TLT
     consume: 2
     produce: 0
   - id: TEST_NEGATIVE
+    flag: write
     scan: TNV
     consume: 1
     produce: 0
   - id: TEST_POSITIVE
+    flag: write
     scan: TPV
     consume: 1
     produce: 0
   - id: TEST_NOT_ZERO
+    flag: write
     scan: TNZ
     consume: 1
     produce: 0
   - id: TEST_XP_ZERO
+    flag: write
     scan: TXPZ
     consume: 0
     produce: 0
   - id: TEST_YP_ZERO
+    flag: write
     scan: TYPZ
     consume: 0
     produce: 0
@@ -225,59 +234,65 @@ opcodes:
   # Unconditional
   - id: RELATIVE_JUMP
     scan: BP
-    braching: true
+    branching: true
     consume: 0
     produce: 0
   - id: ABSOLUTE_JUMP
     scan: BL
-    braching: true
+    branching: true
     consume: 0
     produce: 0
   - id: RELATIVE_CALL
     scan: CP
-    braching: true
+    branching: true
     consume: 0
     produce: 0
   - id: ABSOLUTE_CALL
     scan: CL
-    braching: true
+    branching: true
     consume: 0
     produce: 0
   - id: RETURN
     scan: EXIT
-    braching: true
+    branching: true
     consume: 1
     produce: 0
 
   # Conditional
   - id: COND_RELATIVE_JUMP
     scan: BCR
-    braching: true
+    branching: true
+    flag: read
     consume: 0
     produce: 0
   - id: COND_PAGE_JUMP
     scan: BCP
-    braching: true
+    branching: true
+    flag: read
     consume: 0
     produce: 0
   - id: COND_ABSOLUTE_JUMP
     scan: BCL
-    braching: true
+    branching: true
+    flag: read
     consume: 0
     produce: 0
   - id: COND_RELATIVE_CALL
     scan: CCP
-    braching: true
+    branching: true
+    flag: read
     consume: 0
     produce: 0
   - id: COND_ABSOLUTE_CALL
     scan: CCL
-    braching: true
+    branching: true
+    flag: read
     consume: 0
     produce: 0
   - id: COND_RETURN
     scan: "?EXIT"
-    braching: true
+    branching: true
+    flag: read
     consume: 1
     produce: 0
 
