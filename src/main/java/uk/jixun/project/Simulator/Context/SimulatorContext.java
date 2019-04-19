@@ -1,10 +1,9 @@
-package uk.jixun.project.Simulator;
+package uk.jixun.project.Simulator.Context;
 
 import uk.jixun.project.OpCode.IExecutable;
-import uk.jixun.project.OpCode.ISmOpCode;
+import uk.jixun.project.Simulator.DispatchRecord.IDispatchRecord;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 public class SimulatorContext extends AbstractExecutionContext {
   private Stack<Integer> stack = new Stack<>();
@@ -56,8 +55,8 @@ public class SimulatorContext extends AbstractExecutionContext {
             resolveRecord.toString(),
             record.toString()
           ));
+          assert false;
         }
-        assert record.executed();
         List<Integer> prevStack = record.executeAndGetStack();
         if (prevStack == null) {
           logger.warning(

@@ -3,7 +3,7 @@ package uk.jixun.project.OpCode.OpCodeImpl;
 import uk.jixun.project.Exceptions.OutOfRangeOperand;
 import uk.jixun.project.OpCode.OpCodeAbs.SmOpCodeCondRelativeJumpAbstract;
 import uk.jixun.project.Operand.ISmOperand;
-import uk.jixun.project.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
 public class SmOpCodeCondRelativeJump extends SmOpCodeCondRelativeJumpAbstract {

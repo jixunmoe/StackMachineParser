@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LazyCache<T> {
   private final AtomicBoolean cached = new AtomicBoolean(false);
+  private LazyCacheResolver<T> resolver = new LazyCacheResolver<>();
   private T cache = null;
 
   private GetResult<T> callback;
@@ -14,14 +15,18 @@ public class LazyCache<T> {
 
   public T get() {
     synchronized (cached) {
+      if (resolver.isDirty()) {
+        resolver.reset();
+        cached.set(false);
+      }
+
       if (!cached.getAndSet(true)) {
-        LazyCacheResolver<T> resolver = new LazyCacheResolver<>();
         callback.resolve(resolver);
         assert resolver.isResolved();
 
         if (resolver.isRejected()) {
           cached.set(false);
-        } else {
+        } else if (!resolver.isDirty()) {
           cache = resolver.getResult();
         }
       }

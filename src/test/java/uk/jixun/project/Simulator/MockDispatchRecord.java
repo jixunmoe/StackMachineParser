@@ -2,6 +2,8 @@ package uk.jixun.project.Simulator;
 
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.OpCode.IExecutable;
+import uk.jixun.project.Simulator.DispatchRecord.AbstractDispatchRecord;
+import uk.jixun.project.Simulator.DispatchRecord.IDispatchRecord;
 import uk.jixun.project.Util.FifoList;
 
 import java.util.Collections;
@@ -36,11 +38,6 @@ public class MockDispatchRecord extends AbstractDispatchRecord {
   @Override
   public List<IDispatchRecord> getDependencies() {
     return dependencies;
-  }
-
-  @Override
-  public boolean canResolveDependency() {
-    return true;
   }
 
   @Override

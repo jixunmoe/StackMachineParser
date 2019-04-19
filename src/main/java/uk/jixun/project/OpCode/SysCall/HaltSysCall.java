@@ -1,8 +1,8 @@
 package uk.jixun.project.OpCode.SysCall;
 
-import uk.jixun.project.OpCode.SmRegisterStatusEnum;
+import uk.jixun.project.OpCode.SmRegStatus;
 import uk.jixun.project.Register.SmRegister;
-import uk.jixun.project.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
 public class HaltSysCall extends AbstractSysCall {
@@ -47,7 +47,7 @@ public class HaltSysCall extends AbstractSysCall {
   }
 
   @Override
-  public SmRegisterStatusEnum getRegisterStatus() {
+  public SmRegStatus getRegisterStatus() {
     return null;
   }
 

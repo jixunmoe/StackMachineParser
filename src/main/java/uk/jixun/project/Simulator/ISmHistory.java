@@ -1,6 +1,7 @@
 package uk.jixun.project.Simulator;
 
 import org.jetbrains.annotations.Nullable;
+import uk.jixun.project.Simulator.DispatchRecord.IDispatchRecord;
 
 import java.util.List;
 import java.util.function.Predicate;

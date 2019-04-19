@@ -1,6 +1,6 @@
 package uk.jixun.project.OpCode;
 
-public enum SmRegisterStatusEnum {
+public enum SmRegStatus {
   /**
    * This instruction does not read or write register.
    */

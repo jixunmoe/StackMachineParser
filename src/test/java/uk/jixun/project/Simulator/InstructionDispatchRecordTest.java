@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import uk.jixun.project.Instruction.MockInstruction;
 import uk.jixun.project.OpCode.MockOpCode;
+import uk.jixun.project.Simulator.DispatchRecord.IDispatchRecord;
+import uk.jixun.project.Simulator.DispatchRecord.InstructionDispatchRecord;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,8 +17,8 @@ import static uk.jixun.project.OpCode.MockOpCode.createDependencyTestOpCode;
 
 import static org.junit.Assert.*;
 
-@DisplayName("DispatchRecord implementation test")
-class DispatchRecordTest {
+@DisplayName("InstructionDispatchRecord implementation test")
+class InstructionDispatchRecordTest {
   private MockExecutionContext mockContext = null;
   private MockHistory mockHistory = null;
 
@@ -47,7 +49,7 @@ class DispatchRecordTest {
 
     mockContext.setHistory(history);
 
-    DispatchRecord addRecord = new DispatchRecord();
+    InstructionDispatchRecord addRecord = new InstructionDispatchRecord();
     addRecord.setContext(mockContext);
     addRecord.setInst(add);
     history.add(addRecord);
@@ -76,7 +78,7 @@ class DispatchRecordTest {
 
     mockHistory.add(push1Record, push2Record, push3Record, incRecord);
 
-    DispatchRecord addRecord = new DispatchRecord();
+    InstructionDispatchRecord addRecord = new InstructionDispatchRecord();
     addRecord.setContext(mockContext);
     addRecord.setInst(add);
     mockHistory.add(addRecord);
@@ -99,7 +101,7 @@ class DispatchRecordTest {
     });
 
     MockInstruction add = createFromOpCode(MockOpCode.createMockCalculation(2, 6));
-    DispatchRecord record = new DispatchRecord();
+    InstructionDispatchRecord record = new InstructionDispatchRecord();
     record.setContext(mockContext);
     record.setInst(add);
     record.setExecutionId(1);

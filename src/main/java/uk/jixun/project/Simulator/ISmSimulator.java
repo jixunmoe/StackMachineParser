@@ -1,6 +1,8 @@
 package uk.jixun.project.Simulator;
 
 import uk.jixun.project.Program.ISmProgram;
+import uk.jixun.project.Simulator.DispatchRecord.IDispatchRecord;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 import uk.jixun.project.SimulatorConfig.ISimulatorConfig;
 
 import java.util.List;

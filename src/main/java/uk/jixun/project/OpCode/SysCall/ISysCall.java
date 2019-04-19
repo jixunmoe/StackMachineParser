@@ -1,7 +1,7 @@
 package uk.jixun.project.OpCode.SysCall;
 
 import uk.jixun.project.OpCode.IExecutable;
-import uk.jixun.project.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
 public interface ISysCall extends IExecutable {

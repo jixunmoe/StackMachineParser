@@ -1,6 +1,8 @@
-package uk.jixun.project.Simulator;
+package uk.jixun.project.Simulator.Context;
 
 import uk.jixun.project.Register.SmRegister;
+import uk.jixun.project.Simulator.IMemoryModel;
+import uk.jixun.project.Simulator.ISmHistory;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;

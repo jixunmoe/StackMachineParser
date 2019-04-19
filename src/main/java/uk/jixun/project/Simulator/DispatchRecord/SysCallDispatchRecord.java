@@ -1,9 +1,10 @@
-package uk.jixun.project.Simulator;
+package uk.jixun.project.Simulator.DispatchRecord;
 
 import org.jetbrains.annotations.Nullable;
 import uk.jixun.project.Helper.LazyCache;
 import uk.jixun.project.OpCode.IExecutable;
 import uk.jixun.project.OpCode.SysCall.ISysCall;
+import uk.jixun.project.Simulator.IResourceUsage;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,11 +33,6 @@ public class SysCallDispatchRecord extends AbstractDispatchRecord {
   @Override
   public List<IDispatchRecord> getDependencies() {
     return Collections.singletonList(getContext().getHistory().getLastRecord());
-  }
-
-  @Override
-  public boolean canResolveDependency() {
-    return true;
   }
 
   @Override

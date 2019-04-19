@@ -1,12 +1,17 @@
-package uk.jixun.project.Simulator;
+package uk.jixun.project.Simulator.DispatchRecord;
 
 import org.jetbrains.annotations.Nullable;
-import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.OpCode.IExecutable;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
+import uk.jixun.project.Simulator.IResourceUsage;
 
 import java.util.List;
 
 public interface IDispatchRecord {
+  void setCycleStart(int cycleStart);
+
+  void setCycleEnd(int cycleEnd);
+
   int getInstStartCycle();
 
   int getInstEndCycle();
@@ -63,6 +68,7 @@ public interface IDispatchRecord {
 
   boolean endAtCycle();
 
+  @Nullable
   List<IDispatchRecord> getDependencies();
 
   /**
@@ -73,7 +79,6 @@ public interface IDispatchRecord {
    * @return Check result, {@code true} if they do depends on.
    */
   boolean depends(IDispatchRecord record);
-  boolean canResolveDependency();
 
   boolean needSync();
 

@@ -54,9 +54,9 @@ public abstract class AbstractBasicOpCode implements ISmOpCode {
   }
 
   @Override
-  public SmRegisterStatusEnum getRegisterStatus() {
+  public SmRegStatus getRegisterStatus() {
     assert getRegisterVariant() == SmRegister.NONE;
-    return SmRegisterStatusEnum.NONE;
+    return SmRegStatus.NONE;
   }
 
   @Override
@@ -67,6 +67,10 @@ public abstract class AbstractBasicOpCode implements ISmOpCode {
 
   @Override
   public String toString() {
+    if (getInstruction() == null) {
+      return "<NONE>";
+    }
+
     return getInstruction().toAssemblyWithAddress(3);
   }
 

@@ -1,14 +1,10 @@
 package uk.jixun.project.OpCode;
 
-import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Register.SmRegister;
-import uk.jixun.project.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class MockOpCode extends AbstractBasicOpCode {
   private MockEvaluate evaluateFn = null;

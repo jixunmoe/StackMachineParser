@@ -1,6 +1,6 @@
 package uk.jixun.project.Operand;
 
-import uk.jixun.project.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 
 /**
  * Stack Machine Constant Operand.

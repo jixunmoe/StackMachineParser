@@ -1,7 +1,7 @@
 package uk.jixun.project.Operand;
 
 import uk.jixun.project.Instruction.ISmInstruction;
-import uk.jixun.project.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 
 public interface ISmOperand {
   // Get operand type

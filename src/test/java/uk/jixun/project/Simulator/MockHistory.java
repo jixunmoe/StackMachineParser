@@ -1,6 +1,7 @@
 package uk.jixun.project.Simulator;
 
 import uk.jixun.project.Instruction.ISmInstruction;
+import uk.jixun.project.Simulator.DispatchRecord.IDispatchRecord;
 
 public class MockHistory extends SmHistory {
   public void add(ISmInstruction ...instructions) {
@@ -9,7 +10,7 @@ public class MockHistory extends SmHistory {
     }
   }
 
-  public void add(IDispatchRecord ...records) {
+  public void add(IDispatchRecord...records) {
     for (IDispatchRecord inst : records) {
       add(inst);
     }

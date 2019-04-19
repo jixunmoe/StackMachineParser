@@ -1,8 +1,8 @@
 package uk.jixun.project.OpCode.SysCall;
 
-import uk.jixun.project.OpCode.SmRegisterStatusEnum;
+import uk.jixun.project.OpCode.SmRegStatus;
 import uk.jixun.project.Register.SmRegister;
-import uk.jixun.project.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
 public class AllocateSysCall extends AbstractSysCall {
@@ -47,8 +47,8 @@ public class AllocateSysCall extends AbstractSysCall {
   }
 
   @Override
-  public SmRegisterStatusEnum getRegisterStatus() {
-    return SmRegisterStatusEnum.WRITE;
+  public SmRegStatus getRegisterStatus() {
+    return SmRegStatus.WRITE;
   }
 
   @Override

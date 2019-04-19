@@ -1,7 +1,7 @@
 package uk.jixun.project.OpCode;
 
 import uk.jixun.project.Register.SmRegister;
-import uk.jixun.project.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
 public interface IExecutable {
@@ -32,7 +32,7 @@ public interface IExecutable {
   boolean isReadFlag();
 
   SmRegister getRegisterAccess();
-  SmRegisterStatusEnum getRegisterStatus();
+  SmRegStatus getRegisterStatus();
 
   /**
    * Executes instruction on given stack.

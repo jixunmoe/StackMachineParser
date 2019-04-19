@@ -1,5 +1,7 @@
 package uk.jixun.project.Simulator;
 
+import uk.jixun.project.Simulator.DispatchRecord.IDispatchRecord;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

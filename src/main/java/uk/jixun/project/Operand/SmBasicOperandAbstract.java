@@ -4,7 +4,7 @@ import uk.jixun.project.Helper.ParseHelper;
 import uk.jixun.project.Instruction.ISmInstruction;
 
 public abstract class SmBasicOperandAbstract implements ISmOperand {
-  private long value;
+  private int value;
   private ISmInstruction instruction;
 
   @Override
@@ -14,10 +14,10 @@ public abstract class SmBasicOperandAbstract implements ISmOperand {
 
   @Override
   public void setValue(Object val) {
-    if (val instanceof Integer) {
-      this.value = Long.valueOf((Integer) val);
+    if (val instanceof Long) {
+      this.value = (int) (long) val;
     } else {
-      this.value = (long) val;
+      this.value = (int) val;
     }
   }
 

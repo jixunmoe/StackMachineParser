@@ -1,8 +1,7 @@
 package uk.jixun.project.OpCode.OpCodeImpl;
 
 import uk.jixun.project.OpCode.OpCodeAbs.SmOpCodePopRegisterDecAbstract;
-import uk.jixun.project.Register.SmRegister;
-import uk.jixun.project.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
 public class SmOpCodePopRegisterDec extends SmOpCodePopRegisterDecAbstract {

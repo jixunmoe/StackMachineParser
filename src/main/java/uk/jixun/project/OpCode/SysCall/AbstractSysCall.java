@@ -1,6 +1,6 @@
 package uk.jixun.project.OpCode.SysCall;
 
-import uk.jixun.project.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 
 public abstract class AbstractSysCall implements ISysCall {
   @Override

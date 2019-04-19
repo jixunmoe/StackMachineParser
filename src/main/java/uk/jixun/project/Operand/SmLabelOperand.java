@@ -1,7 +1,7 @@
 package uk.jixun.project.Operand;
 
 import uk.jixun.project.Exceptions.LabelNotFoundException;
-import uk.jixun.project.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 
 public class SmLabelOperand extends SmBasicOperandAbstract {
   private String label = "";

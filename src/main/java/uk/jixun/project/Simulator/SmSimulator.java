@@ -1,18 +1,20 @@
 package uk.jixun.project.Simulator;
 
-import com.google.common.base.Throwables;
 import uk.jixun.project.Exceptions.LabelNotFoundException;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.OpCode.IExecutable;
 import uk.jixun.project.Program.ISmProgram;
-import uk.jixun.project.Register.SmRegister;
+import uk.jixun.project.Simulator.DispatchRecord.IDispatchRecord;
+import uk.jixun.project.Simulator.DispatchRecord.InstructionDispatchRecord;
+import uk.jixun.project.Simulator.DispatchRecord.SysCallDispatchRecord;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
+import uk.jixun.project.Simulator.Context.SimulatorContext;
 import uk.jixun.project.SimulatorConfig.ISimulatorConfig;
 import uk.jixun.project.Util.FifoList;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 public class SmSimulator implements ISmSimulator {
   private static Logger logger = Logger.getLogger(SmSimulator.class.getName());
@@ -109,10 +111,11 @@ public class SmSimulator implements ISmSimulator {
         int consume = inst.getOpCode().getConsume();
         stackBalance += produce - consume;
         logger.fine(String.format("(stack) +%d -%d ==> %d", produce, consume, stackBalance));
-        DispatchRecord record = new DispatchRecord();
+        InstructionDispatchRecord record = new InstructionDispatchRecord();
 
         record.setInst(inst);
         record.setContext(ctx);
+        record.setEip(eip);
 
         // Execution id if the program is executed without any optimisation.
         record.setExecutionId(exeId.getAndIncrement());
@@ -154,16 +157,16 @@ public class SmSimulator implements ISmSimulator {
         // all inserted elements are only dependent on the following condition:
         // (1) - instructions queued before executing instruction;
         // (2) - instructions not yet finished (dispatched but not complete)
-        boolean canFulfill = record.canResolveDependency();
+        boolean canFulfill;
 
         // Checking for (1), instructions queued before current instruction.
-        canFulfill = canFulfill && queuedInst.stream().limit(peekIndex).allMatch(record::depends);
+        canFulfill = queuedInst.stream().limit(peekIndex).allMatch(record::depends);
 
         // Can only fulfill if none of executing instructions
         // were depended by current instruction.
         canFulfill = canFulfill && history
           // Only keep the one executes in this cycle.
-          .filter(x -> !x.isFinished())
+          .filter(x -> !x.executed())
           .noneMatch(record::depends);
 
         // If the instruction can't be fulfilled, don't schedule it (yet).
@@ -175,13 +178,8 @@ public class SmSimulator implements ISmSimulator {
         if (inst.usesAlu()) aluCount--;
         if (inst.readRam() || inst.writeRam()) ramCount--;
 
-        if (record instanceof DispatchRecord) {
-          DispatchRecord r = (DispatchRecord) record;
-          r.setCycleStart(cycle);
-          r.setCycleEnd(cycle + record.getExecutable().getCycleTime() - 1);
-        } else {
-          logger.warning("record is not an instance of DispatchRecord!");
-        }
+        record.setCycleStart(cycle);
+        record.setCycleEnd(cycle + record.getExecutable().getCycleTime() - 1);
 
         // Remove from the queue, and decrease the index to sync index.
         iter.remove();
@@ -208,6 +206,7 @@ public class SmSimulator implements ISmSimulator {
       sysCallRecord.setCycleEnd(cycle);
       sysCallRecord.setEip(getContext().getEip());
       sysCallRecord.setExecutionId(exeId.getAndIncrement());
+      sysCallRecord.setSysCall(program.getSysCall(getContext().getEip()));
       sysCallRecord.executeAndGetStack();
     }
 
