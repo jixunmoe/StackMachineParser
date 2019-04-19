@@ -55,7 +55,7 @@ public abstract class AbstractDispatchRecord implements IDispatchRecord {
 
   @Override
   public boolean isFinished() {
-    return getInstEndCycle() > getContext().getCurrentCycle();
+    return getContext().getCurrentCycle() > getInstEndCycle();
   }
 
   // Setup Instruction
@@ -132,8 +132,8 @@ public abstract class AbstractDispatchRecord implements IDispatchRecord {
   @Override
   public boolean depends(IDispatchRecord target) {
     // Not in the same program space.
-    if (target.getContext() == getContext()) {
-      logger.warning("Checking instructions with different context.");
+    if (target.getContext() != getContext()) {
+      logger.warning("Checking instructions with different context. " + target.getContext().toString() + " <--> " + getContext().toString());
       return false;
     }
 

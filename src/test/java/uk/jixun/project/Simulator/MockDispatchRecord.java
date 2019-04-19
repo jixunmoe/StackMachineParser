@@ -36,6 +36,11 @@ public class MockDispatchRecord extends AbstractDispatchRecord {
     return dependencies;
   }
 
+  @Override
+  public boolean needSync() {
+    return false;
+  }
+
   public void setDependencies(List<IDispatchRecord> dependencies) {
     this.dependencies = dependencies;
   }

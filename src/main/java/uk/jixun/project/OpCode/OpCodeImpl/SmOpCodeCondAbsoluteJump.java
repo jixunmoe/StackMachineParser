@@ -22,6 +22,7 @@ public class SmOpCodeCondAbsoluteJump extends SmOpCodeCondAbsoluteJumpAbstract {
     }
     assert operand != null;
     int functionAddress = operand.resolve(ctx);
+    logger.finest("Branch taken: " + functionAddress);
     ctx.setEip(functionAddress);
   }
 

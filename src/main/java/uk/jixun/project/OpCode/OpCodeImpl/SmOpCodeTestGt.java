@@ -9,6 +9,7 @@ public class SmOpCodeTestGt extends SmOpCodeTestGtAbstract {
   public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) {
     int param2 = stack.pop();
     int param1 = stack.pop();
+    logger.finest(String.format("compare %d < %d", param1, param2));
     ctx.setJumpFlag(param1 > param2);
   }
 

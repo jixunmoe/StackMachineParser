@@ -6,7 +6,6 @@ import java.util.*;
 import java.util.logging.Logger;
 
 public class SimulatorContext extends AbstractExecutionContext {
-  private final static Logger logger = Logger.getLogger(SimulatorContext.class.getName());
   private Stack<Integer> stack = new Stack<>();
 
   @Override
@@ -24,9 +23,10 @@ public class SimulatorContext extends AbstractExecutionContext {
     LinkedList<Integer> stack = new LinkedList<>();
 
     int paramSkips = offset;
-    int nextId = exeId - 1;
+    int nextId = exeId;
 
     while (size > 0) {
+      nextId--;
       IDispatchRecord record = getHistory().getRecordAt(nextId);
       if (record == null) {
         // No more items on the chain, break.
@@ -46,6 +46,7 @@ public class SimulatorContext extends AbstractExecutionContext {
 
       // If previous instruction produces any result, use it.
       if (produces > 0) {
+        assert record.executed();
         List<Integer> prevStack = record.executeAndGetStack();
         if (prevStack == null) {
           logger.warning(
@@ -62,11 +63,19 @@ public class SimulatorContext extends AbstractExecutionContext {
         int start = end - produces;
 
         // Insert the stack list to the front
+        if (start == -2) {
+          logger.warning("start == -2");
+        }
         stack.addAll(0, prevStack.subList(start, end));
       }
 
       // Increase the number of items to skip next round.
       paramSkips += consumes;
+    }
+
+    if (size > 0) {
+      logger.info(String.format("fetch item from the stack (local stack: #%d, required=%d)", this.stack.size(), size));
+      stack.addAll(0, this.stack.subList(this.stack.size() - size, size));
     }
 
     return stack;

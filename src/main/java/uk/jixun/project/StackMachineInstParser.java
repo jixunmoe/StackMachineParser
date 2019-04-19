@@ -1,6 +1,5 @@
 package uk.jixun.project;
 
-import uk.jixun.project.Exceptions.LabelDuplicationException;
 import uk.jixun.project.Exceptions.ParseException;
 import uk.jixun.project.Helper.ParseHelper;
 import uk.jixun.project.Instruction.BasicInstruction;
@@ -11,6 +10,7 @@ import uk.jixun.project.OpCode.ISmOpCode;
 import uk.jixun.project.OpCode.SmOpcodeParser;
 import uk.jixun.project.Operand.ISmOperand;
 import uk.jixun.project.Operand.SmOperandParser;
+import uk.jixun.project.Program.ISmProgram;
 import uk.jixun.project.Program.SmProgram;
 
 import java.util.ArrayList;
@@ -33,7 +33,6 @@ public class StackMachineInstParser {
 
   public StackMachineInstParser(Scanner scanner) {
     source = scanner;
-    program.registerSysCall("Allocate", 1);
   }
 
   private boolean parseInstruction(String line) {
@@ -122,6 +121,7 @@ public class StackMachineInstParser {
     // Set opcode parsed
     ISmOpCode opcode = SmOpcodeParser.parse(opcodeStr);
     instruction.setOpcode(opcode);
+    opcode.setInstruction(instruction);
 
     // Convert operands to nodes
     List<ISmOperand> operands = operandsStr
@@ -144,7 +144,7 @@ public class StackMachineInstParser {
     return source.hasNext() || results.size() > 0;
   }
 
-  public ISmInstruction next() throws LabelDuplicationException, ParseException {
+  public ISmInstruction next() throws ParseException {
     while (results.size() <= 0) {
       if (!hasNext()) {
         // FIXME: Throw an error if no more entries left?
@@ -162,6 +162,14 @@ public class StackMachineInstParser {
     program.addInstruction(instruction);
     results.remove(0);
     return instruction;
+  }
+
+  public ISmProgram toProgram() {
+    SmProgram prog = new SmProgram();
+    while(hasNext()) {
+      prog.addInstruction(next());
+    }
+    return prog;
   }
 
   private enum ParseInstructionState {

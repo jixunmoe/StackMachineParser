@@ -21,6 +21,7 @@ public interface IExecutionContext extends IMemoryModel {
    * @apiNote Stack may not be sync!
    * @deprecated Do not use this method.
    */
+  @Deprecated
   void setStack(int offset, int value);
 
   /**
@@ -31,6 +32,7 @@ public interface IExecutionContext extends IMemoryModel {
    * @apiNote Stack may not be sync! Use {@link #resolveStack(int, int)} if you need the stack when executing an instruction.
    * @deprecated Do not use this method.
    */
+  @Deprecated
   int getStack(int offset);
 
   /**
@@ -140,4 +142,8 @@ public interface IExecutionContext extends IMemoryModel {
    * @param smHistory History object.
    */
   void setHistory(ISmHistory smHistory);
+
+  boolean isHalt();
+  void halt();
+  void halt(boolean halt);
 }

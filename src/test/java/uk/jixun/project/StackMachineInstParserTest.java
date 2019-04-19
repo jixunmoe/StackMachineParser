@@ -19,15 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StackMachineInstParserTest {
-  @SuppressWarnings("UnstableApiUsage")
-  String loadSampleCode(String name) throws Exception {
-    URL url = Resources.getResource(StackMachineInstParserTest.class, "SampleCode/" + name + ".s");
-    return Resources.toString(url, Charsets.UTF_8);
-  }
-
   @Test
   void parseCodeSample1() throws Exception {
-    String text = loadSampleCode("sample1");
+    String text = CodeLoader.loadSampleCode("sample1");
     StackMachineInstParser parser = new StackMachineInstParser(new Scanner(text));
 
     ISmInstruction inst;
@@ -100,7 +94,7 @@ class StackMachineInstParserTest {
 
   @Test
   void parseCodeLoop1() throws Exception {
-    String text = loadSampleCode("loop1");
+    String text = CodeLoader.loadSampleCode("loop1");
     StackMachineInstParser parser = new StackMachineInstParser(new Scanner(text));
 
     ArrayList<ISmInstruction> instructions = new ArrayList<>();

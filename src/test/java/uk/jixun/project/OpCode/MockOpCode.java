@@ -77,6 +77,16 @@ public class MockOpCode extends AbstractBasicOpCode {
     return isBranch;
   }
 
+  @Override
+  public boolean isWriteFlag() {
+    return false;
+  }
+
+  @Override
+  public boolean isReadFlag() {
+    return false;
+  }
+
   public void setEvaluateFn(MockEvaluate evaluateFn) {
     this.evaluateFn = evaluateFn;
   }
@@ -123,11 +133,6 @@ public class MockOpCode extends AbstractBasicOpCode {
   public void evaluateWith(MockEvaluate callback) {
     evaluateFn = callback;
   }
-
-  public interface MockEvaluate {
-    void evaluate(FifoList<Integer> stack, IExecutionContext ctx) throws Exception;
-  }
-
 
   public static MockOpCode createDependencyTestOpCode(int consume, int produce) {
     MockOpCode opcode = new MockOpCode();

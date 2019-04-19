@@ -62,8 +62,4 @@ public class MockExecutionContext extends AbstractExecutionContext {
   public void write(int address, int value) {
 
   }
-
-  public interface StackResolver {
-    List<Integer> resolve(int offset, int exeId, int size);
-  }
 }

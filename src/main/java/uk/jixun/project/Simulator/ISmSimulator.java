@@ -23,4 +23,10 @@ public interface ISmSimulator {
    * @return Dispatched instructions in this cycle, that were not dispatched earlier.
    */
   List<IDispatchRecord> dispatch();
+
+  /**
+   * Check if the simulator has halt.
+   * @return system halt status
+   */
+  boolean isHalt();
 }

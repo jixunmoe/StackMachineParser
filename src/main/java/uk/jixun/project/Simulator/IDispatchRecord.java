@@ -73,4 +73,6 @@ public interface IDispatchRecord {
    * @return Check result, {@code true} if they do depends on.
    */
   boolean depends(IDispatchRecord record);
+
+  boolean needSync();
 }

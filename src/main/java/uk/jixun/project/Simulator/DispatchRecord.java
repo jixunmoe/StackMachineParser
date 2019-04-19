@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DispatchRecord extends AbstractDispatchRecord implements IDispatchRecord {
@@ -57,6 +58,14 @@ public class DispatchRecord extends AbstractDispatchRecord implements IDispatchR
       return Collections.emptyList();
     }
 
+    if (!executed() && logger.isLoggable(Level.FINE)) {
+      logger.fine(String.format(
+        "c%03d: %03d: %s",
+        getContext().getCurrentCycle(),
+        getInstruction().getVirtualAddress(),
+        getInstruction().toAssembly()
+      ));
+    }
     return executionStack.get();
   }
 
@@ -84,12 +93,19 @@ public class DispatchRecord extends AbstractDispatchRecord implements IDispatchR
     return dependencies.get();
   }
 
+  @Override
+  public boolean needSync() {
+    return getInstruction().isBranch();
+  }
+
   private List<IDispatchRecord> explicitGetDependencies() {
     List<IDispatchRecord> dependencies = new LinkedList<>();
     // Begin resolve dependency node
     int paramSkips = 0;
     int size = getInstruction().getOpCode().getConsume();
     AtomicInteger nextId = new AtomicInteger(getExecutionId() - 1);
+
+    boolean foundFlag = !getInstruction().getOpCode().isReadFlag();
 
     while (size > 0) {
       // Current record have resolved without requested id.
@@ -114,6 +130,13 @@ public class DispatchRecord extends AbstractDispatchRecord implements IDispatchR
       if (produces > 0) {
         size -= produces;
         dependencies.add(record);
+      }
+
+      if (!foundFlag && opcode.isWriteFlag()) {
+        foundFlag = true;
+        if (!dependencies.contains(record)) {
+          dependencies.add(record);
+        }
       }
 
       // Increase the number of items to skip next round.

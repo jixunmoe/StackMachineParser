@@ -1,7 +1,10 @@
 package uk.jixun.project.Simulator;
 
+import com.google.common.base.Throwables;
+import uk.jixun.project.Exceptions.LabelNotFoundException;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.Program.ISmProgram;
+import uk.jixun.project.Register.SmRegister;
 import uk.jixun.project.SimulatorConfig.ISimulatorConfig;
 import uk.jixun.project.Util.FifoList;
 
@@ -50,6 +53,13 @@ public class SmSimulator implements ISmSimulator {
   @Override
   public void setProgram(ISmProgram program) {
     this.program = program;
+    try {
+      context.push((int) program.resolveLabel("Halt"));
+      logger.info("halt set as last item.");
+    } catch (LabelNotFoundException e) {
+      logger.info("can't push Halt as return address.");
+    }
+    getContext().halt(false);
   }
 
   @Override
@@ -66,39 +76,57 @@ public class SmSimulator implements ISmSimulator {
 
     // Calculate current available ALU and ram port.
     int cycle = ctx.getCurrentCycle();
-    Stream<IDispatchRecord> executeStream = history
-      .filter(record -> record.executesAt(cycle));
 
     // Get the available resource counts
-    int aluCount = aluLimit - (int) executeStream
+    int aluCount = aluLimit - (int) history
+      .filter(record -> record.executesAt(cycle))
       .filter(IDispatchRecord::usesAlu)
       .count();
-    int ramCount = ramLimit - (int) executeStream
+    int ramCount = ramLimit - (int) history
+      .filter(record -> record.executesAt(cycle))
       .filter(IDispatchRecord::readOrWrite)
       .count();
 
-    while (queuedInst.size() < searchDepth) {
-      // If the last item is a branch, don't continue.
-      if (queuedInst.last().getInstruction().isBranch()) {
-        break;
+    boolean needSync = history
+      .filter(record -> record.executesAt(cycle))
+      .anyMatch(IDispatchRecord::needSync);
+
+    needSync = needSync || queuedInst.stream().anyMatch(IDispatchRecord::needSync);
+
+    if (needSync) {
+      logger.finer("skip schedule, need to sync state.");
+    } else {
+      while (queuedInst.size() < searchDepth) {
+        int eip = ctx.getEip();
+        // sys call requires sync
+        if (program.isSysCall(eip)) {
+          break;
+        }
+
+        ISmInstruction inst = program.getInstruction(eip);
+        int produce = inst.getOpCode().getProduce();
+        int consume = inst.getOpCode().getConsume();
+        stackBalance += produce - consume;
+        logger.fine(String.format("(stack) +%d -%d ==> %d", produce, consume, stackBalance));
+        DispatchRecord record = new DispatchRecord();
+
+        record.setInst(inst);
+        record.setContext(ctx);
+
+        // Execution id if the program is executed without any optimisation.
+        record.setExecutionId(exeId.getAndIncrement());
+        queuedInst.push(record);
+        logger.info("Add inst: " + inst.toAssembly());
+
+        // EIP read from the record must be the same as the instruction eip
+        assert record.getEip() == eip;
+
+        ctx.incEip();
+        if (record.needSync()) {
+          logger.info("added a record requires sync.");
+          break;
+        }
       }
-
-      int eip = ctx.getEip();
-      ISmInstruction inst = program.getInstruction(eip);
-      stackBalance += inst.getOpCode().getProduce() - inst.getOpCode().getConsume();
-      DispatchRecord record = new DispatchRecord();
-
-      record.setInst(inst);
-      record.setContext(ctx);
-
-      // Execution id if the program is executed without any optimisation.
-      record.setExecutionId(exeId.getAndIncrement());
-      queuedInst.push(record);
-
-      // EIP read from the record must be the same as the instruction eip
-      assert record.getEip() == eip;
-
-      ctx.incEip();
     }
 
     // Only try to dispatch if we still have some resource to use.
@@ -112,12 +140,12 @@ public class SmSimulator implements ISmSimulator {
 
         IDispatchRecord record = iter.next();
         ISmInstruction inst = record.getInstruction();
-        if (inst.usesAlu() && aluCount > 0) {
+        if (inst.usesAlu() && aluCount == 0) {
           // Not enough ALU available
           continue;
         }
 
-        if (inst.readOrWriteRam() && ramCount > 0) {
+        if (inst.readOrWriteRam() && ramCount == 0) {
           continue;
         }
 
@@ -149,7 +177,7 @@ public class SmSimulator implements ISmSimulator {
         if (record instanceof DispatchRecord) {
           DispatchRecord r = (DispatchRecord) record;
           r.setCycleStart(cycle);
-          r.setCycleEnd(cycle + record.getInstruction().getCycleTime());
+          r.setCycleEnd(cycle + record.getInstruction().getCycleTime() - 1);
         } else {
           logger.warning("record is not an instance of DispatchRecord!");
         }
@@ -163,8 +191,26 @@ public class SmSimulator implements ISmSimulator {
       }
     }
 
-    // Balance stack when nothing is queued.
-    if (queuedInst.isEmpty() && stackBalance != 0) {
+    history
+      .filter(record -> record.endAtCycle(cycle))
+      .forEach(IDispatchRecord::executeAndGetStack);
+
+    ctx.nextCycle();
+
+    boolean allDone = history.filter(x -> !x.isFinished()).count() == 0;
+    if (allDone && program.isSysCall(getContext().getEip())) {
+      FifoList<Integer> sysCallStack = new FifoList<>();
+      sysCallStack.addAll(ctx.resolveStack(0, history.getLastRecord().getExecutionId(), stackBalance));
+      try {
+        program.getSysCall(getContext().getEip()).evaluate(sysCallStack, getContext());
+      } catch (Exception e) {
+        getContext().halt();
+        logger.warning("syscall failed: " + Throwables.getStackTraceAsString(e));
+      }
+    }
+
+      // Balance stack when nothing is queued.
+    if (queuedInst.isEmpty() && allDone && stackBalance != 0) {
       while (stackBalance < 0) {
         stackBalance++;
         ctx.pop();
@@ -179,12 +225,11 @@ public class SmSimulator implements ISmSimulator {
       ctx.push(subStack);
     }
 
-    history
-      .filter(record -> record.endAtCycle(cycle))
-      .forEach(IDispatchRecord::executeAndGetStack);
-
-    ctx.nextCycle();
-
     return results;
+  }
+
+  @Override
+  public boolean isHalt() {
+    return getContext().isHalt();
   }
 }

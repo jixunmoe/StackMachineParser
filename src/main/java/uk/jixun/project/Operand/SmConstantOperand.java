@@ -21,7 +21,11 @@ public class SmConstantOperand extends SmBasicOperandAbstract {
 
   @Override
   public int resolve(IExecutionContext ctx) {
-    return (int) getValue();
+    Object value = getValue();
+    if (value instanceof Long) {
+      return (int)(long) value;
+    }
+    return (int) value;
   }
 
   @Override
