@@ -51,8 +51,7 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
 
   @Override
   public boolean usesAlu() {
-    // FIXME: Assume all instructions uses ALU.
-    return true;
+    return getOpCode().usesAlu();
   }
 
   @Override

@@ -1,6 +1,7 @@
 package uk.jixun.project.Simulator;
 
 import uk.jixun.project.Instruction.ISmInstruction;
+import uk.jixun.project.OpCode.IExecutable;
 import uk.jixun.project.Util.FifoList;
 
 import java.util.Collections;
@@ -9,6 +10,7 @@ import java.util.List;
 public class MockDispatchRecord extends AbstractDispatchRecord {
   private List<IDispatchRecord> dependencies = null;
   private FifoList<Integer> initialStack = new FifoList<>();
+  private IExecutable executable = null;
 
   @Override
   public IResourceUsage getResourceUsed() {
@@ -24,7 +26,7 @@ public class MockDispatchRecord extends AbstractDispatchRecord {
   public List<Integer> executeAndGetStack() {
     FifoList<Integer> stack = initialStack.copy();
     try {
-      getInstruction().getOpCode().evaluate(stack, this.getContext());
+      getExecutable().evaluate(stack, this.getContext());
     } catch (Exception e) {
       return Collections.emptyList();
     }
@@ -34,6 +36,11 @@ public class MockDispatchRecord extends AbstractDispatchRecord {
   @Override
   public List<IDispatchRecord> getDependencies() {
     return dependencies;
+  }
+
+  @Override
+  public boolean canResolveDependency() {
+    return true;
   }
 
   @Override
@@ -47,7 +54,7 @@ public class MockDispatchRecord extends AbstractDispatchRecord {
 
   public static MockDispatchRecord createFromInstruction(ISmInstruction inst) {
     MockDispatchRecord record = new MockDispatchRecord();
-    record.setInst(inst);
+    record.setExecutable(inst.getOpCode());
     return record;
   }
 
@@ -55,7 +62,16 @@ public class MockDispatchRecord extends AbstractDispatchRecord {
   public String toString() {
     return "MockDispatchRecord{" +
       "exe id=" + getExecutionId() + ", " +
-      "inst=" + getInstruction().toString() +
+      "inst=" + getExecutable().toString() +
       '}';
+  }
+
+  @Override
+  public IExecutable getExecutable() {
+    return executable;
+  }
+
+  public void setExecutable(IExecutable exe) {
+    this.executable = exe;
   }
 }

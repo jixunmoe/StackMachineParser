@@ -3,6 +3,7 @@ package uk.jixun.project.Simulator;
 import com.google.common.base.Throwables;
 import uk.jixun.project.Exceptions.LabelNotFoundException;
 import uk.jixun.project.Instruction.ISmInstruction;
+import uk.jixun.project.OpCode.IExecutable;
 import uk.jixun.project.Program.ISmProgram;
 import uk.jixun.project.Register.SmRegister;
 import uk.jixun.project.SimulatorConfig.ISimulatorConfig;
@@ -139,13 +140,13 @@ public class SmSimulator implements ISmSimulator {
         assert ramCount >= 0;
 
         IDispatchRecord record = iter.next();
-        ISmInstruction inst = record.getInstruction();
+        IExecutable inst = record.getExecutable();
         if (inst.usesAlu() && aluCount == 0) {
           // Not enough ALU available
           continue;
         }
 
-        if (inst.readOrWriteRam() && ramCount == 0) {
+        if ((inst.readRam() || inst.writeRam()) && ramCount == 0) {
           continue;
         }
 
@@ -153,10 +154,10 @@ public class SmSimulator implements ISmSimulator {
         // all inserted elements are only dependent on the following condition:
         // (1) - instructions queued before executing instruction;
         // (2) - instructions not yet finished (dispatched but not complete)
-        boolean canFulfill;
+        boolean canFulfill = record.canResolveDependency();
 
         // Checking for (1), instructions queued before current instruction.
-        canFulfill = queuedInst.stream().limit(peekIndex).allMatch(record::depends);
+        canFulfill = canFulfill && queuedInst.stream().limit(peekIndex).allMatch(record::depends);
 
         // Can only fulfill if none of executing instructions
         // were depended by current instruction.
@@ -172,12 +173,12 @@ public class SmSimulator implements ISmSimulator {
 
         // Decrease available resource counter.
         if (inst.usesAlu()) aluCount--;
-        if (inst.readOrWriteRam()) ramCount--;
+        if (inst.readRam() || inst.writeRam()) ramCount--;
 
         if (record instanceof DispatchRecord) {
           DispatchRecord r = (DispatchRecord) record;
           r.setCycleStart(cycle);
-          r.setCycleEnd(cycle + record.getInstruction().getCycleTime() - 1);
+          r.setCycleEnd(cycle + record.getExecutable().getCycleTime() - 1);
         } else {
           logger.warning("record is not an instance of DispatchRecord!");
         }
@@ -199,14 +200,15 @@ public class SmSimulator implements ISmSimulator {
 
     boolean allDone = history.filter(x -> !x.isFinished()).count() == 0;
     if (allDone && program.isSysCall(getContext().getEip())) {
-      FifoList<Integer> sysCallStack = new FifoList<>();
-      sysCallStack.addAll(ctx.resolveStack(0, history.getLastRecord().getExecutionId(), stackBalance));
-      try {
-        program.getSysCall(getContext().getEip()).evaluate(sysCallStack, getContext());
-      } catch (Exception e) {
-        getContext().halt();
-        logger.warning("syscall failed: " + Throwables.getStackTraceAsString(e));
-      }
+      SysCallDispatchRecord sysCallRecord = new SysCallDispatchRecord();
+      history.add(sysCallRecord);
+      sysCallRecord.setContext(getContext());
+      sysCallRecord.setCycleStart(cycle);
+      // FIXME: Assume all syscall finish in one cycle
+      sysCallRecord.setCycleEnd(cycle);
+      sysCallRecord.setEip(getContext().getEip());
+      sysCallRecord.setExecutionId(exeId.getAndIncrement());
+      sysCallRecord.executeAndGetStack();
     }
 
       // Balance stack when nothing is queued.

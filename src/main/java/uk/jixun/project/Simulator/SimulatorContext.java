@@ -1,5 +1,6 @@
 package uk.jixun.project.Simulator;
 
+import uk.jixun.project.OpCode.IExecutable;
 import uk.jixun.project.OpCode.ISmOpCode;
 
 import java.util.*;
@@ -25,6 +26,9 @@ public class SimulatorContext extends AbstractExecutionContext {
     int paramSkips = offset;
     int nextId = exeId;
 
+    IDispatchRecord resolveRecord = getHistory().getRecordAt(nextId);
+    assert resolveRecord != null;
+
     while (size > 0) {
       nextId--;
       IDispatchRecord record = getHistory().getRecordAt(nextId);
@@ -33,7 +37,7 @@ public class SimulatorContext extends AbstractExecutionContext {
         break;
       }
 
-      ISmOpCode opcode = record.getInstruction().getOpCode();
+      IExecutable opcode = record.getExecutable();
       int consumes = opcode.getConsume();
       int produces = opcode.getProduce();
 
@@ -46,12 +50,19 @@ public class SimulatorContext extends AbstractExecutionContext {
 
       // If previous instruction produces any result, use it.
       if (produces > 0) {
+        if (!record.executed()) {
+          logger.warning(String.format(
+            "!! resolve stack for \n %s \n requires \n %s \n, but was not executed before.",
+            resolveRecord.toString(),
+            record.toString()
+          ));
+        }
         assert record.executed();
         List<Integer> prevStack = record.executeAndGetStack();
         if (prevStack == null) {
           logger.warning(
             "Could not resolve stack: " +
-            "execution of instruction " + record.getInstruction().toAssembly() + " failed."
+            "execution of instruction " + record.getExecutable().toString() + " failed."
           );
           return Collections.emptyList();
         }

@@ -47,4 +47,41 @@ public abstract class AbstractBasicOpCode implements ISmOpCode {
   public void setInstruction(ISmInstruction instruction) {
     this.instruction = instruction;
   }
+
+  @Override
+  public SmRegister getRegisterAccess() {
+    return getRegisterVariant();
+  }
+
+  @Override
+  public SmRegisterStatusEnum getRegisterStatus() {
+    assert getRegisterVariant() == SmRegister.NONE;
+    return SmRegisterStatusEnum.NONE;
+  }
+
+  @Override
+  public boolean usesAlu() {
+    // FIXME: Assume all instructions uses ALU.
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    return getInstruction().toAssemblyWithAddress(3);
+  }
+
+  @Override
+  public int getCycleTime() {
+    int time = 0;
+
+    if (usesAlu()) {
+      time += 2;
+    }
+
+    if (readRam() || writeRam()) {
+      time += 1;
+    }
+
+    return time;
+  }
 }

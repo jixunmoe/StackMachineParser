@@ -26,6 +26,12 @@ public class FifoList<T> extends LinkedList<T> {
     this.add(o);
   }
 
+  public void pushUnique(T o) {
+    if (!contains(o)) {
+      push(o);
+    }
+  }
+
   @Override
   public T pop() {
     return super.removeLast();

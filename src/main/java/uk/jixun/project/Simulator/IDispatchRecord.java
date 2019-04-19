@@ -2,6 +2,7 @@ package uk.jixun.project.Simulator;
 
 import org.jetbrains.annotations.Nullable;
 import uk.jixun.project.Instruction.ISmInstruction;
+import uk.jixun.project.OpCode.IExecutable;
 
 import java.util.List;
 
@@ -15,8 +16,6 @@ public interface IDispatchRecord {
   boolean executesAt(int cycle);
 
   boolean isFinished();
-
-  ISmInstruction getInstruction();
 
   IResourceUsage getResourceUsed();
 
@@ -70,9 +69,13 @@ public interface IDispatchRecord {
    * Check if current record depends on a given record.
    *
    * @param record Record to check on.
+   * @apiNote it also returns {@code true} if it can't be resolved.
    * @return Check result, {@code true} if they do depends on.
    */
   boolean depends(IDispatchRecord record);
+  boolean canResolveDependency();
 
   boolean needSync();
+
+  IExecutable getExecutable();
 }

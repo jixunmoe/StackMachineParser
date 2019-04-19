@@ -8,6 +8,7 @@ import uk.jixun.project.SimulatorConfig.SimulatorConfigImpl;
 import uk.jixun.project.StackMachineInstParser;
 
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,9 +39,13 @@ class SmSimulatorTest {
     String text = CodeLoader.loadSampleCode("program1");
     StackMachineInstParser parser = new StackMachineInstParser(new Scanner(text));
     ISmProgram program = parser.toProgram();
+
+    String code = program.getInstructions().stream().map(inst -> inst.toAssemblyWithAddress(3)).collect(Collectors.joining("\n"));
+    System.out.println(code);
+
     SmSimulator sim = new SmSimulator();
     sim.setProgram(program);
-    sim.setConfig(new SimulatorConfigImpl(2, 2, 10));
+    sim.setConfig(new SimulatorConfigImpl(5, 5, 10));
 
     while(!sim.isHalt()) {
       sim.dispatch();

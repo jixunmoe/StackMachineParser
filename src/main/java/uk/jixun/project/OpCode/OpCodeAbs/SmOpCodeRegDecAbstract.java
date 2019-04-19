@@ -13,8 +13,7 @@ package uk.jixun.project.OpCode.OpCodeAbs;
 
 
 
-import uk.jixun.project.OpCode.AbstractBasicOpCode;
-import uk.jixun.project.OpCode.SmOpCodeEnum;
+import uk.jixun.project.OpCode.*;
 import uk.jixun.project.Register.SmRegister;
 import uk.jixun.project.Simulator.IExecutionContext;
 
@@ -234,6 +233,36 @@ public abstract class SmOpCodeRegDecAbstract extends AbstractBasicOpCode {
     if (variant != 0) {
       throw new RuntimeException("Variant does not apply for this opcode.");
     }
+  }
+
+  @Override
+  public SmRegisterStatusEnum getRegisterStatus() {
+    
+    if (getRegisterVariant() == SmRegister.SP) {
+      return SmRegisterStatusEnum.WRITE;
+    }
+
+    if (getRegisterVariant() == SmRegister.RP) {
+      return SmRegisterStatusEnum.WRITE;
+    }
+
+    if (getRegisterVariant() == SmRegister.YP) {
+      return SmRegisterStatusEnum.WRITE;
+    }
+
+    if (getRegisterVariant() == SmRegister.XP) {
+      return SmRegisterStatusEnum.WRITE;
+    }
+
+    if (getRegisterVariant() == SmRegister.FP) {
+      return SmRegisterStatusEnum.WRITE;
+    }
+
+    if (getRegisterVariant() == SmRegister.TOS) {
+      return SmRegisterStatusEnum.WRITE;
+    }
+
+    throw new RuntimeException("Variant does not apply for this opcode.");
   }
 
   @Override

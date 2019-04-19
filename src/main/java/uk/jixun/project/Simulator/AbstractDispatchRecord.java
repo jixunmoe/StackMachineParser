@@ -1,16 +1,23 @@
 package uk.jixun.project.Simulator;
 
+import com.google.common.base.Throwables;
+import uk.jixun.project.Helper.LazyCacheResolver;
 import uk.jixun.project.Instruction.ISmInstruction;
+import uk.jixun.project.OpCode.IExecutable;
+import uk.jixun.project.OpCode.ISmOpCode;
+import uk.jixun.project.Util.FifoList;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 
 public abstract class AbstractDispatchRecord implements IDispatchRecord {
   private static Logger logger = Logger.getLogger(AbstractDispatchRecord.class.getName());
   private int cycleStart = 0;
   private int cycleEnd = 0;
-  private ISmInstruction inst = null;
   private int exeId = -1;
   private IExecutionContext context = null;
+  private int eip = -1;
 
   // Cycle Setup
 
@@ -58,49 +65,39 @@ public abstract class AbstractDispatchRecord implements IDispatchRecord {
     return getContext().getCurrentCycle() > getInstEndCycle();
   }
 
-  // Setup Instruction
-
-  public void setInst(ISmInstruction inst) {
-    this.inst = inst;
-  }
-
-  @Override
-  public ISmInstruction getInstruction() {
-    return inst;
-  }
-
   // Instruction properties
 
   @Override
   public boolean usesAlu() {
-    return getInstruction().usesAlu();
+    return getExecutable().usesAlu();
   }
 
   @Override
   public boolean reads() {
-    return getInstruction().readRam();
+    return getExecutable().readRam();
   }
 
   @Override
   public boolean writes() {
-    return getInstruction().writeRam();
+    return getExecutable().writeRam();
   }
 
   @Override
   public boolean readOrWrite() {
-    return getInstruction().readOrWriteRam();
+    IExecutable executable = getExecutable();
+    return executable.readRam() || executable.writeRam();
   }
 
   // EIP Setup
 
   @Override
   public int getEip() {
-    return getInstruction().getEip();
+    return eip;
   }
 
   @Override
   public void setEip(int eip) {
-    getInstruction().setEip(eip);
+    this.eip = eip;
   }
 
   // Execution Id setup
@@ -143,5 +140,50 @@ public abstract class AbstractDispatchRecord implements IDispatchRecord {
     }
 
     return getDependencies().contains(target);
+  }
+
+
+  @Override
+  public boolean canResolveDependency() {
+    IExecutable executable = getExecutable();
+
+    // Check if ram address can be resolved.
+    if (executable.readRam() && !executable.isStaticRamAddress()) {
+      try {
+        executable.resolveRamAddress(getContext());
+      } catch (Exception ex) {
+        // Can't resolve it yet.
+        logger.fine(String.format("can't resolve dependency for %s yet", Throwables.getStackTraceAsString(ex)));
+        return false;
+      }
+    }
+
+    // Now, current node should be able to process,
+    //   however, the previous nodes may not be able to.
+    // If any of this dependency can't resolve it, it should not be able to resolve.
+    if (!this.getDependencies().stream().allMatch(IDispatchRecord::canResolveDependency)) {
+      return false;
+    }
+
+    // FIXME: Other checks here?
+
+    // Now dependency check should be able to proceed.
+    return true;
+  }
+
+  void explicitExecuteAndRecordStack(LazyCacheResolver<List<Integer>> promise) {
+    IExecutable opcode = getExecutable();
+    FifoList<Integer> stack = new FifoList<>();
+    stack.addAll(getContext().resolveStack(0, getExecutionId(), opcode.getConsume()));
+    try {
+      opcode.evaluate(stack, getContext());
+      promise.resolve(stack);
+    } catch (Exception e) {
+      logger.warning(
+        "Instruction failed when executing " + getExecutable().toString() + "; " +
+          "trace: " + Throwables.getStackTraceAsString(e)
+      );
+      promise.reject();
+    }
   }
 }

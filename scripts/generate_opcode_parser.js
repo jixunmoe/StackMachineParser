@@ -50,8 +50,7 @@ function writeOpCodeAbstract(opcode) {
 
 ${editWarning}
 
-import uk.jixun.project.OpCode.AbstractBasicOpCode;
-import uk.jixun.project.OpCode.SmOpCodeEnum;
+import uk.jixun.project.OpCode.*;
 import uk.jixun.project.Register.SmRegister;
 import uk.jixun.project.Simulator.IExecutionContext;
 
@@ -175,6 +174,16 @@ code += `
     if (variant != 0) {
       throw new RuntimeException("Variant does not apply for this opcode.");
     }
+  }
+
+  @Override
+  public SmRegisterStatusEnum getRegisterStatus() {
+    ${Object.keys(opcode.reg).map(reg => `
+    if (getRegisterVariant() == SmRegister.${reg}) {
+      return SmRegisterStatusEnum.${opcode.reg[reg].access.toUpperCase()};
+    }`).join('\n')}
+
+    throw new RuntimeException("Variant does not apply for this opcode.");
   }
 
   @Override

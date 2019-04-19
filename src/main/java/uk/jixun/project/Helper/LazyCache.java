@@ -15,7 +15,15 @@ public class LazyCache<T> {
   public T get() {
     synchronized (cached) {
       if (!cached.getAndSet(true)) {
-        cache = callback.resolve();
+        LazyCacheResolver<T> resolver = new LazyCacheResolver<>();
+        callback.resolve(resolver);
+        assert resolver.isResolved();
+
+        if (resolver.isRejected()) {
+          cached.set(false);
+        } else {
+          cache = resolver.getResult();
+        }
       }
     }
 
@@ -53,6 +61,6 @@ public class LazyCache<T> {
   }
 
   public interface GetResult<T> {
-    T resolve();
+    void resolve(LazyCacheResolver<T> resolver);
   }
 }

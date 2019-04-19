@@ -357,12 +357,14 @@ opcodes:
       # pop; pop;
       NOS:
         scan: "!"
+        access: read
         consume: 2
         produce: 0
         ram: write
         address: unknown
       TOS:
         scan: "![TOS]"
+        access: read
         consume: 2
         produce: 0
         ram: write
@@ -370,6 +372,7 @@ opcodes:
       # pop [XP]
       XP:
         scan: "![XP]"
+        access: read
         consume: 1
         produce: 0
         ram: write
@@ -377,6 +380,7 @@ opcodes:
       # pop [YP]
       YP:
         scan: "![YP]"
+        access: read
         consume: 1
         produce: 0
         ram: write
@@ -388,6 +392,7 @@ opcodes:
       # pop temp_reg; push [temp_reg]
       TOS:
         scan: ["@", "@[TOS]"]
+        access: read
         consume: 1
         produce: 1
         ram: read
@@ -395,6 +400,7 @@ opcodes:
       # push [XP]
       XP:
         scan: "@[XP]"
+        access: read
         consume: 0
         produce: 1
         ram: read
@@ -402,6 +408,7 @@ opcodes:
       # push [YP]
       YP:
         scan: "@[YP]"
+        access: read
         consume: 0
         produce: 1
         ram: read
@@ -411,12 +418,14 @@ opcodes:
     reg:
       XP:
         scan: "![XP++]"
+        access: write
         consume: 1
         produce: 0
         ram: write
         address: unknown
       YP:
         scan: "![YP++]"
+        access: write
         consume: 1
         produce: 0
         ram: write
@@ -426,12 +435,14 @@ opcodes:
     reg:
       XP:
         scan: "![XP--]"
+        access: write
         consume: 1
         produce: 0
         ram: write
         address: unknown
       YP:
         scan: "![YP--]"
+        access: write
         consume: 1
         produce: 0
         ram: write
@@ -441,12 +452,14 @@ opcodes:
     reg:
       XP:
         scan: "@[XP++]"
+        access: write
         consume: 0
         produce: 1
         ram: read
         address: unknown
       YP:
         scan: "@[YP++]"
+        access: write
         consume: 0
         produce: 1
         ram: read
@@ -456,12 +469,14 @@ opcodes:
     reg:
       XP:
         scan: "@[XP--]"
+        access: write
         consume: 0
         produce: 1
         ram: write
         address: unknown
       YP:
         scan: "@[YP--]"
+        access: write
         consume: 0
         produce: 1
         ram: write
@@ -472,93 +487,115 @@ opcodes:
         scan: SP+
         consume: 1
         produce: 0
+        access: write
       RP:
         scan: RP+
         consume: 1
         produce: 0
+        access: write
       YP:
         scan: YP+
         consume: 1
         produce: 0
+        access: write
       XP:
         scan: XP+
         consume: 1
         produce: 0
+        access: write
       FP:
         scan: FP+
         consume: 1
         produce: 0
+        access: write
   - id: REG_SUB
     reg:
       SP:
         scan: SP-
         consume: 1
         produce: 0
+        access: write
       RP:
         scan: RP-
         consume: 1
         produce: 0
+        access: write
       YP:
         scan: YP-
         consume: 1
         produce: 0
+        access: write
       XP:
         scan: XP-
         consume: 1
         produce: 0
+        access: write
       FP:
         scan: FP-
         consume: 1
         produce: 0
+        access: write
   - id: REG_INC
     reg:
       SP:
         scan: SP++
         consume: 0
         produce: 0
+        access: write
       RP:
         scan: RP++
         consume: 0
         produce: 0
+        access: write
       YP:
         scan: YP++
         consume: 0
         produce: 0
+        access: write
       XP:
         scan: XP++
         consume: 0
         produce: 0
+        access: write
       FP:
         scan: FP++
         consume: 0
         produce: 0
+        access: write
       TOS:
         scan: TOS++
         consume: 0
         produce: 0
+        access: write
   - id: REG_DEC
     reg:
       SP:
         scan: SP--
         consume: 0
         produce: 0
+        access: write
       RP:
         scan: RP--
         consume: 0
         produce: 0
+        access: write
       YP:
         scan: YP--
         consume: 0
         produce: 0
+        access: write
       XP:
         scan: XP--
         consume: 0
         produce: 0
+        access: write
       FP:
         scan: FP--
         consume: 0
         produce: 0
+        access: write
       TOS:
         scan: TOS--
         consume: 0
         produce: 0
+        access: write

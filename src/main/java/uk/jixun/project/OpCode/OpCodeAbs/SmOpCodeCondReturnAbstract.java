@@ -13,8 +13,7 @@ package uk.jixun.project.OpCode.OpCodeAbs;
 
 
 
-import uk.jixun.project.OpCode.AbstractBasicOpCode;
-import uk.jixun.project.OpCode.SmOpCodeEnum;
+import uk.jixun.project.OpCode.*;
 import uk.jixun.project.Register.SmRegister;
 import uk.jixun.project.Simulator.IExecutionContext;
 
