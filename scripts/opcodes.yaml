@@ -188,31 +188,31 @@ opcodes:
   - id: TEST_EQ
     scan: TEQ
     consume: 2
-    produce: 2
+    produce: 0
   - id: TEST_NEQ
     scan: TNE
     consume: 2
-    produce: 2
+    produce: 0
   - id: TEST_GT
     scan: TGT
     consume: 2
-    produce: 2
+    produce: 0
   - id: TEST_LT
     scan: TLT
     consume: 2
-    produce: 2
+    produce: 0
   - id: TEST_NEGATIVE
     scan: TNV
     consume: 1
-    produce: 1
+    produce: 0
   - id: TEST_POSITIVE
     scan: TPV
     consume: 1
-    produce: 1
+    produce: 0
   - id: TEST_NOT_ZERO
     scan: TNZ
     consume: 1
-    produce: 1
+    produce: 0
   - id: TEST_XP_ZERO
     scan: TXPZ
     consume: 0

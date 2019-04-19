@@ -2,6 +2,7 @@ package uk.jixun.project.OpCode.OpCodeImpl;
 
 import uk.jixun.project.Exceptions.OutOfRangeOperand;
 import uk.jixun.project.OpCode.OpCodeAbs.SmOpCodePopFrameAddrAbstract;
+import uk.jixun.project.Register.SmRegister;
 import uk.jixun.project.Simulator.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
@@ -11,7 +12,7 @@ public class SmOpCodePopFrameAddr extends SmOpCodePopFrameAddrAbstract {
     throws OutOfRangeOperand {
 
     // pop [fp + n], val
-    int fp = ctx.getRegister(getRegisterVariant()).get();
+    int fp = ctx.getRegister(SmRegister.FP).get();
     int offset = getInstruction().getOperand(0).resolve(ctx);
     int address = fp + offset;
 

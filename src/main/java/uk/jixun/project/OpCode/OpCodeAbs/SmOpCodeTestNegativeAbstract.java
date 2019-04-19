@@ -33,7 +33,7 @@ public abstract class SmOpCodeTestNegativeAbstract extends AbstractBasicOpCode {
 
   @Override
   public int getProduce() {
-    return 1;
+    return 0;
   }
 
   @Override
