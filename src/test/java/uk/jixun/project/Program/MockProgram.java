@@ -10,7 +10,7 @@ import java.util.*;
 
 public class MockProgram implements ISmProgram {
   private List<ISmInstruction> instructions;
-  private Map<String, Long> mapping = new HashMap<>();
+  private Map<String, Integer> mapping = new HashMap<>();
 
   public MockProgram() {
     this.instructions = new ArrayList<>();
@@ -42,18 +42,18 @@ public class MockProgram implements ISmProgram {
   }
 
   @Override
-  public Map<String, Long> getLabelMapping() {
+  public Map<String, Integer> getLabelMapping() {
     return mapping;
   }
 
   @Override
-  public void registerLabel(String label, long address) {
+  public void registerLabel(String label, int address) {
     mapping.put(label, address);
   }
 
   @Override
   public long resolveLabel(String label) throws LabelNotFoundException {
-    return mapping.getOrDefault(label, -1L);
+    return mapping.getOrDefault(label, -1);
   }
 
   @Override

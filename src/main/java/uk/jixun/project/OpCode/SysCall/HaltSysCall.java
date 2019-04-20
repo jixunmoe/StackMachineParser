@@ -55,4 +55,9 @@ public class HaltSysCall extends AbstractSysCall {
   public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) throws Exception {
     ctx.halt();
   }
+
+  @Override
+  public String toString() {
+    return "<SYS:HALT>";
+  }
 }

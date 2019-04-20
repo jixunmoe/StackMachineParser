@@ -18,9 +18,9 @@ public interface ISmProgram {
 
   void addInstruction(ISmInstruction instruction);
 
-  Map<String, Long> getLabelMapping();
+  Map<String, Integer> getLabelMapping();
 
-  void registerLabel(String label, long address);
+  void registerLabel(String label, int address);
 
   long resolveLabel(String label) throws LabelNotFoundException;
 

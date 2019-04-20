@@ -141,7 +141,7 @@ public abstract class AbstractDispatchRecord implements IDispatchRecord {
 
     List<IDispatchRecord> dependencies = getDependencies();
     if (dependencies == null) {
-      logger.info("can't resolve dependency yet, assume dependency.");
+      logger.info("can't resolve dependency yet, assume dependency.\n" + getExecutable().toString());
       return true;
     }
 

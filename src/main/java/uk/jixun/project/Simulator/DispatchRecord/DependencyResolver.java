@@ -20,7 +20,6 @@ public class DependencyResolver implements IDependencyResolver {
   private int paramSkips = 0;
   private FifoList<IDispatchRecord> dependencies = FifoList.create();
   private int stackRequired;
-  private LazyCache<Integer> ramAddressCache = null;
   private SmRegStatus regStatus;
 
   DependencyResolver(IDispatchRecord record) {
@@ -32,10 +31,6 @@ public class DependencyResolver implements IDependencyResolver {
     // Only resolve ram if they read/write to it.
     boolean rwRam = record.readOrWrite();
     ramResolved.set(!rwRam);
-    if (rwRam) {
-      assert !ramResolved.get();
-      ramAddressCache = new LazyCache<>(this::resolveRamAddress);
-    }
 
     // Only resolve register dependency if they read/write to it.
     regAccess = exe.getRegisterAccess();
@@ -94,23 +89,16 @@ public class DependencyResolver implements IDependencyResolver {
     }
   }
 
-  private void resolveRamAddress(LazyCacheResolver<Integer> resolver) {
-    try {
-      resolver.resolve(mainRecord.getExecutable().resolveRamAddress(mainRecord.getContext()));
-    } catch (Exception ex) {
-      resolver.reject();
-    }
-  }
-
   private void resolveRam(IDispatchRecord record) {
     synchronized (ramResolved) {
       if (ramResolved.get()) {
         return;
       }
 
-      int address = ramAddressCache.get();
-      if (!ramAddressCache.isCached()) {
-        // Did not resolve successful
+      int address = 0;
+      try {
+        address = mainRecord.getExecutable().resolveRamAddress(mainRecord.getContext());
+      } catch (Exception ex) {
         return;
       }
 

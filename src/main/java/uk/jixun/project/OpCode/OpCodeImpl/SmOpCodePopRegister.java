@@ -13,12 +13,12 @@ public class SmOpCodePopRegister extends SmOpCodePopRegisterAbstract {
     SmRegister reg = getRegisterVariant();
 
     if (reg == SmRegister.NOS) {
-      int data = stack.pop();
       int addr = stack.pop();
+      int data = stack.pop();
       ctx.write(addr, data);
     } else if (reg == SmRegister.TOS) {
-      int addr = stack.pop();
       int data = stack.pop();
+      int addr = stack.pop();
       ctx.write(addr, data);
     } else {
       ctx.getRegister(reg).set(stack.pop());

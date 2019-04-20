@@ -16,7 +16,7 @@ public abstract class AbstractExecutionContext implements IExecutionContext {
   // Memory Allocation: 0x2000 ~ 0x2FFF
   // Stack / Frame:     0x3000 ~ 0x3FFF   <- shared?
   private final static int appSpace     = 0;
-  private final static int allocAddress = 0;
+  private final static int allocAddress = 0x2000;
   private final static int stackAddress = 0x3000;
   private final static int frameAddress = 0x3FFF;
   // FIXME: Proper memory page allocation.
@@ -48,12 +48,21 @@ public abstract class AbstractExecutionContext implements IExecutionContext {
 
   @Override
   public int read(int address) {
-    return memory.get(address);
+    int value = memory.get(address);
+    logger.info(String.format("read from 0x%04x: %d", address, value));
+    return value;
   }
 
   @Override
   public void write(int address, int value) {
     memory.set(address, value);
+    logger.info(String.format("write to 0x%04x: %d", address, value));
+  }
+
+  @Override
+  public List<Integer> dump(int start, int len) {
+    assert len >= 0;
+    return memory.subList(start, start + len);
   }
 
   @Override

@@ -23,9 +23,9 @@ public interface ISmInstruction {
 
   void setLine(long lineNumber);
 
-  long getVirtualAddress();
+  int getVirtualAddress();
 
-  void setVirtualAddress(long address);
+  void setVirtualAddress(int address);
 
   /**
    * Set an operand; use {@link #setOperands(List)} if you are trying to assign many operands.

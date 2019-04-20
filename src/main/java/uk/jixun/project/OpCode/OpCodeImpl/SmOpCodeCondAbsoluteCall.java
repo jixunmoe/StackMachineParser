@@ -15,7 +15,7 @@ public class SmOpCodeCondAbsoluteCall extends SmOpCodeCondAbsoluteCallAbstract {
     }
 
     // save current address (+1) and jump to the new address.
-    int returnAddress = ctx.getEip();
+    int returnAddress = getInstruction().getVirtualAddress() + 1;
     stack.push(returnAddress);
 
     ISmOperand operand = null;

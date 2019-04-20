@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class AbstractBasicInstruction implements ISmInstruction {
   private long line = 0;
-  private long virtualAddress = 0;
+  private int virtualAddress = 0;
   private int eip = 0;
   private ISmOpCode opcode;
   private ISmProgram program;
@@ -80,12 +80,12 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
   }
 
   @Override
-  public long getVirtualAddress() {
+  public int getVirtualAddress() {
     return virtualAddress;
   }
 
   @Override
-  public void setVirtualAddress(long virtualAddress) {
+  public void setVirtualAddress(int virtualAddress) {
     this.virtualAddress = virtualAddress;
   }
 

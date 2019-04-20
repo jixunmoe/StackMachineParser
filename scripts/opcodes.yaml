@@ -246,12 +246,12 @@ opcodes:
     scan: CP
     branching: true
     consume: 0
-    produce: 0
+    produce: 1
   - id: ABSOLUTE_CALL
     scan: CL
     branching: true
     consume: 0
-    produce: 0
+    produce: 1
   - id: RETURN
     scan: EXIT
     branching: true
@@ -282,13 +282,13 @@ opcodes:
     branching: true
     flag: read
     consume: 0
-    produce: 0
+    produce: 1
   - id: COND_ABSOLUTE_CALL
     scan: CCL
     branching: true
     flag: read
     consume: 0
-    produce: 0
+    produce: 1
   - id: COND_RETURN
     scan: "?EXIT"
     branching: true

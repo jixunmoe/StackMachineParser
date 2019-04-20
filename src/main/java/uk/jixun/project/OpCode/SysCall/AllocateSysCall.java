@@ -8,7 +8,7 @@ import uk.jixun.project.Util.FifoList;
 public class AllocateSysCall extends AbstractSysCall {
   @Override
   public int getConsume() {
-    return 1;
+    return 2;
   }
 
   @Override
@@ -53,6 +53,9 @@ public class AllocateSysCall extends AbstractSysCall {
 
   @Override
   public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) throws Exception {
+    int returnAddress = stack.pop();
+    ctx.setEip(returnAddress);
+
     int size = stack.pop();
     int address = ctx.getRegister(SmRegister.ALLOC_REGISTER).getAndAdd(size);
     stack.push(address);
@@ -60,6 +63,6 @@ public class AllocateSysCall extends AbstractSysCall {
 
   @Override
   public String toString() {
-    return "<allocate syscall>";
+    return "<SYS:ALLOCATE>";
   }
 }

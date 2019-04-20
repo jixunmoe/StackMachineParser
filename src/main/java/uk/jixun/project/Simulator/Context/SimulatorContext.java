@@ -72,10 +72,6 @@ public class SimulatorContext extends AbstractExecutionContext {
         int end = prevStack.size() - skipThisTime;
         int start = end - produces;
 
-        // Insert the stack list to the front
-        if (start == -2) {
-          logger.warning("start == -2");
-        }
         stack.addAll(0, prevStack.subList(start, end));
       }
 
@@ -85,7 +81,8 @@ public class SimulatorContext extends AbstractExecutionContext {
 
     if (size > 0) {
       logger.info(String.format("fetch item from the stack (local stack: #%d, required=%d)", this.stack.size(), size));
-      stack.addAll(0, this.stack.subList(this.stack.size() - size, size));
+      int stackSize = this.stack.size();
+      stack.addAll(0, this.stack.subList(stackSize - size, stackSize));
     }
 
     return stack;

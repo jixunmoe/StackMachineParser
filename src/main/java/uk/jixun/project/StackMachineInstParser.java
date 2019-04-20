@@ -25,8 +25,8 @@ import java.util.stream.Collectors;
 public class StackMachineInstParser {
   private static Logger logger = Logger.getLogger(StackMachineInstParser.class.getName());
 
-  private long virtualAddress = 0;
-  private long lineNumber = 0;
+  private int virtualAddress = 0;
+  private int lineNumber = 0;
   private SmProgram program = new SmProgram();
   private Scanner source;
   private ArrayList<ISmInstruction> results = new ArrayList<>();

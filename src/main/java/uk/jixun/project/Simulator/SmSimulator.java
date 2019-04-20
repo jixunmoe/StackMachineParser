@@ -3,6 +3,7 @@ package uk.jixun.project.Simulator;
 import uk.jixun.project.Exceptions.LabelNotFoundException;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.OpCode.IExecutable;
+import uk.jixun.project.OpCode.SysCall.ISysCall;
 import uk.jixun.project.Program.ISmProgram;
 import uk.jixun.project.Simulator.DispatchRecord.IDispatchRecord;
 import uk.jixun.project.Simulator.DispatchRecord.InstructionDispatchRecord;
@@ -14,6 +15,7 @@ import uk.jixun.project.Util.FifoList;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SmSimulator implements ISmSimulator {
@@ -107,10 +109,6 @@ public class SmSimulator implements ISmSimulator {
         }
 
         ISmInstruction inst = program.getInstruction(eip);
-        int produce = inst.getOpCode().getProduce();
-        int consume = inst.getOpCode().getConsume();
-        stackBalance += produce - consume;
-        logger.fine(String.format("(stack) +%d -%d ==> %d", produce, consume, stackBalance));
         InstructionDispatchRecord record = new InstructionDispatchRecord();
 
         record.setInst(inst);
@@ -192,39 +190,56 @@ public class SmSimulator implements ISmSimulator {
 
     history
       .filter(record -> record.endAtCycle(cycle))
-      .forEach(IDispatchRecord::executeAndGetStack);
+      .forEach(record -> {
+        IExecutable exe = record.getExecutable();
+        int produce = exe.getProduce();
+        int consume = exe.getConsume();
+        stackBalance += produce - consume;
+        logger.info(String.format(
+          "(stack) +%d -%d ==> %d\n >> %s",
+          produce,
+          consume,
+          stackBalance,
+          exe.toString()
+        ));
+        record.executeAndGetStack();
+      });
 
     ctx.nextCycle();
 
     boolean allDone = history.filter(x -> !x.isFinished()).count() == 0;
     if (allDone && program.isSysCall(getContext().getEip())) {
       SysCallDispatchRecord sysCallRecord = new SysCallDispatchRecord();
-      history.add(sysCallRecord);
+      queuedInst.add(sysCallRecord);
+
+
       sysCallRecord.setContext(getContext());
       sysCallRecord.setCycleStart(cycle);
       // FIXME: Assume all syscall finish in one cycle
       sysCallRecord.setCycleEnd(cycle);
+      // Get EIP because we are in sync.
       sysCallRecord.setEip(getContext().getEip());
       sysCallRecord.setExecutionId(exeId.getAndIncrement());
       sysCallRecord.setSysCall(program.getSysCall(getContext().getEip()));
-      sysCallRecord.executeAndGetStack();
+      // sysCallRecord.executeAndGetStack();
+      allDone = false;
     }
 
       // Balance stack when nothing is queued.
-    if (queuedInst.isEmpty() && allDone && stackBalance != 0) {
-      while (stackBalance < 0) {
-        stackBalance++;
-        ctx.pop();
-      }
-
-      // Sync with stack.
-      IDispatchRecord record = history.getLastRecord();
-      assert record != null;
-
-      List<Integer> subStack = ctx.resolveStack(0, record.getExecutionId(), stackBalance);
-      assert subStack.size() == stackBalance;
-      ctx.push(subStack);
-    }
+//    if (queuedInst.isEmpty() && allDone && stackBalance != 0) {
+//      while (stackBalance < 0) {
+//        stackBalance++;
+//        ctx.pop();
+//      }
+//
+//      // Sync with stack.
+//      IDispatchRecord record = history.getLastRecord();
+//      assert record != null;
+//
+//      List<Integer> subStack = ctx.resolveStack(0, record.getExecutionId(), stackBalance);
+//      assert subStack.size() == stackBalance;
+//      ctx.push(subStack);
+//    }
 
     return results;
   }

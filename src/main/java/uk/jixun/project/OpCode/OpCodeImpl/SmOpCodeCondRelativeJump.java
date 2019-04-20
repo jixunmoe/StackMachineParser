@@ -15,7 +15,7 @@ public class SmOpCodeCondRelativeJump extends SmOpCodeCondRelativeJumpAbstract {
     }
 
     // save current address (+1) and jump to the new address.
-    int returnAddress = ctx.getEip();
+    int returnAddress = getInstruction().getVirtualAddress() + 1;
 
     ISmOperand operand = null;
     try {

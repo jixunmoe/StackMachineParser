@@ -10,7 +10,7 @@ public class SmOpCodeAbsoluteCall extends SmOpCodeAbsoluteCallAbstract {
   @Override
   public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) {
     // save current address + 1 and jump to the new address.
-    int returnAddress = ctx.getEip();
+    int returnAddress = getInstruction().getVirtualAddress() + 1;
     stack.push(returnAddress);
 
     ISmOperand operand = null;

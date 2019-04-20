@@ -20,7 +20,7 @@ public class SmProgram implements ISmProgram {
   private final Object lock = new Object();
   private final AtomicInteger sysCallId = new AtomicInteger(1);
   private List<ISmInstruction> instructions = new ArrayList<>();
-  private HashMap<String, Long> labelMapping = new HashMap<>();
+  private HashMap<String, Integer> labelMapping = new HashMap<>();
   private Map<Integer, ISysCall> sysCallMap = new HashMap<>();
 
   public SmProgram() {
@@ -63,12 +63,12 @@ public class SmProgram implements ISmProgram {
   }
 
   @Override
-  public Map<String, Long> getLabelMapping() {
+  public Map<String, Integer> getLabelMapping() {
     return labelMapping;
   }
 
   @Override
-  public void registerLabel(String label, long address) {
+  public void registerLabel(String label, int address) {
     labelMapping.put(label, address);
   }
 
