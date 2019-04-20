@@ -32,8 +32,11 @@ dependencies {
     compile("com.google.guava:guava:27.0.1-jre")
     compile("org.apache.commons:commons-lang3:3.8.1")
     compile("com.github.adedayo.intellij.sdk:forms_rt:142.1")
-    compile("com.github.vlsi.mxgraph:jgraphx:3.9.8.1")
     compile("org.jetbrains:annotations:17.0.0")
+
+    // Graph-viz in java
+    compile("ch.qos.logback:logback-classic:1.2.3")
+    compile("guru.nidi:graphviz-java:0.8.3")
 }
 
 jar {
