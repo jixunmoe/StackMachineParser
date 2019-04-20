@@ -15,7 +15,7 @@ package uk.jixun.project.OpCode.OpCodeAbs;
 
 import uk.jixun.project.OpCode.*;
 import uk.jixun.project.Register.SmRegister;
-import uk.jixun.project.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 
 
 

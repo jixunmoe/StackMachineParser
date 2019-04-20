@@ -52,7 +52,7 @@ ${editWarning}
 
 import uk.jixun.project.OpCode.*;
 import uk.jixun.project.Register.SmRegister;
-import uk.jixun.project.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 
 ${!importHashMap ? '' : 'import java.util.HashMap;'}
 
@@ -177,10 +177,10 @@ code += `
   }
 
   @Override
-  public SmRegisterStatusEnum getRegisterStatus() {
+  public SmRegStatus getRegisterStatus() {
     ${Object.keys(opcode.reg).map(reg => `
     if (getRegisterVariant() == SmRegister.${reg}) {
-      return SmRegisterStatusEnum.${opcode.reg[reg].access.toUpperCase()};
+      return SmRegStatus.${opcode.reg[reg].access.toUpperCase()};
     }`).join('\n')}
 
     throw new RuntimeException("Variant does not apply for this opcode.");

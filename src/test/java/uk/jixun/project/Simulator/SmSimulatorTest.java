@@ -1,5 +1,7 @@
 package uk.jixun.project.Simulator;
 
+import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import uk.jixun.project.CodeLoader;
@@ -38,5 +40,25 @@ class SmSimulatorTest {
     System.out.println("Program completed in " + ctx.getCurrentCycle() + " cycles.");
 
     assertEquals(5050, result);
+  }
+
+  @Test
+  @DisplayName("Simulates Loop1 properly")
+  void simulateLoop1() throws Exception {
+    String text = CodeLoader.loadSampleCode("loop1");
+    StackMachineInstParser parser = new StackMachineInstParser(new Scanner(text));
+    ISmProgram program = parser.toProgram();
+    SmSimulator sim = new SmSimulator();
+    sim.setProgram(program);
+    sim.setConfig(new SimulatorConfigImpl(1, 1, 5));
+
+    while(!sim.isHalt()) {
+      sim.dispatch();
+    }
+
+    IExecutionContext ctx = sim.getContext();
+    int result = ctx.read(ctx.getRegister(SmRegister.FP).get() - 2 + 1);
+    System.out.println("Execution result: " + result);
+    System.out.println("Program completed in " + ctx.getCurrentCycle() + " cycles.");
   }
 }

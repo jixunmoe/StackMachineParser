@@ -15,7 +15,7 @@ package uk.jixun.project.OpCode.OpCodeAbs;
 
 import uk.jixun.project.OpCode.*;
 import uk.jixun.project.Register.SmRegister;
-import uk.jixun.project.Simulator.IExecutionContext;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 
 import java.util.HashMap;
 
@@ -190,22 +190,22 @@ public abstract class SmOpCodePopRegisterAbstract extends AbstractBasicOpCode {
   }
 
   @Override
-  public SmRegisterStatusEnum getRegisterStatus() {
+  public SmRegStatus getRegisterStatus() {
     
     if (getRegisterVariant() == SmRegister.NOS) {
-      return SmRegisterStatusEnum.READ;
+      return SmRegStatus.READ;
     }
 
     if (getRegisterVariant() == SmRegister.TOS) {
-      return SmRegisterStatusEnum.READ;
+      return SmRegStatus.READ;
     }
 
     if (getRegisterVariant() == SmRegister.XP) {
-      return SmRegisterStatusEnum.READ;
+      return SmRegStatus.READ;
     }
 
     if (getRegisterVariant() == SmRegister.YP) {
-      return SmRegisterStatusEnum.READ;
+      return SmRegStatus.READ;
     }
 
     throw new RuntimeException("Variant does not apply for this opcode.");
