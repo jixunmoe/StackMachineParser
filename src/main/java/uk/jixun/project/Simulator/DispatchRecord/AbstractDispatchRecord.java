@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class AbstractDispatchRecord implements IDispatchRecord {
-  protected static Logger logger = HLogger.getLogger(AbstractDispatchRecord.class.getName(), Level.FINE);
+  protected static Logger logger = HLogger.getLogger(AbstractDispatchRecord.class.getName(), Level.FINER);
 
   private int cycleStart = 0;
   private int cycleEnd = 0;
