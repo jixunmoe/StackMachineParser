@@ -99,9 +99,12 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
     return getOperands().size();
   }
 
-  private String toAssembly(String opcode) {
+  private String toAssembly(String opcode, int prefix, boolean line) {
     StringBuilder result = new StringBuilder();
-    result.append(getOpCode().toAssembly());
+    if (line) {
+      result.append(String.format("%0" + prefix + "d: l %0" + prefix + "d: ", getVirtualAddress(), getLine()));
+    }
+    result.append(opcode);
 
     for (int i = 0; i < getOperandCount(); i++) {
       result.append(" ");
@@ -119,16 +122,19 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
 
   @Override
   public String toAssembly() {
-    return toAssembly(getOpCode().toAssembly());
+    return toAssembly(getOpCode().toAssembly(), 0, false);
   }
 
   @Override
   public String getStackAssembly() {
-    return toAssembly(getOpCode().getOriginalText());
+    if (getOpCode() == null || getOpCode().getOriginalText() == null) {
+      assert false;
+    }
+    return toAssembly(getOpCode().getOriginalText(), 3, true);
   }
 
   public String toAssemblyWithAddress(int prefix) {
-    return String.format("%0" + prefix + "d: l %0" + prefix + "d: %s", getVirtualAddress(), getLine(), toAssembly());
+    return toAssembly(getOpCode().toAssembly(), 3, true);
   }
 
   @Override
@@ -143,7 +149,7 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
   }
 
   @Override
-  public boolean notForExecute() {
+  public boolean isMetaInst() {
     return false;
   }
 

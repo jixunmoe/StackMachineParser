@@ -1,22 +1,17 @@
 package uk.jixun.project.Simulator.DispatchRecord;
 
-import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import uk.jixun.project.Helper.LazyCache;
 import uk.jixun.project.Helper.LazyCacheResolver;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.OpCode.IExecutable;
-import uk.jixun.project.OpCode.SmRegStatus;
-import uk.jixun.project.Register.SmRegister;
 import uk.jixun.project.Simulator.IResourceUsage;
 import uk.jixun.project.Simulator.ResourceUsage;
-import uk.jixun.project.Util.FifoList;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class InstructionDispatchRecord extends AbstractDispatchRecord implements IDispatchRecord {
   private final LazyCache<List<IDispatchRecord>> dependencies = new LazyCache<>(this::explicitGetDependencies);
@@ -71,7 +66,7 @@ public class InstructionDispatchRecord extends AbstractDispatchRecord implements
 
   @Override
   public List<Integer> executeAndGetStack() {
-    if (getInstruction().notForExecute()) {
+    if (getInstruction().isMetaInst()) {
       logger.info("try to execute non-executable instruction: " + getInstruction().toAssembly());
       return Collections.emptyList();
     }

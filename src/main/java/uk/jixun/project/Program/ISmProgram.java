@@ -37,4 +37,6 @@ public interface ISmProgram {
   boolean isSysCall(int address);
 
   ISysCall getSysCall(int address);
+
+  String decompile();
 }

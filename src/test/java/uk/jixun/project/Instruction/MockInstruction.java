@@ -33,7 +33,7 @@ public class MockInstruction extends AbstractBasicInstruction {
   }
 
   @Override
-  public boolean notForExecute() {
+  public boolean isMetaInst() {
     return notForExecuteValue;
   }
 

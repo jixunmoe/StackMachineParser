@@ -1,11 +1,19 @@
 package uk.jixun.project;
 
-import uk.jixun.project.Gui.TestForm1;
+import uk.jixun.project.Gui.MainForm;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class Entry {
   public static void main(String[] args) {
-    TestForm1 form = new TestForm1();
-    form.pack();
+    try {
+      UIManager.setLookAndFeel(javax.swing.plaf.nimbus.NimbusLookAndFeel.class.getName());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    MainForm form = new MainForm();
     form.setVisible(true);
   }
 }

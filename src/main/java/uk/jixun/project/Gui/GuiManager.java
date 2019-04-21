@@ -1,5 +1,7 @@
 package uk.jixun.project.Gui;
 
+import uk.jixun.project.Helper.FontLookup;
+
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
@@ -18,7 +20,12 @@ public class GuiManager {
   static {
     affinetransform = new AffineTransform();
     frc = new FontRenderContext(affinetransform, true, true);
-    fontMono = Font.getFont(Font.MONOSPACED);
+    fontMono = new Font(FontLookup.lookup("monospace", new String[] {
+      "Source Code Pro",
+      "Ubuntu Mono",
+      "Courier New",
+      "DejaVu Sans Mono"
+    }), Font.PLAIN, 12);
     fontDialog = Font.getFont(Font.DIALOG);
   }
 

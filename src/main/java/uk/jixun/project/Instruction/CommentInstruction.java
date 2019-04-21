@@ -60,7 +60,7 @@ public class CommentInstruction extends AbstractBasicInstruction {
   }
 
   @Override
-  public boolean notForExecute() {
+  public boolean isMetaInst() {
     return true;
   }
 }

@@ -37,7 +37,7 @@ public class NoInstruction extends AbstractBasicInstruction {
   }
 
   @Override
-  public boolean notForExecute() {
+  public boolean isMetaInst() {
     return true;
   }
 }

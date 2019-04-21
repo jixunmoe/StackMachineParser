@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class SmProgram implements ISmProgram {
   private static final int sysCallBaseAddress = 0x10000;
@@ -34,7 +35,10 @@ public class SmProgram implements ISmProgram {
   @Override
   public void setInstructions(List<ISmInstruction> instructions) {
     synchronized (lock) {
-      this.instructions = instructions;
+      this.instructions = instructions
+        .stream()
+        .filter(inst -> !inst.isMetaInst())
+        .collect(Collectors.toList());
 
       AtomicInteger index = new AtomicInteger(0);
       // assign eip.
@@ -51,6 +55,10 @@ public class SmProgram implements ISmProgram {
 
   @Override
   public void addInstruction(ISmInstruction instruction) {
+    if (instruction.isMetaInst()) {
+      return;
+    }
+
     synchronized (lock) {
       int nextEip = instructions.size();
 
@@ -95,5 +103,10 @@ public class SmProgram implements ISmProgram {
   public ISysCall getSysCall(int address) {
     int id = ~sysCallBaseAddress & address;
     return sysCallMap.get(id);
+  }
+
+  @Override
+  public String decompile() {
+    return instructions.stream().map(ISmInstruction::getStackAssembly).collect(Collectors.joining("\n"));
   }
 }

@@ -77,7 +77,7 @@ public interface ISmInstruction {
 
   boolean isBranch();
 
-  boolean notForExecute();
+  boolean isMetaInst();
 
   boolean usesAlu();
 
