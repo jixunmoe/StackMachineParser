@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Execution log parser</title>
+</head>
+<body>
+    <section>
+        <textarea id="input" cols="30" rows="10"></textarea>
+    </section>
+
+    <section>
+        <label>indent: <input id="indent" type="number" value="2"></label>
+        <button id="parse">Parse Execution Log</button>
+    </section>
+
+    <section>
+        <pre id="output"></pre>
+    </section>
+
+    <script>
+
+const $ = id => document.getElementById(id);
+
+function spaces(n) {
+    let str = '';
+    for (let i = 0; i < n; i++)
+        str += ' ';
+    return str;
+}
+
+function indent(level) {
+    let str = '';
+    for (let i = 0; i < level; i++)
+        str += '|' + spaces(parseInt($('indent').value, 10));
+    return str;
+}
+
+$('parse').onclick = () => {
+    const lines = $('input').value.split('\n').filter(l => l.includes('>> ') || l.includes("(dispatch)"));
+    let level = 0;
+
+    let isCall = false;
+    let condition = false;
+    let checkLabel = -1;
+
+    const results = [];
+    let exec = '';
+
+    for(let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim();
+        if (line.includes('(dispatch)')) {
+            let s = results.pop();
+            // results.push(indent(level) + spaces(15) + line.slice(11));
+            let n = Math.max(120 - s.length, 4);
+            s += spaces(n) + line.slice(11);
+            results.push(s);
+            continue;
+        }
+
+        if (checkLabel !== -1) {
+            let m = line.match(/\>\> (\d+):/);
+
+            if (m) {
+                if (parseInt(m[1], 10) === checkLabel) {
+                    if (isCall) {
+                        level++;
+                    }
+                    if (condition) {
+                        results.push(indent(level) + spaces(15) + '(jmp taken)');
+                    }
+                }
+            }
+
+            checkLabel = -1;
+        }
+
+        if (line.includes(': CALL') || line.includes(': JMP')) {
+            isCall = line.includes(': CALL');
+            condition = /: (CALL|JMP)\?/.test(line);
+
+            let m = line.match(/: (\d+)\)\>/);
+            if (m) {
+                checkLabel = parseInt(m[1], 10);
+            } else {
+                m = line.match(/\d+$/);
+                if (m) {
+                    checkLabel = parseInt(m[0], 10);
+                }
+            }
+        }
+
+        results.push(indent(level) + line);
+
+        if (line.includes(': RETURN')) {
+            level--;
+        }
+    }
+
+    $('output').textContent = results.join('\n');
+};
+
+    </script>
+</body>
+</html>
