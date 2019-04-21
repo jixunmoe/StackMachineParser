@@ -1,10 +1,8 @@
 package uk.jixun.project.Program;
 
-import uk.jixun.project.Exceptions.LabelDuplicationException;
 import uk.jixun.project.Exceptions.LabelNotFoundException;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.OpCode.SysCall.ISysCall;
-import uk.jixun.project.Program.NodeGraph.ISmProgramGraph;
 
 import java.util.*;
 
@@ -54,11 +52,6 @@ public class MockProgram implements ISmProgram {
   @Override
   public long resolveLabel(String label) throws LabelNotFoundException {
     return mapping.getOrDefault(label, -1);
-  }
-
-  @Override
-  public ISmProgramGraph createGraph() {
-    return null;
   }
 
   @Override

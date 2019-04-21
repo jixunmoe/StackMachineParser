@@ -1,13 +1,10 @@
 package uk.jixun.project.Program;
 
-import uk.jixun.project.Exceptions.LabelDuplicationException;
 import uk.jixun.project.Exceptions.LabelNotFoundException;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.OpCode.SysCall.AllocateSysCall;
 import uk.jixun.project.OpCode.SysCall.HaltSysCall;
 import uk.jixun.project.OpCode.SysCall.ISysCall;
-import uk.jixun.project.Program.NodeGraph.ISmProgramGraph;
-import uk.jixun.project.Program.NodeGraph.SmDependencyGraph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,13 +76,6 @@ public class SmProgram implements ISmProgram {
     }
 
     return labelMapping.get(label);
-  }
-
-  @Override
-  public ISmProgramGraph createGraph() {
-    ISmProgramGraph graph = new SmDependencyGraph();
-    graph.setProgram(this);
-    return graph;
   }
 
   @Override
