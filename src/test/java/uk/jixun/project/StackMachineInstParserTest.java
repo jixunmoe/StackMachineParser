@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class StackMachineInstParserTest {
   @Test
   void parseCodeSample1() throws Exception {
-    String text = CodeLoader.loadSampleCode("sample1");
+    String text = CodeLoader.loadSampleCode("loop_parsing1");
     StackMachineInstParser parser = new StackMachineInstParser(new Scanner(text));
 
     ISmInstruction inst;
