@@ -122,7 +122,7 @@ class SmSimulatorTest {
     System.out.println("Execution result: " + result);
     System.out.println("Program completed in " + ctx.getCurrentCycle() + " cycles.");
 
-    assertEquals(144, result);
+    assertEquals(55, result);
   }
   @ParameterizedTest(name = "(fibonacci 10 + cache), with {0} ram port, {1} alu, {2} search depth")
   @CsvSource({

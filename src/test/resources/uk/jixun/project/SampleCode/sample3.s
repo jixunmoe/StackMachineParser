@@ -1,10 +1,10 @@
 ; Sample Program (3) for simulator correctness test
-; Program: Fibonacci(12)
+; Program: Fibonacci(10)
 ; Author:  Jixun
 ; Version: 0.1
 ; Date:    2019.04.21
 ;
-; Calculates fibonacci(12) using recursive function calls,
+; Calculates fibonacci(10) using recursive function calls,
 ; No cache implemented.
 ;
 ; Test Cycles:
@@ -22,7 +22,7 @@ RSU2
 EXIT
 
 __main:
-  lit 12
+  lit 10
   cl fn_fibonacci
 
   ; nothing to clear
