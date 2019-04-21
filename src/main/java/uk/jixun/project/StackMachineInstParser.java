@@ -42,12 +42,17 @@ public class StackMachineInstParser {
     List<String> operandsStr = new ArrayList<>();
 
     ParseInstructionState state = ParseInstructionState.Opcode;
-    for (int i = 0; i < line.length(); i++) {
+    int lineLen = line.length();
+    for (int i = 0; i < lineLen; i++) {
       if (skipWhiteSpace) {
-        while (ParseHelper.isWhiteSpace(line.charAt(i))) {
+        while (i < lineLen && ParseHelper.isWhiteSpace(line.charAt(i))) {
           i++;
         }
         skipWhiteSpace = false;
+
+        if (i >= lineLen) {
+          break;
+        }
       }
 
       char c = line.charAt(i);
@@ -94,7 +99,7 @@ public class StackMachineInstParser {
           instruction.setVirtualAddress(virtualAddress);
           // FIXME: Add comment to the program not as an instruction.
           // results.add(instruction);
-          i += line.length();
+          i += lineLen;
           break;
         default:
           break;

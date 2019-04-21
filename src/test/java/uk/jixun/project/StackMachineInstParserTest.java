@@ -8,6 +8,7 @@ import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.OpCode.ISmOpCode;
 import uk.jixun.project.OpCode.SmOpCodeEnum;
 import uk.jixun.project.Operand.SmLabelOperand;
+import uk.jixun.project.Program.ISmProgram;
 import uk.jixun.project.Register.SmRegister;
 
 import java.net.URL;
@@ -19,6 +20,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StackMachineInstParserTest {
+  @Test
+  void testEmptyLineWithSpaces() throws Exception {
+    String text = "; comment \n   \n  \t  \n add";
+    StackMachineInstParser parser = new StackMachineInstParser(new Scanner(text));
+
+    ISmProgram program = parser.toProgram();
+    // String decompiled = program.getInstructions().stream().map(x -> x.toAssemblyWithAddress(3)).collect(Collectors.joining("\n"));
+    // System.out.println(decompiled);
+    assertEquals(program.getInstruction(0).getOpCode().getOpCodeId(), SmOpCodeEnum.ADD);
+  }
+
   @Test
   void parseCodeSample1() throws Exception {
     String text = CodeLoader.loadSampleCode("loop_parsing1");
