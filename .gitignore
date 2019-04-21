@@ -28,3 +28,9 @@ gradle-app.setting
 /bin/
 /out/
 /build/
+
+# Experiment stuff
+/src/test/java/uk/jixun/project/Experiment
+
+# Java Crashes
+/*.log

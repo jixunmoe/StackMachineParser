@@ -6,6 +6,9 @@ import uk.jixun.project.Operand.ISmOperand;
 import uk.jixun.project.Simulator.Context.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class SmOpCodeAbsoluteCall extends SmOpCodeAbsoluteCallAbstract {
   @Override
   public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) {
@@ -19,6 +22,7 @@ public class SmOpCodeAbsoluteCall extends SmOpCodeAbsoluteCallAbstract {
     } catch (OutOfRangeOperand outOfRangeOperand) {
       outOfRangeOperand.printStackTrace();
     }
+
     assert operand != null;
     int functionAddress = operand.resolve(ctx);
     ctx.setEip(functionAddress);

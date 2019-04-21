@@ -49,4 +49,17 @@ public interface IExecutable {
   boolean usesAlu();
 
   int getCycleTime();
+
+  /**
+   * Set original text for this opcode.
+   * Useful to provide different version of the text / convert to different names.
+   * @param text Text to set.
+   */
+  void setOriginalText(String text);
+
+  /**
+   * Get previously set text for this opcode.
+   * @return original text.
+   */
+  String getOriginalText();
 }

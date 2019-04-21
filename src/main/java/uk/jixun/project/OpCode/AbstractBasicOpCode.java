@@ -88,4 +88,20 @@ public abstract class AbstractBasicOpCode implements ISmOpCode {
 
     return time;
   }
+
+  private String originalText = null;
+
+  @Override
+  public String getOriginalText() {
+    if (originalText == null) {
+      logger.warning(String.format("%s did not provide original text, use re-constructed text.", toAssembly()));
+      return toAssembly();
+    }
+    return originalText;
+  }
+
+  @Override
+  public void setOriginalText(String originalText) {
+    this.originalText = originalText;
+  }
 }

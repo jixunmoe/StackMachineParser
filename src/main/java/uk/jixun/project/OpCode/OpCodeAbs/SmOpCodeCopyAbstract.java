@@ -32,13 +32,13 @@ public abstract class SmOpCodeCopyAbstract extends AbstractBasicOpCode {
       mapProduce.put(1, 2);
     
       mapConsume.put(2, 2);
-      mapProduce.put(2, 4);
+      mapProduce.put(2, 3);
     
       mapConsume.put(3, 3);
-      mapProduce.put(3, 6);
+      mapProduce.put(3, 4);
     
       mapConsume.put(4, 4);
-      mapProduce.put(4, 8);
+      mapProduce.put(4, 5);
     
   }
 

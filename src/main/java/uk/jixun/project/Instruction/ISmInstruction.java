@@ -100,4 +100,10 @@ public interface ISmInstruction {
    */
   @Deprecated
   boolean depends(ISmInstruction inst);
+
+  /**
+   * Get instruction in original text format.
+   * @return original stack machine assembly format.
+   */
+  String getStackAssembly();
 }

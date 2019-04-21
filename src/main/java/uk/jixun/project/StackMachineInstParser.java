@@ -122,6 +122,7 @@ public class StackMachineInstParser {
     ISmOpCode opcode = SmOpcodeParser.parse(opcodeStr);
     instruction.setOpcode(opcode);
     opcode.setInstruction(instruction);
+    opcode.setOriginalText(opcodeStr);
 
     // Convert operands to nodes
     List<ISmOperand> operands = operandsStr

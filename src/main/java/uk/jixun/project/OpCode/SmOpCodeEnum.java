@@ -146,5 +146,7 @@ public enum SmOpCodeEnum {
   REG_ADD, REG_SUB,
   REG_INC, REG_DEC,
 
+  SAVE_TO_REG, PUSH_REG_VALUE,
+
   SYS_CALL,
 }

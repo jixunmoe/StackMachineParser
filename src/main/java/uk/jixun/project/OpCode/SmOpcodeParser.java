@@ -221,6 +221,18 @@ public class SmOpcodeParser {
     if ("STL".equals(opcode)) {
       return OpCodeFactory.create(SmOpCodeEnum.POP_INDIRECT_ABSOLUTE);
     }
+    if ("!XP".equals(opcode)) {
+      return OpCodeFactory.create(SmOpCodeEnum.SAVE_TO_REG, SmRegister.XP);
+    }
+    if ("!YP".equals(opcode)) {
+      return OpCodeFactory.create(SmOpCodeEnum.SAVE_TO_REG, SmRegister.YP);
+    }
+    if ("@XP".equals(opcode)) {
+      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REG_VALUE, SmRegister.XP);
+    }
+    if ("@YP".equals(opcode)) {
+      return OpCodeFactory.create(SmOpCodeEnum.PUSH_REG_VALUE, SmRegister.YP);
+    }
     if ("!".equals(opcode)) {
       return OpCodeFactory.create(SmOpCodeEnum.POP_REGISTER, SmRegister.NOS);
     }

@@ -1,16 +1,19 @@
 package uk.jixun.project.Simulator.DispatchRecord;
 
 import com.google.common.base.Throwables;
+import uk.jixun.project.Helper.HLogger;
 import uk.jixun.project.Helper.LazyCacheResolver;
 import uk.jixun.project.OpCode.IExecutable;
 import uk.jixun.project.Simulator.Context.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class AbstractDispatchRecord implements IDispatchRecord {
-  protected static Logger logger = Logger.getLogger(AbstractDispatchRecord.class.getName());
+  protected static Logger logger = HLogger.getLogger(AbstractDispatchRecord.class.getName(), Level.FINE);
+
   private int cycleStart = 0;
   private int cycleEnd = 0;
   private int exeId = -1;
@@ -152,9 +155,20 @@ public abstract class AbstractDispatchRecord implements IDispatchRecord {
     IExecutable opcode = getExecutable();
     FifoList<Integer> stack = new FifoList<>();
     stack.addAll(getContext().resolveStack(0, getExecutionId(), opcode.getConsume()));
+    String log = null;
+
+    if (logger.isLoggable(Level.FINER)) {
+      log = ("\n(dispatch) [" + stack.join(",") + "] => [");
+    }
+
     try {
       opcode.evaluate(stack, getContext());
       promise.resolve(stack);
+      if (log != null) {
+        log += stack.join(",") + "]";
+        logger.finer(log);
+      }
+
     } catch (Exception e) {
       logger.warning(
         "Instruction failed when executing " + getExecutable().toString() + "; " +

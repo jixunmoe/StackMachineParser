@@ -8,6 +8,8 @@ public class SmOpCodeCopy extends SmOpCodeCopyAbstract {
   @Override
   public void evaluate(FifoList<Integer> stack, IExecutionContext ctx) {
     int index = getVariant();
-    stack.push(stack.get(-index));
+    int value = stack.get(-index);
+    // logger.info(" >> (copy) value = " + value);
+    stack.push(value);
   }
 }

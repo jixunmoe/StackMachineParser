@@ -134,13 +134,13 @@ opcodes:
         produce: 2
       - id: 2
         consume: 2
-        produce: 4
+        produce: 3
       - id: 3
         consume: 3
-        produce: 6
+        produce: 4
       - id: 4
         consume: 4
-        produce: 8
+        produce: 5
   - id: DROP
     Varients:
       - id: 1
@@ -351,6 +351,30 @@ opcodes:
     ram: write
     address: op1
     # pop [reg]
+  - id: SAVE_TO_REG
+    reg:
+      XP:
+        scan: "!XP"
+        consume: 1
+        produce: 0
+        access: write
+      YP:
+        scan: "!YP"
+        consume: 1
+        produce: 0
+        access: write
+  - id: PUSH_REG_VALUE
+    reg:
+      XP:
+        scan: "@XP"
+        consume: 0
+        produce: 1
+        access: read
+      YP:
+        scan: "@YP"
+        consume: 0
+        produce: 1
+        access: read
   - id: POP_REGISTER
     reg:
       # mov [sp + 0], [sp + 1]

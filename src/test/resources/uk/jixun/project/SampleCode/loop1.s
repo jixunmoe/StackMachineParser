@@ -1,3 +1,20 @@
+; A simple loop code extracted from paper by Shi, Huibin, appendix C.1
+; Program: loop1
+; Author:  Huibin Shi
+; Version: 0.1
+; Date:    2006.03.??
+;
+; Calculates the square of values between 0 to 11 (inclusive),
+; Using both add, mul and div.
+;
+; Test Cycles:
+; A M D  Cycles
+; 1 1 5  2087
+; 2 2 5  1366
+; 5 5 5  1092
+;
+
+
 ; Setup stack frame
 main:
 	lit 6

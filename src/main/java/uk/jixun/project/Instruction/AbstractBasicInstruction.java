@@ -99,8 +99,7 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
     return getOperands().size();
   }
 
-  @Override
-  public String toAssembly() {
+  private String toAssembly(String opcode) {
     StringBuilder result = new StringBuilder();
     result.append(getOpCode().toAssembly());
 
@@ -116,6 +115,16 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
     }
 
     return result.toString();
+  }
+
+  @Override
+  public String toAssembly() {
+    return toAssembly(getOpCode().toAssembly());
+  }
+
+  @Override
+  public String getStackAssembly() {
+    return toAssembly(getOpCode().getOriginalText());
   }
 
   public String toAssemblyWithAddress(int prefix) {

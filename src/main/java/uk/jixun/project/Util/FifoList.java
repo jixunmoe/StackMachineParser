@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class FifoList<T> extends LinkedList<T> {
   @SafeVarargs
@@ -90,12 +92,19 @@ public class FifoList<T> extends LinkedList<T> {
   }
 
   public T get(int index) {
-    return super.get(idx(size() + index));
+    return super.get(idx(index));
   }
 
   public FifoList<T> copy() {
     FifoList<T> result = new FifoList<>();
     result.addAll(ImmutableList.copyOf(this));
     return result;
+  }
+
+  public String join(CharSequence delimiter, Function<? super T, ? extends String> f) {
+    return this.stream().map(f).collect(Collectors.joining(delimiter));
+  }
+  public String join(CharSequence delimiter) {
+    return join(delimiter, Object::toString);
   }
 }

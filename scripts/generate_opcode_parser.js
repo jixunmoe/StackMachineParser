@@ -317,7 +317,7 @@ code += `
 package uk.jixun.project.OpCode.OpCodeImpl;
 
 import uk.jixun.project.OpCode.OpCodeAbs.${absName};
-import uk.jixun.project.Program.Simulator.Context.IExecutionContext;
+import uk.jixun.project.Simulator.Context.IExecutionContext;
 import uk.jixun.project.Util.FifoList;
 
 public class ${implName} extends ${absName} {

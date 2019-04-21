@@ -21,7 +21,9 @@ public class SmOpCodePopRegister extends SmOpCodePopRegisterAbstract {
       int addr = stack.pop();
       ctx.write(addr, data);
     } else {
-      ctx.getRegister(reg).set(stack.pop());
+      int addr = ctx.getRegister(reg).get();
+      int data = stack.pop();
+      ctx.write(addr, data);
     }
   }
 

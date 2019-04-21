@@ -17,14 +17,8 @@ import java.util.Scanner;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SmSimulatorTest {
-  @ParameterizedTest(name = "correct simulate with {0} ram port, {1} alu, {2} search depth (program1)")
-  @CsvSource({
-    "1, 1, 5",
-    "2, 2, 5",
-    "5, 5, 5",
-  })
-  void simulateProgram1(int ram, int alu, int depth) throws Exception {
-    String text = CodeLoader.loadSampleCode("program1");
+  SmSimulator simulate(String code, int ram, int alu, int depth) throws Exception {
+    String text = CodeLoader.loadSampleCode(code);
     StackMachineInstParser parser = new StackMachineInstParser(new Scanner(text));
     ISmProgram program = parser.toProgram();
     SmSimulator sim = new SmSimulator();
@@ -34,6 +28,18 @@ class SmSimulatorTest {
     while(!sim.isHalt()) {
       sim.dispatch();
     }
+
+    return sim;
+  }
+
+  @ParameterizedTest(name = "correct simulate with {0} ram port, {1} alu, {2} search depth (program1)")
+  @CsvSource({
+    "1, 1, 5",
+    "2, 2, 5",
+    "5, 5, 5",
+  })
+  void simulateProgram1(int ram, int alu, int depth) throws Exception {
+    SmSimulator sim = simulate("sample1", ram, alu, depth);
 
     IExecutionContext ctx = sim.getContext();
     int result = ctx.read(ctx.getRegister(SmRegister.FP).get() - 2 + 1);
@@ -50,16 +56,7 @@ class SmSimulatorTest {
     "5, 5, 5",
   })
   void simulateLoopTest(int ram, int alu, int depth) throws Exception {
-    String text = CodeLoader.loadSampleCode("loop1");
-    StackMachineInstParser parser = new StackMachineInstParser(new Scanner(text));
-    ISmProgram program = parser.toProgram();
-    SmSimulator sim = new SmSimulator();
-    sim.setProgram(program);
-    sim.setConfig(new SimulatorConfigImpl(ram, alu, depth));
-
-    while(!sim.isHalt()) {
-      sim.dispatch();
-    }
+    SmSimulator sim = simulate("loop1", ram, alu, depth);
 
     IExecutionContext ctx = sim.getContext();
     System.out.println("Program completed in " + ctx.getCurrentCycle() + " cycles.");
@@ -85,5 +82,69 @@ class SmSimulatorTest {
     assertArrayEquals(new Integer[]{
       0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121
     }, K.toArray());
+  }
+
+  @ParameterizedTest(name = "(factorial 10), with {0} ram port, {1} alu, {2} search depth")
+  @CsvSource({
+    "1, 1, 5",
+    "2, 2, 5",
+    "5, 5, 5",
+  })
+  void testFactorial(int ram, int alu, int depth) throws Exception {
+    // 10! = 3628800
+    SmSimulator sim = simulate("sample2", ram, alu, depth);
+
+    IExecutionContext ctx = sim.getContext();
+    int result = ctx.resolveStack(0, ctx.getHistory().getLastRecord().getExecutionId());
+    System.out.println("Execution result: " + result);
+    System.out.println("Program completed in " + ctx.getCurrentCycle() + " cycles.");
+
+    assertEquals(3628800, result);
+  }
+
+  @ParameterizedTest(name = "(fibonacci 10), with {0} ram port, {1} alu, {2} search depth")
+  @CsvSource({
+    "1, 1, 5",
+    "2, 2, 5",
+    "5, 5, 5",
+  })
+  void testFibonacci(int ram, int alu, int depth) throws Exception {
+    // fab(10) = 55
+    // fab(11) = 89
+    // fab(12) = 144
+    // fab(13) = 233
+    // fab(14) = 377
+    // fab(15) = 610
+    SmSimulator sim = simulate("sample3", ram, alu, depth);
+
+    IExecutionContext ctx = sim.getContext();
+    int result = ctx.resolveStack(0, ctx.getHistory().getLastRecord().getExecutionId());
+    System.out.println("Execution result: " + result);
+    System.out.println("Program completed in " + ctx.getCurrentCycle() + " cycles.");
+
+    assertEquals(144, result);
+  }
+  @ParameterizedTest(name = "(fibonacci 10 + cache), with {0} ram port, {1} alu, {2} search depth")
+  @CsvSource({
+    "1, 1, 5",
+    "2, 2, 5",
+    "5, 5, 5",
+  })
+  void testFibonacciWithCache(int ram, int alu, int depth) throws Exception {
+    // fab(10) = 55
+    // fab(11) = 89
+    // fab(12) = 144
+    // fab(13) = 233
+    // fab(14) = 377
+    // fab(15) = 610
+    // fab(20) = 6765
+    SmSimulator sim = simulate("sample4", ram, alu, depth);
+
+    IExecutionContext ctx = sim.getContext();
+    int result = ctx.resolveStack(0, ctx.getHistory().getLastRecord().getExecutionId());
+    System.out.println("Execution result: " + result);
+    System.out.println("Program completed in " + ctx.getCurrentCycle() + " cycles.");
+
+    assertEquals(6765, result);
   }
 }

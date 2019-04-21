@@ -67,10 +67,15 @@ public class SimulatorContext extends AbstractExecutionContext {
         }
 
         // It should satisfy "produces" number of params.
-        size -= produces;
+        int itemsToUse = Math.min(size, produces);
+        size -= itemsToUse;
 
         int end = prevStack.size() - skipThisTime;
-        int start = end - produces;
+        int start = end - itemsToUse;
+
+        // If an instruction did not produce enough amount of data
+        // as defined in `getProduce`, this assertion will fail.
+        assert start >= 0;
 
         stack.addAll(0, prevStack.subList(start, end));
       }
