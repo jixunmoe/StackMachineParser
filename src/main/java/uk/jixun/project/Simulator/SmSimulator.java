@@ -204,15 +204,13 @@ public class SmSimulator implements ISmSimulator {
       });
 
     boolean allDone = history.filter(x -> !x.isFinished()).count() == 0;
-    ctx.nextCycle();
-
     if (allDone && program.isSysCall(getContext().getEip())) {
       SysCallDispatchRecord sysCallRecord = new SysCallDispatchRecord();
 
       sysCallRecord.setContext(getContext());
+      // FIXME: Assume all syscall finish in two cycles
       sysCallRecord.setCycleStart(ctx.getCurrentCycle());
-      // FIXME: Assume all syscall finish in one cycle
-      sysCallRecord.setCycleEnd(ctx.getCurrentCycle());
+      sysCallRecord.setCycleEnd(ctx.getCurrentCycle() + 1);
       // Get EIP because we are in sync.
       sysCallRecord.setEip(getContext().getEip());
       sysCallRecord.setExecutionId(exeId.getAndIncrement());
@@ -221,6 +219,7 @@ public class SmSimulator implements ISmSimulator {
       // sysCallRecord.executeAndGetStack();
       allDone = false;
     }
+    ctx.nextCycle();
 
       // Balance stack when nothing is queued.
 //    if (queuedInst.isEmpty() && allDone && stackBalance != 0) {

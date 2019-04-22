@@ -32,30 +32,14 @@ class SmSimulatorTest {
     return sim;
   }
 
-  @ParameterizedTest(name = "correct simulate with {0} ram port, {1} alu, {2} search depth (program1)")
+  @DisplayName("Loop 1: Appendix C.1 from Shi")
+  @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
   @CsvSource({
     "1, 1, 5",
     "2, 2, 5",
     "5, 5, 5",
   })
-  void simulateProgram1(int ram, int alu, int depth) throws Exception {
-    SmSimulator sim = simulate("sample1", ram, alu, depth);
-
-    IExecutionContext ctx = sim.getContext();
-    int result = ctx.read(ctx.getRegister(SmRegister.FP).get() - 2 + 1);
-    System.out.println("Execution result: " + result);
-    System.out.println("Program completed in " + ctx.getCurrentCycle() + " cycles.");
-
-    assertEquals(5050, result);
-  }
-
-  @ParameterizedTest(name = "(loop1) correct simulate with {0} ram port, {1} alu, {2} search depth")
-  @CsvSource({
-    "1, 1, 5",
-    "2, 2, 5",
-    "5, 5, 5",
-  })
-  void simulateLoopTest(int ram, int alu, int depth) throws Exception {
+  void testSimLoop1(int ram, int alu, int depth) throws Exception {
     SmSimulator sim = simulate("loop1", ram, alu, depth);
 
     IExecutionContext ctx = sim.getContext();
@@ -84,13 +68,32 @@ class SmSimulatorTest {
     }, K.toArray());
   }
 
-  @ParameterizedTest(name = "(factorial 10), with {0} ram port, {1} alu, {2} search depth")
+  @DisplayName("Sample 1: sum(100)")
+  @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
   @CsvSource({
     "1, 1, 5",
     "2, 2, 5",
     "5, 5, 5",
   })
-  void testFactorial(int ram, int alu, int depth) throws Exception {
+  void testSimSample1(int ram, int alu, int depth) throws Exception {
+    SmSimulator sim = simulate("sample1", ram, alu, depth);
+
+    IExecutionContext ctx = sim.getContext();
+    int result = ctx.read(ctx.getRegister(SmRegister.FP).get() - 2 + 1);
+    System.out.println("Execution result: " + result);
+    System.out.println("Program completed in " + ctx.getCurrentCycle() + " cycles.");
+
+    assertEquals(5050, result);
+  }
+
+  @DisplayName("Sample 2: factorial(10)")
+  @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
+  @CsvSource({
+    "1, 1, 5",
+    "2, 2, 5",
+    "5, 5, 5",
+  })
+  void testSimSample2(int ram, int alu, int depth) throws Exception {
     // 10! = 3628800
     SmSimulator sim = simulate("sample2", ram, alu, depth);
 
@@ -102,13 +105,14 @@ class SmSimulatorTest {
     assertEquals(3628800, result);
   }
 
-  @ParameterizedTest(name = "(fibonacci 10), with {0} ram port, {1} alu, {2} search depth")
+  @DisplayName("Sample 3: fibonacci(10)")
+  @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
   @CsvSource({
     "1, 1, 5",
     "2, 2, 5",
     "5, 5, 5",
   })
-  void testFibonacci(int ram, int alu, int depth) throws Exception {
+  void testSimSample3(int ram, int alu, int depth) throws Exception {
     // fab(10) = 55
     // fab(11) = 89
     // fab(12) = 144
@@ -124,13 +128,15 @@ class SmSimulatorTest {
 
     assertEquals(55, result);
   }
-  @ParameterizedTest(name = "(fibonacci 10 + cache), with {0} ram port, {1} alu, {2} search depth")
+
+  @DisplayName("Sample 4: fibonacci(20) + cache")
+  @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
   @CsvSource({
     "1, 1, 5",
     "2, 2, 5",
     "5, 5, 5",
   })
-  void testFibonacciWithCache(int ram, int alu, int depth) throws Exception {
+  void testSimSample4(int ram, int alu, int depth) throws Exception {
     // fab(10) = 55
     // fab(11) = 89
     // fab(12) = 144
