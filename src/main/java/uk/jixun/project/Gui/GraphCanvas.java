@@ -155,7 +155,7 @@ public class GraphCanvas extends JComponent implements IGraphCanvas {
     if (configChanged) {
       setStatus(Status.ConfigChanged);
     } else if (needReDraw && status != Status.ConfigChanged) {
-      prepareRepaint(true);
+      prepareRepaint();
     }
   }
 
@@ -164,14 +164,13 @@ public class GraphCanvas extends JComponent implements IGraphCanvas {
     this.history = history;
     if (status == Status.ConfigChanged) {
       setStatus(Status.Loading);
+    } else {
+      prepareRepaint();
     }
-    prepareRepaint(true);
   }
 
-  private void prepareRepaint(boolean force) {
-    if (force) {
-      image.invalidate();
-    }
+  private void prepareRepaint() {
+    image.invalidate();
 
     synchronized (haveNewWork) {
       if (!haveNewWork.getAndSet(true)) {
@@ -180,12 +179,6 @@ public class GraphCanvas extends JComponent implements IGraphCanvas {
           worker.start();
         }
       }
-    }
-  }
-
-  private void repaintIfReady() {
-    if (image.isCached()) {
-      repaint();
     }
   }
 
@@ -230,7 +223,7 @@ public class GraphCanvas extends JComponent implements IGraphCanvas {
 
   private void setStatus(Status status) {
     this.status = status;
-    repaintIfReady();
+    repaint();
   }
 
   private void doWork() {

@@ -10,6 +10,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import org.apache.commons.text.StringEscapeUtils;
 import uk.jixun.project.Program.ISmProgram;
+import uk.jixun.project.Simulator.ISmHistory;
 import uk.jixun.project.Simulator.SmSimulator;
 import uk.jixun.project.SimulatorConfig.ISimulatorConfigFormValue;
 import uk.jixun.project.StackMachineInstParser;
@@ -47,24 +48,6 @@ public class MainForm extends JFrame {
     Platform.runLater(() -> {
       webView = new WebView();
       jfxPanel.setScene(new Scene(webView));
-
-      // WebEngine have some basic JavaScript support
-      // Maybe add jQuery for some cross-reference function?
-      WebEngine webengine = webView.getEngine();
-      webengine.setJavaScriptEnabled(true);
-      webengine.loadContent("<html><body>" +
-        "<table collapse=1>" +
-        "<tr><td rowspan=2>rowspan=2</td><td colspan=2>colspan=2</td></tr>" +
-        "<tr><td>AAA</td><td>" + StringEscapeUtils.escapeHtml4("<script>alert(1)</script>") + "</td></tr>" +
-        "<tr><td>AAA</td><td>BBB</td><td>AAA</td></tr>" +
-        "</table>" +
-        "<button type=button onclick='alert(111111)'>hello</button>" +
-        "</body></html>");
-
-      webengine.setOnAlert(e -> {
-        System.out.println(e.getData());
-      });
-      webengine.executeScript("alert(123)");
     });
 
 
@@ -156,7 +139,15 @@ public class MainForm extends JFrame {
     StackMachineInstParser parser = new StackMachineInstParser(scanner);
     program = parser.toProgram();
     decompileCode.setText(program.decompile());
-    graphCanvas1.setHistory(null);
+    updateHistory(null);
+  }
+
+  private void updateHistory(ISmHistory history) {
+    graphCanvas1.setHistory(history);
+    Platform.runLater(() -> {
+      String table = FlowTable.fromHistory(history);
+      webView.getEngine().loadContent(table);
+    });
   }
 
   private void runCode(ActionEvent e) {
@@ -184,7 +175,7 @@ public class MainForm extends JFrame {
     }
 
     if (sim.isHalt()) {
-      graphCanvas1.setHistory(sim.getContext().getHistory());
+      updateHistory(sim.getContext().getHistory());
     }
   }
 
