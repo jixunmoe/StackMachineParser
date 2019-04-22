@@ -3,11 +3,14 @@ package uk.jixun.project.Gui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import uk.jixun.project.Helper.FontLookup;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import org.apache.commons.text.StringEscapeUtils;
 import uk.jixun.project.Program.ISmProgram;
-import uk.jixun.project.Program.SmProgram;
 import uk.jixun.project.Simulator.SmSimulator;
-import uk.jixun.project.SimulatorConfig.ISimulatorConfig;
 import uk.jixun.project.SimulatorConfig.ISimulatorConfigFormValue;
 import uk.jixun.project.StackMachineInstParser;
 
@@ -29,14 +32,42 @@ public class MainForm extends JFrame {
   private JTextArea decompileCode;
   private JTabbedPane tabbedPane1;
   private JButton btnRun;
-  private ImagePane imagePane1;
+  private JFXPanel jfxPanel;
+  private JScrollPane flowPanel;
   private ISimulatorConfigFormValue config;
   private ISmProgram program = null;
+  private WebView webView;
+
 
   public MainForm() {
     $$$setupUI$$$();
     setTitle("Stack Machine Parser - Jixun");
     setContentPane(contentPane);
+
+    Platform.runLater(() -> {
+      webView = new WebView();
+      jfxPanel.setScene(new Scene(webView));
+
+      // WebEngine have some basic JavaScript support
+      // Maybe add jQuery for some cross-reference function?
+      WebEngine webengine = webView.getEngine();
+      webengine.setJavaScriptEnabled(true);
+      webengine.loadContent("<html><body>" +
+        "<table collapse=1>" +
+        "<tr><td rowspan=2>rowspan=2</td><td colspan=2>colspan=2</td></tr>" +
+        "<tr><td>AAA</td><td>" + StringEscapeUtils.escapeHtml4("<script>alert(1)</script>") + "</td></tr>" +
+        "<tr><td>AAA</td><td>BBB</td><td>AAA</td></tr>" +
+        "</table>" +
+        "<button type=button onclick='alert(111111)'>hello</button>" +
+        "</body></html>");
+
+      webengine.setOnAlert(e -> {
+        System.out.println(e.getData());
+      });
+      webengine.executeScript("alert(123)");
+    });
+
+
 
     pack();
     setResizable(true);
@@ -159,7 +190,7 @@ public class MainForm extends JFrame {
 
   private void createUIComponents() {
     graphCanvas1 = new GraphCanvas();
-    imagePane1 = new ImagePane();
+    // imagePane1 = new ImagePane();
   }
 
   private void onOK() {
@@ -233,9 +264,8 @@ public class MainForm extends JFrame {
     final JPanel panel7 = new JPanel();
     panel7.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
     tabbedPane1.addTab("Flow", panel7);
-    final JScrollPane scrollPane3 = new JScrollPane();
-    panel7.add(scrollPane3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-    scrollPane3.setViewportView(imagePane1);
+    jfxPanel = new JFXPanel();
+    panel7.add(jfxPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
   }
 
   /**

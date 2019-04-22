@@ -166,19 +166,12 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <scrollpane id="3bc50">
+                  <component id="897ba" class="javafx.embed.swing.JFXPanel" binding="jfxPanel">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
-                    <border type="none"/>
-                    <children>
-                      <component id="2c9b" class="uk.jixun.project.Gui.ImagePane" binding="imagePane1" custom-create="true">
-                        <constraints/>
-                        <properties/>
-                      </component>
-                    </children>
-                  </scrollpane>
+                  </component>
                 </children>
               </grid>
             </children>
