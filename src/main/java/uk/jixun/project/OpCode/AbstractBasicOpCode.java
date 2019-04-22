@@ -104,4 +104,9 @@ public abstract class AbstractBasicOpCode implements ISmOpCode {
   public void setOriginalText(String originalText) {
     this.originalText = originalText;
   }
+
+  @Override
+  public String getOriginalLine() {
+    return getInstruction().getStackAssembly();
+  }
 }

@@ -68,4 +68,9 @@ public class MockProgram implements ISmProgram {
   public ISysCall getSysCall(int address) {
     return null;
   }
+
+  @Override
+  public String decompile() {
+    return "";
+  }
 }

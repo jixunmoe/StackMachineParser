@@ -5,5 +5,5 @@ import java.util.List;
 public interface IDependencyResolver {
   boolean allResolved();
   boolean resolveDependency(IDispatchRecord record);
-  List<IDispatchRecord> getDependencies();
+  List<IDispatchRecord> getDependencies(boolean force);
 }

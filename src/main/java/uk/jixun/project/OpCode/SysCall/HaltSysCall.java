@@ -8,7 +8,7 @@ import uk.jixun.project.Util.FifoList;
 public class HaltSysCall extends AbstractSysCall {
   @Override
   public int getConsume() {
-    return 0;
+    return 1;
   }
 
   @Override

@@ -56,7 +56,7 @@ public class DependencyResolver implements IDependencyResolver {
   }
 
   @Override
-  public List<IDispatchRecord> getDependencies() {
+  public List<IDispatchRecord> getDependencies(boolean force) {
     return dependencies;
   }
 

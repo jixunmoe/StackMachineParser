@@ -31,11 +31,6 @@ public class SysCallDispatchRecord extends AbstractDispatchRecord {
   }
 
   @Override
-  public List<IDispatchRecord> getDependencies() {
-    return Collections.singletonList(getContext().getHistory().getLastRecord());
-  }
-
-  @Override
   public boolean needSync() {
     return true;
   }

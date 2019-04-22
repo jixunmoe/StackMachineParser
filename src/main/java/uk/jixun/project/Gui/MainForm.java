@@ -8,6 +8,7 @@ import uk.jixun.project.Program.ISmProgram;
 import uk.jixun.project.Program.SmProgram;
 import uk.jixun.project.Simulator.SmSimulator;
 import uk.jixun.project.SimulatorConfig.ISimulatorConfig;
+import uk.jixun.project.SimulatorConfig.ISimulatorConfigFormValue;
 import uk.jixun.project.StackMachineInstParser;
 
 import javax.swing.*;
@@ -19,7 +20,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class MainForm extends JDialog {
+public class MainForm extends JFrame {
   private JPanel contentPane;
   private JButton buttonCancel;
   private GraphCanvas graphCanvas1;
@@ -29,15 +30,13 @@ public class MainForm extends JDialog {
   private JTabbedPane tabbedPane1;
   private JButton btnRun;
   private ImagePane imagePane1;
-  private ISimulatorConfig config;
-  private SmSimulator sim = null;
+  private ISimulatorConfigFormValue config;
+  private ISmProgram program = null;
 
   public MainForm() {
-    super((Dialog) null);
     $$$setupUI$$$();
     setTitle("Stack Machine Parser - Jixun");
     setContentPane(contentPane);
-    setModal(true);
 
     pack();
     setResizable(true);
@@ -65,8 +64,9 @@ public class MainForm extends JDialog {
     );
   }
 
-  private void setConfig(ISimulatorConfig config) {
+  private void setConfig(ISimulatorConfigFormValue config) {
     this.config = config;
+    graphCanvas1.setConfig(config);
   }
 
   private void loadCode(ActionEvent e) {
@@ -123,17 +123,37 @@ public class MainForm extends JDialog {
     decompileCode.setFont(GuiManager.getFontMono());
 
     StackMachineInstParser parser = new StackMachineInstParser(scanner);
-    ISmProgram program = parser.toProgram();
-    sim = new SmSimulator();
-    sim.setProgram(program);
-    sim.setConfig(config);
+    program = parser.toProgram();
     decompileCode.setText(program.decompile());
+    graphCanvas1.setHistory(null);
   }
 
   private void runCode(ActionEvent e) {
-    if (sim == null) {
+    if (program == null) {
       errorMsg("Code not loaded, load it first!");
       return;
+    }
+
+    SmSimulator sim = new SmSimulator();
+    sim.setProgram(program);
+    sim.setConfig(config);
+
+    int zeroCount = 0;
+    while (!sim.isHalt()) {
+      if (sim.dispatch().size() == 0) {
+        zeroCount++;
+
+        if (zeroCount > 30) {
+          errorMsg("Simulator failed to terminate, incorrect implemented simulator?");
+          break;
+        }
+      } else {
+        zeroCount = 0;
+      }
+    }
+
+    if (sim.isHalt()) {
+      graphCanvas1.setHistory(sim.getContext().getHistory());
     }
   }
 
@@ -162,13 +182,18 @@ public class MainForm extends JDialog {
   private void $$$setupUI$$$() {
     createUIComponents();
     contentPane = new JPanel();
-    contentPane.setLayout(new GridLayoutManager(1, 2, new Insets(10, 10, 10, 10), -1, -1));
+    contentPane.setLayout(new GridLayoutManager(1, 1, new Insets(10, 10, 10, 10), -1, -1));
+    final JSplitPane splitPane1 = new JSplitPane();
+    splitPane1.setDividerSize(3);
+    contentPane.add(splitPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(640, 400), null, 0, false));
     final JPanel panel1 = new JPanel();
     panel1.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
-    contentPane.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+    splitPane1.setLeftComponent(panel1);
+    panelOptions = new OptionsForm();
+    panel1.add(panelOptions.$$$getRootComponent$$$(), new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_SOUTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
     final JPanel panel2 = new JPanel();
     panel2.setLayout(new GridLayoutManager(1, 4, new Insets(0, 0, 0, 0), -1, -1));
-    panel1.add(panel2, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
+    panel1.add(panel2, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
     final Spacer spacer1 = new Spacer();
     panel2.add(spacer1, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
     final JPanel panel3 = new JPanel();
@@ -186,36 +211,31 @@ public class MainForm extends JDialog {
     btnRun = new JButton();
     btnRun.setText("Run");
     panel2.add(btnRun, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-    panelOptions = new OptionsForm();
-    panel1.add(panelOptions.$$$getRootComponent$$$(), new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
     final JPanel panel5 = new JPanel();
-    panel5.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-    panel1.add(panel5, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+    panel5.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+    panel1.add(panel5, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+    final JScrollPane scrollPane1 = new JScrollPane();
+    panel5.add(scrollPane1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(180, -1), null, null, 0, false));
+    decompileCode = new JTextArea();
+    decompileCode.setEditable(false);
+    scrollPane1.setViewportView(decompileCode);
+    final JLabel label1 = new JLabel();
+    label1.setText("Log / Data");
+    panel5.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     tabbedPane1 = new JTabbedPane();
-    panel5.add(tabbedPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+    splitPane1.setRightComponent(tabbedPane1);
     final JPanel panel6 = new JPanel();
     panel6.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
     tabbedPane1.addTab("Dependency", panel6);
-    final JScrollPane scrollPane1 = new JScrollPane();
-    panel6.add(scrollPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-    scrollPane1.setViewportView(graphCanvas1);
+    final JScrollPane scrollPane2 = new JScrollPane();
+    panel6.add(scrollPane2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+    scrollPane2.setViewportView(graphCanvas1);
     final JPanel panel7 = new JPanel();
     panel7.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
     tabbedPane1.addTab("Flow", panel7);
-    final JScrollPane scrollPane2 = new JScrollPane();
-    panel7.add(scrollPane2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-    scrollPane2.setViewportView(imagePane1);
-    final JPanel panel8 = new JPanel();
-    panel8.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
-    contentPane.add(panel8, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
     final JScrollPane scrollPane3 = new JScrollPane();
-    panel8.add(scrollPane3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, new Dimension(180, -1), null, null, 0, false));
-    decompileCode = new JTextArea();
-    decompileCode.setEditable(false);
-    scrollPane3.setViewportView(decompileCode);
-    final JLabel label1 = new JLabel();
-    label1.setText("Log / Data");
-    panel8.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+    panel7.add(scrollPane3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+    scrollPane3.setViewportView(imagePane1);
   }
 
   /**

@@ -50,6 +50,7 @@ public class LazyCacheResolver<T> {
   void reset() {
     synchronized (resolved) {
       resolved.set(false);
+      rejected.set(false);
       result = null;
       dirty = false;
     }

@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public abstract class AbstractExecutionContext implements IExecutionContext {
   protected final static Logger logger = Logger.getLogger(AbstractExecutionContext.class.getName());
-  private final static int memoryCapacity = 0x4000;
+  private final static int memoryCapacity = 0x8001;
 
   // App Space:         0x0000 ~ 0x1FFF
   // Memory Allocation: 0x2000 ~ 0x2FFF
@@ -40,7 +40,7 @@ public abstract class AbstractExecutionContext implements IExecutionContext {
 
   private static List<Integer> setupMemory(int size) {
     ArrayList<Integer> memory = new ArrayList<>(size);
-    for(int i = 0; i < size; i++) {
+    for(int i = 0; i <= size; i++) {
       memory.add(0);
     }
     return memory;

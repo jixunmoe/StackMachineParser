@@ -37,4 +37,8 @@ public interface ISmHistory {
 
   IDispatchRecord getLastRecord();
   Stream<IDispatchRecord> filter(Predicate<? super IDispatchRecord> predicate);
+
+  Stream<IDispatchRecord> getNotExecuted();
+
+  Stream<IDispatchRecord> getNotStarted();
 }

@@ -34,3 +34,4 @@ gradle-app.setting
 
 # Java Crashes
 /*.log
+/graph.dot

@@ -14,7 +14,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 public class InstructionDispatchRecord extends AbstractDispatchRecord implements IDispatchRecord {
-  private final LazyCache<List<IDispatchRecord>> dependencies = new LazyCache<>(this::explicitGetDependencies);
   private LazyCache<IResourceUsage> resourceUsage = new LazyCache<>(this::explicitGetResourceUsed);
   private LazyCache<List<Integer>> executionStack = new LazyCache<>(this::explicitExecuteAndRecordStack);
   private ISmInstruction inst;
@@ -82,50 +81,9 @@ public class InstructionDispatchRecord extends AbstractDispatchRecord implements
     return executionStack.get();
   }
 
-  // Resolve Dependency
-
-  @Override
-  public List<IDispatchRecord> getDependencies() {
-    assert getExecutionId() >= 0;
-
-    synchronized (dependencies) {
-      List<IDispatchRecord> result = dependencies.get();
-      if (result == null || !dependencies.isCached()) {
-        return null;
-      }
-      return result;
-    }
-  }
-
   @Override
   public boolean needSync() {
     return getInstruction().isBranch();
-  }
-
-  private void explicitGetDependencies(LazyCacheResolver<List<IDispatchRecord>> promise) {
-    IDependencyResolver resolver = new DependencyResolver(this);
-    AtomicInteger nextId = new AtomicInteger(getExecutionId());
-
-    int id = 0;
-    if (!resolver.allResolved()) {
-      while ((id = nextId.decrementAndGet()) >= 0) {
-        // Current record have resolved without requested id.
-        IDispatchRecord record = getContext().getHistory().getRecordAt(id);
-        if (record == null) {
-          // No more items on the chain, break.
-          break;
-        }
-
-        if (resolver.resolveDependency(record)) {
-          break;
-        }
-      }
-    }
-
-    // Should this result be cached?
-    boolean dirty = id > 0 && !resolver.allResolved();
-
-    promise.resolve(Lists.reverse(resolver.getDependencies()), dirty);
   }
 
   @Override

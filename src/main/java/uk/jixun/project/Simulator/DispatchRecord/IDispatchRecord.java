@@ -69,7 +69,7 @@ public interface IDispatchRecord {
   boolean endAtCycle();
 
   @Nullable
-  List<IDispatchRecord> getDependencies();
+  List<IDispatchRecord> getDependencies(boolean force);
 
   /**
    * Check if current record depends on a given record.

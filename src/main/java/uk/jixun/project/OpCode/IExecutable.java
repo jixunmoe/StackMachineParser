@@ -62,4 +62,6 @@ public interface IExecutable {
    * @return original text.
    */
   String getOriginalText();
+
+  String getOriginalLine();
 }

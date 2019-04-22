@@ -102,7 +102,7 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
   private String toAssembly(String opcode, int prefix, boolean line) {
     StringBuilder result = new StringBuilder();
     if (line) {
-      result.append(String.format("%0" + prefix + "d: l %0" + prefix + "d: ", getVirtualAddress(), getLine()));
+      result.append(String.format("addr(%0" + prefix + "d),line(%0" + prefix + "d): ", getVirtualAddress(), getLine()));
     }
     result.append(opcode);
 
@@ -130,6 +130,7 @@ public abstract class AbstractBasicInstruction implements ISmInstruction {
     if (getOpCode() == null || getOpCode().getOriginalText() == null) {
       assert false;
     }
+
     return toAssembly(getOpCode().getOriginalText(), 3, true);
   }
 

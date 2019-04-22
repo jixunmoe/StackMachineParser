@@ -53,7 +53,7 @@ class InstructionDispatchRecordTest {
     addRecord.setContext(mockContext);
     addRecord.setInst(add);
     history.add(addRecord);
-    List<IDispatchRecord> dependencies = addRecord.getDependencies();
+    List<IDispatchRecord> dependencies = addRecord.getDependencies(false);
 
     assertArrayEquals(
       "Should contains push2 and push3 as dependency",
@@ -82,7 +82,7 @@ class InstructionDispatchRecordTest {
     addRecord.setContext(mockContext);
     addRecord.setInst(add);
     mockHistory.add(addRecord);
-    List<IDispatchRecord> dependencies = addRecord.getDependencies();
+    List<IDispatchRecord> dependencies = addRecord.getDependencies(false);
 
     assertArrayEquals(
       "Should contains 'push2' and 'inc' as dependency",

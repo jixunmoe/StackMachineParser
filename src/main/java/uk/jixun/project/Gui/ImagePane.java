@@ -28,11 +28,17 @@ public class ImagePane extends JComponent {
 
   @Override
   public int getWidth() {
+    if (image == null) {
+      return super.getWidth();
+    }
     return Math.max(image.getWidth(), super.getWidth());
   }
 
   @Override
   public int getHeight() {
+    if (image == null) {
+      return super.getHeight();
+    }
     return Math.max(image.getHeight(), super.getHeight());
   }
 }

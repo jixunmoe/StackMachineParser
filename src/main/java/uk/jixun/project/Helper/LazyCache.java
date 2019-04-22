@@ -15,7 +15,7 @@ public class LazyCache<T> {
 
   public T get() {
     synchronized (cached) {
-      if (resolver.isDirty()) {
+      if (resolver.isDirty() || resolver.isRejected()) {
         resolver.reset();
         cached.set(false);
       }
@@ -61,6 +61,7 @@ public class LazyCache<T> {
     synchronized (cached) {
       if (cached.getAndSet(false)) {
         cache = null;
+        resolver.reset();
       }
     }
   }

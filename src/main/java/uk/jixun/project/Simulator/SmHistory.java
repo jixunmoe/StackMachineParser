@@ -49,6 +49,24 @@ public class SmHistory implements ISmHistory {
     return records.stream().filter(predicate);
   }
 
+  @Override
+  public Stream<IDispatchRecord> getNotExecuted() {
+    return filter(SmHistory::notExecuted);
+  }
+
+  @Override
+  public Stream<IDispatchRecord> getNotStarted() {
+    return filter(SmHistory::notStarted);
+  }
+
+  private static boolean notStarted(IDispatchRecord r) {
+    return r.getInstStartCycle() == -1;
+  }
+
+  private static boolean notExecuted(IDispatchRecord r) {
+    return !r.executed();
+  }
+
   public void add(IDispatchRecord record) {
     record.setExecutionId(id.getAndIncrement());
     records.add(record);

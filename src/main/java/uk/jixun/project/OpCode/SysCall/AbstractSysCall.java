@@ -50,4 +50,11 @@ public abstract class AbstractSysCall implements ISysCall {
       originalText
     ));
   }
+
+  @Override
+  public String getOriginalLine() {
+    return getOriginalText();
+  }
+
+
 }

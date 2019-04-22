@@ -1,5 +1,6 @@
 package uk.jixun.project.Simulator;
 
+import org.jetbrains.annotations.Nullable;
 import uk.jixun.project.Exceptions.LabelNotFoundException;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.OpCode.IExecutable;
@@ -14,9 +15,11 @@ import uk.jixun.project.SimulatorConfig.ISimulatorConfig;
 import uk.jixun.project.Util.FifoList;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class SmSimulator implements ISmSimulator {
   private static Logger logger = Logger.getLogger(SmSimulator.class.getName());
@@ -37,7 +40,7 @@ public class SmSimulator implements ISmSimulator {
   /**
    * Instruction held in the "to be processed" queue.
    */
-  private FifoList<IDispatchRecord> queuedInst = new FifoList<>();
+  // private FifoList<IDispatchRecord> queuedInst = new FifoList<>();
 
   private SimulatorContext context;
 
@@ -96,16 +99,22 @@ public class SmSimulator implements ISmSimulator {
       .filter(record -> record.executesAt(cycle))
       .anyMatch(IDispatchRecord::needSync);
 
-    needSync = needSync || queuedInst.stream().anyMatch(IDispatchRecord::needSync);
+    needSync = needSync || history.getNotExecuted().anyMatch(IDispatchRecord::needSync);
 
     if (needSync) {
       logger.finer("skip schedule, need to sync state.");
     } else {
-      while (queuedInst.size() < searchDepth) {
+      while (history.filter(r -> !r.executed()).count() < searchDepth) {
         int eip = ctx.getEip();
         // sys call requires sync
         if (program.isSysCall(eip)) {
           break;
+        }
+
+        if (eip >= program.getInstructions().size()) {
+          logger.warning("Reached eof unexpectedly.");
+          ctx.halt();
+          return Collections.emptyList();
         }
 
         ISmInstruction inst = program.getInstruction(eip);
@@ -114,10 +123,11 @@ public class SmSimulator implements ISmSimulator {
         record.setInst(inst);
         record.setContext(ctx);
         record.setEip(eip);
+        record.setCycleStart(-1);
 
         // Execution id if the program is executed without any optimisation.
         record.setExecutionId(exeId.getAndIncrement());
-        queuedInst.push(record);
+        history.add(record);
         logger.info("Add inst: " + inst.toAssembly());
 
         // EIP read from the record must be the same as the instruction eip
@@ -134,62 +144,49 @@ public class SmSimulator implements ISmSimulator {
     // Only try to dispatch if we still have some resource to use.
     if (aluCount > 0 || ramCount > 0) {
       // Try to dispatch instructions, and remove if they are dispatched.
-      Iterator<IDispatchRecord> iter = queuedInst.iterator();
-      for (int peekIndex = 0; iter.hasNext(); peekIndex++) {
+      List<IDispatchRecord> notExecuted = history.getNotStarted().collect(Collectors.toList());
+      for (IDispatchRecord record : notExecuted) {
         // Ensure they are legal in debug build
         assert aluCount >= 0;
         assert ramCount >= 0;
 
-        IDispatchRecord record = iter.next();
-        IExecutable inst = record.getExecutable();
-        if (inst.usesAlu() && aluCount == 0) {
+        IExecutable exe = record.getExecutable();
+        if (exe.usesAlu() && aluCount == 0) {
           // Not enough ALU available
           continue;
         }
 
-        if ((inst.readRam() || inst.writeRam()) && ramCount == 0) {
+        if ((exe.readRam() || exe.writeRam()) && ramCount == 0) {
           continue;
         }
 
-        // Due to the nature of instruction queue,
-        // all inserted elements are only dependent on the following condition:
-        // (1) - instructions queued before executing instruction;
-        // (2) - instructions not yet finished (dispatched but not complete)
-        boolean canFulfill;
-
-        // Checking for (1), instructions queued before current instruction.
-        canFulfill = queuedInst.stream().limit(peekIndex).allMatch(record::depends);
-
-        // Can only fulfill if none of executing instructions
-        // were depended by current instruction.
-        canFulfill = canFulfill && history
-          // Only keep the one executes in this cycle.
-          .filter(x -> !x.executed())
-          .noneMatch(record::depends);
-
-        // If the instruction can't be fulfilled, don't schedule it (yet).
-        if (!canFulfill) {
+        List<IDispatchRecord> deps = record.getDependencies(true);
+        // Could not resolve.
+        if (deps == null) {
           continue;
+        }
+
+        // If any dependency not done, don't start it.
+        if (deps.size() > 0) {
+          if (!deps.stream().allMatch(IDispatchRecord::executed)) {
+            continue;
+          }
         }
 
         // Decrease available resource counter.
-        if (inst.usesAlu()) aluCount--;
-        if (inst.readRam() || inst.writeRam()) ramCount--;
+        if (exe.usesAlu()) aluCount--;
+        if (exe.readRam() || exe.writeRam()) ramCount--;
 
         record.setCycleStart(cycle);
         record.setCycleEnd(cycle + record.getExecutable().getCycleTime() - 1);
 
-        // Remove from the queue, and decrease the index to sync index.
-        iter.remove();
-        peekIndex--;
-
-        history.add(record);
-        results.add(record);
+        // history.add(record);
+        // results.add(record);
       }
     }
 
     history
-      .filter(record -> record.endAtCycle(cycle))
+      .filter(record -> record.endAtCycle(ctx.getCurrentCycle()))
       .forEach(record -> {
         IExecutable exe = record.getExecutable();
         int produce = exe.getProduce();
@@ -203,24 +200,24 @@ public class SmSimulator implements ISmSimulator {
           exe.toString()
         ));
         record.executeAndGetStack();
+        results.add(record);
       });
 
+    boolean allDone = history.filter(x -> !x.isFinished()).count() == 0;
     ctx.nextCycle();
 
-    boolean allDone = history.filter(x -> !x.isFinished()).count() == 0;
     if (allDone && program.isSysCall(getContext().getEip())) {
       SysCallDispatchRecord sysCallRecord = new SysCallDispatchRecord();
-      queuedInst.add(sysCallRecord);
-
 
       sysCallRecord.setContext(getContext());
-      sysCallRecord.setCycleStart(cycle);
+      sysCallRecord.setCycleStart(ctx.getCurrentCycle());
       // FIXME: Assume all syscall finish in one cycle
-      sysCallRecord.setCycleEnd(cycle);
+      sysCallRecord.setCycleEnd(ctx.getCurrentCycle());
       // Get EIP because we are in sync.
       sysCallRecord.setEip(getContext().getEip());
       sysCallRecord.setExecutionId(exeId.getAndIncrement());
       sysCallRecord.setSysCall(program.getSysCall(getContext().getEip()));
+      history.add(sysCallRecord);
       // sysCallRecord.executeAndGetStack();
       allDone = false;
     }
