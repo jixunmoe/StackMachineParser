@@ -59,6 +59,11 @@ public class SmHistory implements ISmHistory {
     return filter(SmHistory::notStarted);
   }
 
+  @Override
+  public List<IDispatchRecord> getAllRecords() {
+    return records;
+  }
+
   private static boolean notStarted(IDispatchRecord r) {
     return r.getInstStartCycle() == -1;
   }

@@ -1,10 +1,10 @@
 package uk.jixun.project.Simulator;
 
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import uk.jixun.project.CodeLoader;
+import uk.jixun.project.Helper.PerformanceHelper;
 import uk.jixun.project.Program.ISmProgram;
 import uk.jixun.project.Register.SmRegister;
 import uk.jixun.project.Simulator.Context.IExecutionContext;
@@ -43,7 +43,7 @@ class SmSimulatorTest {
     SmSimulator sim = simulate("loop1", ram, alu, depth);
 
     IExecutionContext ctx = sim.getContext();
-    System.out.println("Program completed in " + ctx.getCurrentCycle() + " cycles.");
+    PerformanceHelper.printEfficiency(ctx.getHistory());
 
     List<Integer> fp = ctx.dump(ctx.getRegister(SmRegister.FP).get() - 6, 6);
 
@@ -81,7 +81,7 @@ class SmSimulatorTest {
     IExecutionContext ctx = sim.getContext();
     int result = ctx.read(ctx.getRegister(SmRegister.FP).get() - 2 + 1);
     System.out.println("Execution result: " + result);
-    System.out.println("Program completed in " + ctx.getCurrentCycle() + " cycles.");
+    PerformanceHelper.printEfficiency(ctx.getHistory());
 
     assertEquals(5050, result);
   }
@@ -100,7 +100,7 @@ class SmSimulatorTest {
     IExecutionContext ctx = sim.getContext();
     int result = ctx.resolveStack(0, ctx.getHistory().getLastRecord().getExecutionId());
     System.out.println("Execution result: " + result);
-    System.out.println("Program completed in " + ctx.getCurrentCycle() + " cycles.");
+    PerformanceHelper.printEfficiency(ctx.getHistory());
 
     assertEquals(3628800, result);
   }
@@ -124,7 +124,7 @@ class SmSimulatorTest {
     IExecutionContext ctx = sim.getContext();
     int result = ctx.resolveStack(0, ctx.getHistory().getLastRecord().getExecutionId());
     System.out.println("Execution result: " + result);
-    System.out.println("Program completed in " + ctx.getCurrentCycle() + " cycles.");
+    PerformanceHelper.printEfficiency(ctx.getHistory());
 
     assertEquals(55, result);
   }
@@ -149,7 +149,7 @@ class SmSimulatorTest {
     IExecutionContext ctx = sim.getContext();
     int result = ctx.resolveStack(0, ctx.getHistory().getLastRecord().getExecutionId());
     System.out.println("Execution result: " + result);
-    System.out.println("Program completed in " + ctx.getCurrentCycle() + " cycles.");
+    PerformanceHelper.printEfficiency(ctx.getHistory());
 
     assertEquals(6765, result);
   }

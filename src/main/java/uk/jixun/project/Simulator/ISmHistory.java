@@ -41,4 +41,6 @@ public interface ISmHistory {
   Stream<IDispatchRecord> getNotExecuted();
 
   Stream<IDispatchRecord> getNotStarted();
+
+  List<IDispatchRecord> getAllRecords();
 }

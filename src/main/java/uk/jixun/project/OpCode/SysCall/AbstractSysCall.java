@@ -33,8 +33,8 @@ public abstract class AbstractSysCall implements ISysCall {
 
   @Override
   public int getCycleTime() {
-    // FIXME: Assume all sys call uses 1 cycle to complete.
-    return 1;
+    // FIXME: Assume all sys call uses 2 cycle to complete.
+    return 2;
   }
 
   @Override
