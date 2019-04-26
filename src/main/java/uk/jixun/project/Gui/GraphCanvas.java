@@ -164,9 +164,8 @@ public class GraphCanvas extends JComponent implements IGraphCanvas {
     this.history = history;
     if (status == Status.ConfigChanged) {
       setStatus(Status.Loading);
-    } else {
-      prepareRepaint();
     }
+    prepareRepaint();
   }
 
   private void prepareRepaint() {
