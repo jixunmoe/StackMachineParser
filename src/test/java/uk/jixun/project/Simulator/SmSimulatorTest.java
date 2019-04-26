@@ -2,8 +2,12 @@ package uk.jixun.project.Simulator;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import uk.jixun.project.CodeLoader;
+import uk.jixun.project.Helper.ArrayReduce;
 import uk.jixun.project.Helper.PerformanceHelper;
 import uk.jixun.project.Program.ISmProgram;
 import uk.jixun.project.Register.SmRegister;
@@ -12,7 +16,9 @@ import uk.jixun.project.SimulatorConfig.SimulatorConfigImpl;
 import uk.jixun.project.StackMachineInstParser;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,13 +38,25 @@ class SmSimulatorTest {
     return sim;
   }
 
+  private static Stream<Arguments> getTestConfig() {
+    if ("YES".equals(System.getenv("RUN_FIGURES"))) {
+      final int n = 10;
+      Arguments[] args = new Arguments[n];
+      for(int i = 0; i < n; i++) {
+        // NOTE: Do not commit changes to the next line.
+        args[i] = Arguments.of(999, i + 1, 999);
+      }
+      return Stream.of(args);
+    }
+    return Stream.of(
+      Arguments.of(1, 1, 5),
+      Arguments.of(2, 2, 5),
+      Arguments.of(5, 5, 5));
+  }
+
   @DisplayName("Loop 1: Appendix C.1 from Shi")
   @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
-  @CsvSource({
-    "1, 1, 5",
-    "2, 2, 5",
-    "5, 5, 5",
-  })
+  @MethodSource("getTestConfig")
   void testSimLoop1(int ram, int alu, int depth) throws Exception {
     SmSimulator sim = simulate("loop1", ram, alu, depth);
 
@@ -70,11 +88,7 @@ class SmSimulatorTest {
 
   @DisplayName("Sample 1: sum(100)")
   @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
-  @CsvSource({
-    "1, 1, 5",
-    "2, 2, 5",
-    "5, 5, 5",
-  })
+  @MethodSource("getTestConfig")
   void testSimSample1(int ram, int alu, int depth) throws Exception {
     SmSimulator sim = simulate("sample1", ram, alu, depth);
 
@@ -88,11 +102,7 @@ class SmSimulatorTest {
 
   @DisplayName("Sample 2: factorial(10)")
   @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
-  @CsvSource({
-    "1, 1, 5",
-    "2, 2, 5",
-    "5, 5, 5",
-  })
+  @MethodSource("getTestConfig")
   void testSimSample2(int ram, int alu, int depth) throws Exception {
     // 10! = 3628800
     SmSimulator sim = simulate("sample2", ram, alu, depth);
@@ -107,11 +117,7 @@ class SmSimulatorTest {
 
   @DisplayName("Sample 3: fibonacci(10)")
   @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
-  @CsvSource({
-    "1, 1, 5",
-    "2, 2, 5",
-    "5, 5, 5",
-  })
+  @MethodSource("getTestConfig")
   void testSimSample3(int ram, int alu, int depth) throws Exception {
     // fab(10) = 55
     // fab(11) = 89
@@ -131,11 +137,7 @@ class SmSimulatorTest {
 
   @DisplayName("Sample 4: fibonacci(20) + cache")
   @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
-  @CsvSource({
-    "1, 1, 5",
-    "2, 2, 5",
-    "5, 5, 5",
-  })
+  @MethodSource("getTestConfig")
   void testSimSample4(int ram, int alu, int depth) throws Exception {
     // fab(10) = 55
     // fab(11) = 89

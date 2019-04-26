@@ -12,6 +12,9 @@ public class PerformanceHelper {
       .mapToInt(IDispatchRecord::getInstEndCycle)
       .max().orElse(0) + 1;
     double cpi = 1.0 * cycles / instCount;
-    System.out.println(String.format("Program completed in %d cycles, cpi = %.3f", instCount, cpi));
+    System.out.println(String.format(
+      "Program completed in %d cycles, %d instructions, cpi = %.3f",
+      cycles, instCount, cpi
+    ));
   }
 }
