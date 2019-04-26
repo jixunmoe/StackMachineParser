@@ -4,9 +4,7 @@ import org.jetbrains.annotations.Nullable;
 import uk.jixun.project.Helper.LazyCache;
 import uk.jixun.project.OpCode.IExecutable;
 import uk.jixun.project.OpCode.SysCall.ISysCall;
-import uk.jixun.project.Simulator.IResourceUsage;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -14,11 +12,6 @@ public class SysCallDispatchRecord extends AbstractDispatchRecord {
   private final static Logger logger = Logger.getLogger(SysCallDispatchRecord.class.getName());
   private LazyCache<List<Integer>> executionStack = new LazyCache<>(this::explicitExecuteAndRecordStack);
   private ISysCall sysCall;
-
-  @Override
-  public IResourceUsage getResourceUsed() {
-    return null;
-  }
 
   @Override
   public boolean executed() {

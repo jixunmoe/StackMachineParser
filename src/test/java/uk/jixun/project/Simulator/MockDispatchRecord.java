@@ -15,11 +15,6 @@ public class MockDispatchRecord extends AbstractDispatchRecord {
   private IExecutable executable = null;
 
   @Override
-  public IResourceUsage getResourceUsed() {
-    return null;
-  }
-
-  @Override
   public boolean executed() {
     return false;
   }

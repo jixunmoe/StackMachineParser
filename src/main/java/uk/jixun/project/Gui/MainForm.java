@@ -10,6 +10,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import org.apache.commons.text.StringEscapeUtils;
 import uk.jixun.project.Program.ISmProgram;
+import uk.jixun.project.Simulator.DispatchRecord.IDispatchRecord;
 import uk.jixun.project.Simulator.ISmHistory;
 import uk.jixun.project.Simulator.SmSimulator;
 import uk.jixun.project.SimulatorConfig.ISimulatorConfigFormValue;
@@ -34,6 +35,7 @@ public class MainForm extends JFrame {
   private JTabbedPane tabbedPane1;
   private JButton btnRun;
   private JFXPanel jfxPanel;
+  private JLabel lbPerformance;
   private JScrollPane flowPanel;
   private ISimulatorConfigFormValue config;
   private ISmProgram program = null;
@@ -175,7 +177,23 @@ public class MainForm extends JFrame {
     }
 
     if (sim.isHalt()) {
+      int cycles = sim.getContext()
+        .getHistory()
+        .getAllRecords()
+        .stream()
+        .mapToInt(IDispatchRecord::getInstEndCycle)
+        .max().orElse(0);
+      int instructionExecuted = sim.getContext().getHistory().getAllRecords().size();
+      double cpi = (double)cycles / instructionExecuted;
+      lbPerformance.setText(String.format(
+        "The simulation completed in %d cycles, CPI is %.3f",
+        cycles, cpi
+      ));
+
       updateHistory(sim.getContext().getHistory());
+    } else {
+      updateHistory(null);
+      lbPerformance.setText("Performance data unavailable.");
     }
   }
 

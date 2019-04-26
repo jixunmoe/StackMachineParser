@@ -135,7 +135,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <grid id="e764c" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="e764c" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <tabbedpane title="Dependency"/>
@@ -156,6 +156,14 @@
                       </component>
                     </children>
                   </scrollpane>
+                  <component id="ccfe5" class="javax.swing.JLabel" binding="lbPerformance">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Performance data unavailable."/>
+                    </properties>
+                  </component>
                 </children>
               </grid>
               <grid id="d6a04" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

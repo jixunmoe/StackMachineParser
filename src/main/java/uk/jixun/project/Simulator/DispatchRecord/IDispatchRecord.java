@@ -3,7 +3,6 @@ package uk.jixun.project.Simulator.DispatchRecord;
 import org.jetbrains.annotations.Nullable;
 import uk.jixun.project.OpCode.IExecutable;
 import uk.jixun.project.Simulator.Context.IExecutionContext;
-import uk.jixun.project.Simulator.IResourceUsage;
 
 import java.util.List;
 
@@ -21,8 +20,6 @@ public interface IDispatchRecord {
   boolean executesAt(int cycle);
 
   boolean isFinished();
-
-  IResourceUsage getResourceUsed();
 
   /**
    * Declare if this record uses ALU.

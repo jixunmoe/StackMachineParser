@@ -1,9 +1,6 @@
 package uk.jixun.project;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
 import org.junit.jupiter.api.Test;
-import uk.jixun.project.Instruction.CommentInstruction;
 import uk.jixun.project.Instruction.ISmInstruction;
 import uk.jixun.project.OpCode.ISmOpCode;
 import uk.jixun.project.OpCode.SmOpCodeEnum;
