@@ -30,8 +30,6 @@ public class OptionsForm extends JComponent {
 // DO NOT EDIT OR ADD ANY CODE HERE!
     $$$setupUI$$$();
 
-    add(mainPanel);
-
     // btnApply.addActionListener(e -> this.applyOptions());
     txtAlu.setValue(2);
     txtRam.setValue(2);
