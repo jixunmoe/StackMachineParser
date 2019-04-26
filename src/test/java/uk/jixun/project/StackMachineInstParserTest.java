@@ -8,13 +8,12 @@ import uk.jixun.project.Operand.SmLabelOperand;
 import uk.jixun.project.Program.ISmProgram;
 import uk.jixun.project.Register.SmRegister;
 
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class StackMachineInstParserTest {
   @Test
@@ -106,10 +105,7 @@ class StackMachineInstParserTest {
     String text = CodeLoader.loadSampleCode("loop1");
     StackMachineInstParser parser = new StackMachineInstParser(new Scanner(text));
 
-    ArrayList<ISmInstruction> instructions = new ArrayList<>();
-    while(parser.hasNext()) {
-      instructions.add(parser.next());
-    }
+    List<ISmInstruction> instructions = parser.toProgram().getInstructions();
 
     System.out.println(
       instructions
