@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'eclipse'
+    id 'application'
 
     id 'org.openjfx.javafxplugin' version '0.0.7'
 }
@@ -25,7 +26,6 @@ repositories {
     mavenCentral()
 }
 
-// Yay! JavaFX!
 javafx {
     // Java 11
     version = "11"
@@ -58,19 +58,8 @@ dependencies {
     compile("ch.qos.logback:logback-classic:1.2.3")
     compile("guru.nidi:graphviz-java:0.8.3")
 }
+mainClassName = 'uk.jixun.project.Entry'
 
-jar {
-    manifest {
-        attributes(
-                "Class-Path": configurations.compile.collect { it.getName() }.join(' '),
-                "Main-Class" : "uk.jixun.project.Entry"
-        )
-    }
+run {
+    main = mainClassName
 }
-
-task copyToLib(type: Copy) {
-    into "$buildDir/libs"
-    from configurations.runtime
-}
-
-jar.dependsOn(copyToLib)
