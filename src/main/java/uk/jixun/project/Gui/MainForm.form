@@ -128,62 +128,72 @@
               </grid>
             </children>
           </grid>
-          <tabbedpane id="da97a" binding="tabbedPane1" default-binding="true">
+          <grid id="401b9" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <splitpane position="right"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
-              <grid id="e764c" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="0" bottom="0" right="0"/>
+              <tabbedpane id="da97a" binding="tabbedPane1" default-binding="true">
                 <constraints>
-                  <tabbedpane title="Dependency"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <scrollpane id="913cf">
+                  <grid id="e764c" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <tabbedpane title="Dependency"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="c2e9b" class="uk.jixun.project.Gui.GraphCanvas" binding="graphCanvas1" custom-create="true" default-binding="true">
-                        <constraints/>
+                      <scrollpane id="913cf">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="c2e9b" class="uk.jixun.project.Gui.GraphCanvas" binding="graphCanvas1" custom-create="true" default-binding="true">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                    </children>
+                  </grid>
+                  <grid id="d6a04" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <tabbedpane title="Flow"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="897ba" class="javafx.embed.swing.JFXPanel" binding="jfxPanel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
                         <properties/>
                       </component>
                     </children>
-                  </scrollpane>
-                  <component id="ccfe5" class="javax.swing.JLabel" binding="lbPerformance">
-                    <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <text value="Performance data unavailable."/>
-                    </properties>
-                  </component>
+                  </grid>
                 </children>
-              </grid>
-              <grid id="d6a04" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="0" bottom="0" right="0"/>
+              </tabbedpane>
+              <component id="ccfe5" class="javax.swing.JLabel" binding="lbPerformance">
                 <constraints>
-                  <tabbedpane title="Flow"/>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
-                <border type="none"/>
-                <children>
-                  <component id="897ba" class="javafx.embed.swing.JFXPanel" binding="jfxPanel">
-                    <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties/>
-                  </component>
-                </children>
-              </grid>
+                <properties>
+                  <text value="Performance data unavailable."/>
+                </properties>
+              </component>
             </children>
-          </tabbedpane>
+          </grid>
         </children>
       </splitpane>
     </children>
