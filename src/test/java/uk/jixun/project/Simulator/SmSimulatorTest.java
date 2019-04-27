@@ -39,6 +39,10 @@ class SmSimulatorTest {
   }
 
   private static Stream<Arguments> getTestConfig() {
+    if (!"WHT".equals(System.getenv("RUN_FIGURES"))) {
+      return Stream.of();
+    }
+
     if ("YES".equals(System.getenv("RUN_FIGURES"))) {
       final int n = 10;
       Arguments[] args = new Arguments[n];
@@ -54,9 +58,19 @@ class SmSimulatorTest {
       Arguments.of(5, 5, 5));
   }
 
+  private static Stream<Arguments> getTestConfig2() {
+    final int n = 10;
+    Arguments[] args = new Arguments[n];
+    for(int i = 0; i < n; i++) {
+      // NOTE: Do not commit changes to the next line.
+      args[i] = Arguments.of(999, 999, i + 1);
+    }
+    return Stream.of(args);
+  }
+
   @DisplayName("Loop 1: Appendix C.1 from Shi")
   @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
-  @MethodSource("getTestConfig")
+  @MethodSource("getTestConfig2")
   void testSimLoop1(int ram, int alu, int depth) throws Exception {
     SmSimulator sim = simulate("loop1", ram, alu, depth);
 
@@ -88,7 +102,7 @@ class SmSimulatorTest {
 
   @DisplayName("Loop 1 (loop unrolled): Appendix C.1 from Shi")
   @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
-  @MethodSource("getTestConfig")
+  @MethodSource("getTestConfig2")
   void testSimLoop1_imp(int ram, int alu, int depth) throws Exception {
     SmSimulator sim = simulate("loop1_imp", ram, alu, depth);
 
@@ -120,7 +134,7 @@ class SmSimulatorTest {
 
   @DisplayName("Loop 2: Appendix C.1 from Shi")
   @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
-  @MethodSource("getTestConfig")
+  @MethodSource("getTestConfig2")
   void testSimLoop2(int ram, int alu, int depth) throws Exception {
     SmSimulator sim = simulate("loop2", ram, alu, depth);
 
