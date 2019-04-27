@@ -14,19 +14,10 @@ public class SmOpCodeCondRelativeJump extends SmOpCodeCondRelativeJumpAbstract {
       return;
     }
 
-    // save current address (+1) and jump to the new address.
-    int returnAddress = getInstruction().getVirtualAddress() + 1;
-
-    ISmOperand operand = null;
     try {
-      operand = getInstruction().getOperand(0);
+      ctx.setEip(getInstruction().getOperand(0).resolve(ctx));
     } catch (OutOfRangeOperand outOfRangeOperand) {
       outOfRangeOperand.printStackTrace();
     }
-    assert operand != null;
-    // return address - sizeof(instruction size)
-    // instruction size = 1 (for this model)
-    int functionAddress = (returnAddress - 1) + operand.resolve(ctx);
-    ctx.setEip(functionAddress);
   }
 }

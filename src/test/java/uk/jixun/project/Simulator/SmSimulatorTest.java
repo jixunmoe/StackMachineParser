@@ -86,6 +86,64 @@ class SmSimulatorTest {
     }, K.toArray());
   }
 
+  @DisplayName("Loop 1 (loop unrolled): Appendix C.1 from Shi")
+  @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
+  @MethodSource("getTestConfig")
+  void testSimLoop1_imp(int ram, int alu, int depth) throws Exception {
+    SmSimulator sim = simulate("loop1_imp", ram, alu, depth);
+
+    IExecutionContext ctx = sim.getContext();
+    PerformanceHelper.printEfficiency(ctx.getHistory());
+
+    List<Integer> fp = ctx.dump(ctx.getRegister(SmRegister.FP).get() - 6, 6);
+
+    List<Integer> A = ctx.dump(fp.get(0), 12);
+    List<Integer> B = ctx.dump(fp.get(1), 12);
+    List<Integer> C = ctx.dump(fp.get(2), 12);
+    List<Integer> D = ctx.dump(fp.get(3), 12);
+    Integer[] ABCD = new Integer[]{
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+    };
+    assertArrayEquals(ABCD, A.toArray());
+    assertArrayEquals(ABCD, B.toArray());
+    assertArrayEquals(ABCD, C.toArray());
+    assertArrayEquals(ABCD, D.toArray());
+
+    int i = fp.get(5);
+    assertEquals(12, i);
+
+    List<Integer> K = ctx.dump(fp.get(4), 12);
+    assertArrayEquals(new Integer[]{
+      0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121
+    }, K.toArray());
+  }
+
+  @DisplayName("Loop 2: Appendix C.1 from Shi")
+  @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
+  @MethodSource("getTestConfig")
+  void testSimLoop2(int ram, int alu, int depth) throws Exception {
+    SmSimulator sim = simulate("loop2", ram, alu, depth);
+
+    IExecutionContext ctx = sim.getContext();
+    PerformanceHelper.printEfficiency(ctx.getHistory());
+
+    List<Integer> fp = ctx.dump(ctx.getRegister(SmRegister.FP).get() - 4, 4);
+
+    List<Integer> X = ctx.dump(fp.get(0), 12);
+    List<Integer> Y = ctx.dump(fp.get(1), 12);
+    // int i = fp.get(1);
+    // int T = fp.get(2);
+
+    Integer[] expectedX = new Integer[]{
+      50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61
+    };
+    Integer[] expectedY = new Integer[]{
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+    };
+    assertArrayEquals(expectedX, X.toArray());
+    assertArrayEquals(expectedY, Y.toArray());
+  }
+
   @DisplayName("Sample 1: sum(100)")
   @ParameterizedTest(name = "with {0} ram port, {1} alu, {2} search depth")
   @MethodSource("getTestConfig")

@@ -19,6 +19,10 @@ public class SmOpCodeRsd extends SmOpCodeRsdAbstract {
     // 2nd   1st   3rd
     // 1nd   3rd   2nd
 
+    // orig  rsu2  rsd2
+    // 2nd   1st   1st
+    // 1nd   2nd   2nd
+
     // rsd: pop last item and push it to beginning of the list.
 
     int index = getVariant();

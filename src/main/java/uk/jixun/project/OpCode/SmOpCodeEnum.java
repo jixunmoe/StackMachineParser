@@ -37,6 +37,7 @@ public enum SmOpCodeEnum {
   // (n & 0xFF00FFFF) | (x << 16)
   INSERT_WORD,
 
+  DUP,
   COPY,
   DROP,
   RSU,

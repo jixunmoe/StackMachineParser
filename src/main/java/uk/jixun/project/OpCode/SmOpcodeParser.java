@@ -100,6 +100,9 @@ public class SmOpcodeParser {
       return OpCodeFactory.create(SmOpCodeEnum.INSERT_WORD,
         Character.getNumericValue(lastChar));
     }
+    if ("DUP".equals(opcode)) {
+      return OpCodeFactory.create(SmOpCodeEnum.DUP);
+    }
     if (
       "COPY".equals(opcode.substring(0, opcode.length() - 1))
       && (lastChar == '1' || lastChar == '2' || lastChar == '3' || lastChar == '4')
@@ -123,7 +126,7 @@ public class SmOpcodeParser {
     }
     if (
       "RSD".equals(opcode.substring(0, opcode.length() - 1))
-      && (lastChar == '3' || lastChar == '4')
+      && (lastChar == '2' || lastChar == '3' || lastChar == '4')
     ) {
       return OpCodeFactory.create(SmOpCodeEnum.RSD,
         Character.getNumericValue(lastChar));

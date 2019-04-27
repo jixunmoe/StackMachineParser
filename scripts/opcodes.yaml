@@ -127,6 +127,10 @@ opcodes:
         consume: 2
         produce: 1
   # Stack & Register Manipulation
+  - id: DUP
+    scan: dup
+    consume: 1
+    produce: 2
   - id: COPY
     Varients:
       - id: 1
@@ -168,6 +172,9 @@ opcodes:
         produce: 4
   - id: RSD
     Varients:
+      - id: 2
+        consume: 2
+        produce: 2
       - id: 3
         consume: 3
         produce: 3
@@ -588,8 +595,8 @@ opcodes:
         access: write
       TOS:
         scan: TOS++
-        consume: 0
-        produce: 0
+        consume: 1
+        produce: 1
         access: write
   - id: REG_DEC
     reg:

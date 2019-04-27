@@ -25,9 +25,8 @@ public class SmOpCodeCondRelativeCall extends SmOpCodeCondRelativeCallAbstract {
       outOfRangeOperand.printStackTrace();
     }
     assert operand != null;
-    // return address - sizeof(instruction size)
     // instruction size = 1 (for this model)
-    int functionAddress = (returnAddress - 1) + operand.resolve(ctx);
+    int functionAddress = operand.resolve(ctx);
     ctx.setEip(functionAddress);
   }
 }

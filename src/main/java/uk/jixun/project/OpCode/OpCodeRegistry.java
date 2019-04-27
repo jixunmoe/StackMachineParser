@@ -38,6 +38,7 @@ class OpCodeRegistry {
     OpCodeFactory.register(SmOpCodeEnum.EXTRACT_RIGHT_WORD, SmOpCodeExtractRightWord.class);
     OpCodeFactory.register(SmOpCodeEnum.INSERT_BYTE, SmOpCodeInsertByte.class);
     OpCodeFactory.register(SmOpCodeEnum.INSERT_WORD, SmOpCodeInsertWord.class);
+    OpCodeFactory.register(SmOpCodeEnum.DUP, SmOpCodeDup.class);
     OpCodeFactory.register(SmOpCodeEnum.COPY, SmOpCodeCopy.class);
     OpCodeFactory.register(SmOpCodeEnum.DROP, SmOpCodeDrop.class);
     OpCodeFactory.register(SmOpCodeEnum.RSU, SmOpCodeRsu.class);

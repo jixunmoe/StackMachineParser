@@ -74,6 +74,8 @@ public abstract class AbstractBasicOpCode implements ISmOpCode {
     return getInstruction().toAssemblyWithAddress(3);
   }
 
+  private static final int RAM_DELAY = 1;
+
   @Override
   public int getCycleTime() {
     int time = 0;
@@ -83,8 +85,10 @@ public abstract class AbstractBasicOpCode implements ISmOpCode {
     }
 
     if (readRam() || writeRam()) {
-      time += 1;
+      time += RAM_DELAY;
     }
+
+    time += RAM_DELAY * (getProduce() + getConsume());
 
     return time;
   }

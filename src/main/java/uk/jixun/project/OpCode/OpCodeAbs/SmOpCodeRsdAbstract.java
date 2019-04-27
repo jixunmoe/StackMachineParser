@@ -28,6 +28,9 @@ public abstract class SmOpCodeRsdAbstract extends AbstractBasicOpCode {
     
 
     
+      mapConsume.put(2, 2);
+      mapProduce.put(2, 2);
+    
       mapConsume.put(3, 3);
       mapProduce.put(3, 3);
     
@@ -69,6 +72,10 @@ public abstract class SmOpCodeRsdAbstract extends AbstractBasicOpCode {
   @Override
   public boolean readRam() {
     
+    if (variant == 2) {
+      return false;
+    }
+
     if (variant == 3) {
       return false;
     }
@@ -83,6 +90,10 @@ public abstract class SmOpCodeRsdAbstract extends AbstractBasicOpCode {
   @Override
   public boolean writeRam() {
     
+    if (variant == 2) {
+      return false;
+    }
+
     if (variant == 3) {
       return false;
     }
@@ -97,6 +108,10 @@ public abstract class SmOpCodeRsdAbstract extends AbstractBasicOpCode {
   @Override
   public boolean isStaticRamAddress() {
     
+    if (variant == 2) {
+      return false;
+    }
+
     if (variant == 3) {
       return false;
     }
@@ -111,6 +126,10 @@ public abstract class SmOpCodeRsdAbstract extends AbstractBasicOpCode {
   @Override
   public int resolveRamAddress(IExecutionContext ctx) throws Exception {
     
+    if (variant == 2) {
+      
+    }
+
     if (variant == 3) {
       
     }
@@ -124,7 +143,7 @@ public abstract class SmOpCodeRsdAbstract extends AbstractBasicOpCode {
 
   @Override
   public void setVariant(int variant) {
-    if ((variant == 3) || (variant == 4)) {
+    if ((variant == 2) || (variant == 3) || (variant == 4)) {
       this.variant = variant;
     }
   }

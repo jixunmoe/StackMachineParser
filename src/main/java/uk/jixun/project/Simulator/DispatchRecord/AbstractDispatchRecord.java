@@ -169,7 +169,7 @@ public abstract class AbstractDispatchRecord implements IDispatchRecord {
       promise.resolve(stack);
       if (log != null) {
         log += stack.join(",") + "]";
-        logger.finer(log);
+        logger.info(log);
       }
 
     } catch (Exception e) {

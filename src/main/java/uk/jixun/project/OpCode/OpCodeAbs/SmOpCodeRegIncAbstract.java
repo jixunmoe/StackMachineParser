@@ -41,8 +41,8 @@ public abstract class SmOpCodeRegIncAbstract extends AbstractBasicOpCode {
     mapConsume.put(SmRegister.FP, 0);
     mapProduce.put(SmRegister.FP, 0);
     
-    mapConsume.put(SmRegister.TOS, 0);
-    mapProduce.put(SmRegister.TOS, 0);
+    mapConsume.put(SmRegister.TOS, 1);
+    mapProduce.put(SmRegister.TOS, 1);
     
 
     
