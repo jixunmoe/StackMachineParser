@@ -3,7 +3,7 @@
 export RUN_FIGURES=YES
 
 # NOTE: Do not commit changes to the next line
-export TEST_NAME=CONTROLLED_SEARCH_DEPTH_LOOP
+export TEST_NAME=FINAL_RESULT
 
 
 export LOG_FILE=logs/TEST_LOG_${TEST_NAME}.log

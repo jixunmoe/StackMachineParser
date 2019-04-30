@@ -1,0 +1,140 @@
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1_imp(int, int, int)[1] STANDARD_OUT
+    Program completed in 1996 cycles, 820 instructions, cpi = 2.434
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1_imp(int, int, int)[2] STANDARD_OUT
+    Program completed in 1700 cycles, 820 instructions, cpi = 2.073
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1_imp(int, int, int)[3] STANDARD_OUT
+    Program completed in 1647 cycles, 820 instructions, cpi = 2.009
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1_imp(int, int, int)[4] STANDARD_OUT
+    Program completed in 1607 cycles, 820 instructions, cpi = 1.960
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1_imp(int, int, int)[5] STANDARD_OUT
+    Program completed in 1607 cycles, 820 instructions, cpi = 1.960
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1_imp(int, int, int)[6] STANDARD_OUT
+    Program completed in 1600 cycles, 820 instructions, cpi = 1.951
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1_imp(int, int, int)[7] STANDARD_OUT
+    Program completed in 1583 cycles, 820 instructions, cpi = 1.930
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1_imp(int, int, int)[8] STANDARD_OUT
+    Program completed in 1583 cycles, 820 instructions, cpi = 1.930
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1_imp(int, int, int)[9] STANDARD_OUT
+    Program completed in 1583 cycles, 820 instructions, cpi = 1.930
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1_imp(int, int, int)[10] STANDARD_OUT
+    Program completed in 1583 cycles, 820 instructions, cpi = 1.930
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1(int, int, int)[1] STANDARD_OUT
+    Program completed in 2155 cycles, 820 instructions, cpi = 2.628
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1(int, int, int)[2] STANDARD_OUT
+    Program completed in 1324 cycles, 820 instructions, cpi = 1.615
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1(int, int, int)[3] STANDARD_OUT
+    Program completed in 1058 cycles, 820 instructions, cpi = 1.290
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1(int, int, int)[4] STANDARD_OUT
+    Program completed in 914 cycles, 820 instructions, cpi = 1.115
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1(int, int, int)[5] STANDARD_OUT
+    Program completed in 822 cycles, 820 instructions, cpi = 1.002
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1(int, int, int)[6] STANDARD_OUT
+    Program completed in 777 cycles, 820 instructions, cpi = 0.948
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1(int, int, int)[7] STANDARD_OUT
+    Program completed in 729 cycles, 820 instructions, cpi = 0.889
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1(int, int, int)[8] STANDARD_OUT
+    Program completed in 726 cycles, 820 instructions, cpi = 0.885
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1(int, int, int)[9] STANDARD_OUT
+    Program completed in 726 cycles, 820 instructions, cpi = 0.885
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop1(int, int, int)[10] STANDARD_OUT
+    Program completed in 726 cycles, 820 instructions, cpi = 0.885
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop2(int, int, int)[1] STANDARD_OUT
+    Program completed in 1645 cycles, 628 instructions, cpi = 2.619
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop2(int, int, int)[2] STANDARD_OUT
+    Program completed in 1068 cycles, 628 instructions, cpi = 1.701
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop2(int, int, int)[3] STANDARD_OUT
+    Program completed in 804 cycles, 628 instructions, cpi = 1.280
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop2(int, int, int)[4] STANDARD_OUT
+    Program completed in 756 cycles, 628 instructions, cpi = 1.204
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop2(int, int, int)[5] STANDARD_OUT
+    Program completed in 708 cycles, 628 instructions, cpi = 1.127
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop2(int, int, int)[6] STANDARD_OUT
+    Program completed in 708 cycles, 628 instructions, cpi = 1.127
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop2(int, int, int)[7] STANDARD_OUT
+    Program completed in 684 cycles, 628 instructions, cpi = 1.089
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop2(int, int, int)[8] STANDARD_OUT
+    Program completed in 684 cycles, 628 instructions, cpi = 1.089
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop2(int, int, int)[9] STANDARD_OUT
+    Program completed in 660 cycles, 628 instructions, cpi = 1.051
+uk.jixun.project.Simulator.SmSimulatorTest > testSimLoop2(int, int, int)[10] STANDARD_OUT
+    Program completed in 660 cycles, 628 instructions, cpi = 1.051
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample1(int, int, int)[1] STANDARD_OUT
+    Program completed in 3132 cycles, 1314 instructions, cpi = 2.384
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample1(int, int, int)[2] STANDARD_OUT
+    Program completed in 2728 cycles, 1314 instructions, cpi = 2.076
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample1(int, int, int)[3] STANDARD_OUT
+    Program completed in 2328 cycles, 1314 instructions, cpi = 1.772
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample1(int, int, int)[4] STANDARD_OUT
+    Program completed in 2328 cycles, 1314 instructions, cpi = 1.772
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample1(int, int, int)[5] STANDARD_OUT
+    Program completed in 2328 cycles, 1314 instructions, cpi = 1.772
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample1(int, int, int)[6] STANDARD_OUT
+    Program completed in 2328 cycles, 1314 instructions, cpi = 1.772
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample1(int, int, int)[7] STANDARD_OUT
+    Program completed in 2328 cycles, 1314 instructions, cpi = 1.772
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample1(int, int, int)[8] STANDARD_OUT
+    Program completed in 2328 cycles, 1314 instructions, cpi = 1.772
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample1(int, int, int)[9] STANDARD_OUT
+    Program completed in 2328 cycles, 1314 instructions, cpi = 1.772
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample1(int, int, int)[10] STANDARD_OUT
+    Program completed in 2328 cycles, 1314 instructions, cpi = 1.772
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample2(int, int, int)[1] STANDARD_OUT
+    Program completed in 454 cycles, 180 instructions, cpi = 2.522
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample2(int, int, int)[2] STANDARD_OUT
+    Program completed in 454 cycles, 180 instructions, cpi = 2.522
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample2(int, int, int)[3] STANDARD_OUT
+    Program completed in 454 cycles, 180 instructions, cpi = 2.522
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample2(int, int, int)[4] STANDARD_OUT
+    Program completed in 454 cycles, 180 instructions, cpi = 2.522
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample2(int, int, int)[5] STANDARD_OUT
+    Program completed in 454 cycles, 180 instructions, cpi = 2.522
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample2(int, int, int)[6] STANDARD_OUT
+    Program completed in 454 cycles, 180 instructions, cpi = 2.522
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample2(int, int, int)[7] STANDARD_OUT
+    Program completed in 454 cycles, 180 instructions, cpi = 2.522
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample2(int, int, int)[8] STANDARD_OUT
+    Program completed in 454 cycles, 180 instructions, cpi = 2.522
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample2(int, int, int)[9] STANDARD_OUT
+    Program completed in 454 cycles, 180 instructions, cpi = 2.522
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample2(int, int, int)[10] STANDARD_OUT
+    Program completed in 454 cycles, 180 instructions, cpi = 2.522
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample3(int, int, int)[1] STANDARD_OUT
+    Program completed in 7624 cycles, 3012 instructions, cpi = 2.531
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample3(int, int, int)[2] STANDARD_OUT
+    Program completed in 7624 cycles, 3012 instructions, cpi = 2.531
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample3(int, int, int)[3] STANDARD_OUT
+    Program completed in 7624 cycles, 3012 instructions, cpi = 2.531
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample3(int, int, int)[4] STANDARD_OUT
+    Program completed in 7624 cycles, 3012 instructions, cpi = 2.531
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample3(int, int, int)[5] STANDARD_OUT
+    Program completed in 7624 cycles, 3012 instructions, cpi = 2.531
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample3(int, int, int)[6] STANDARD_OUT
+    Program completed in 7624 cycles, 3012 instructions, cpi = 2.531
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample3(int, int, int)[7] STANDARD_OUT
+    Program completed in 7624 cycles, 3012 instructions, cpi = 2.531
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample3(int, int, int)[8] STANDARD_OUT
+    Program completed in 7624 cycles, 3012 instructions, cpi = 2.531
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample3(int, int, int)[9] STANDARD_OUT
+    Program completed in 7624 cycles, 3012 instructions, cpi = 2.531
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample3(int, int, int)[10] STANDARD_OUT
+    Program completed in 7624 cycles, 3012 instructions, cpi = 2.531
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample4(int, int, int)[1] STANDARD_OUT
+    Program completed in 3532 cycles, 1398 instructions, cpi = 2.526
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample4(int, int, int)[2] STANDARD_OUT
+    Program completed in 3532 cycles, 1398 instructions, cpi = 2.526
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample4(int, int, int)[3] STANDARD_OUT
+    Program completed in 3532 cycles, 1398 instructions, cpi = 2.526
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample4(int, int, int)[4] STANDARD_OUT
+    Program completed in 3532 cycles, 1398 instructions, cpi = 2.526
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample4(int, int, int)[5] STANDARD_OUT
+    Program completed in 3532 cycles, 1398 instructions, cpi = 2.526
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample4(int, int, int)[6] STANDARD_OUT
+    Program completed in 3532 cycles, 1398 instructions, cpi = 2.526
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample4(int, int, int)[7] STANDARD_OUT
+    Program completed in 3532 cycles, 1398 instructions, cpi = 2.526
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample4(int, int, int)[8] STANDARD_OUT
+    Program completed in 3532 cycles, 1398 instructions, cpi = 2.526
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample4(int, int, int)[9] STANDARD_OUT
+    Program completed in 3532 cycles, 1398 instructions, cpi = 2.526
+uk.jixun.project.Simulator.SmSimulatorTest > testSimSample4(int, int, int)[10] STANDARD_OUT
+    Program completed in 3532 cycles, 1398 instructions, cpi = 2.526
