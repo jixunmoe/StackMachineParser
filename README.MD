@@ -1,6 +1,16 @@
+Change `./gradlew` to `gradlew` when running commands in Windows.
+
+IDE may or may not require additional configuration to work properly.
+
+This project is developed under Intellij IDEA.
+
 ## Build
 
-    ./gradlew jar
+    ./gradlew build
+
+## Create zip package
+
+    ./gradlew distZip
 
 ## Open in Eclipse
 
